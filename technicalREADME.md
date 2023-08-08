@@ -52,9 +52,7 @@ Variables de entorno:
 - `DATABASE`: Nombre de la base de datos.
 
 ### Levantar servidor
-
 Una vez instaladas las dependencias y creadas las variables de entorno, ejecutar el siguiente comando en la consola.
-
 ```
 npm start
 ```
@@ -62,9 +60,14 @@ npm start
 *Nota:* Se recomienda tener 2 consolas abiertas para levantar los servidores de Frontend y Backend simultáneamente.
 
 ## Configuración del Frontend :desktop_computer:
-
 Posicionarse en la carpeta `client` y ejecutar el siguiente comando en la consola para instalar las dependencias:
 
 ```
 npm i
+```
+
+### Levantar servidor
+Sobre la carpeta `client`, correr el comando
+```
+npm run dev
 ```
