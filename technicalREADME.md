@@ -40,10 +40,10 @@ Esto instalará todas las dependencias listadas en el package.json.
 ### Variables de entorno
 Este proyecto maneja las credenciales mediante variables de entorno, que deben ser creadas antes de levantar el servidor.
 
-##### Archivo .env
+#### Archivo .env
 Posicionarse en la carpeta `server` y crear un archivo con el nombre `.env`. Dentro de él se crearán las distintas variables que serán únicas en cada repositorio local.
 
-##### Conexión con base de datos
+#### Conexión con base de datos
 Variables de entorno:
 
 - `USER`: Usuario del gestor de la base de datos.
