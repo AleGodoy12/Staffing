@@ -25,3 +25,49 @@ Facilitaremos el trabajo colaborativo del equipo utilizando ***Github*** para el
 ## Metodología de trabajo :bookmark_tabs:
 Cada miembro del equipo de desarrollo asumirá un rol específico en cada sprint, fomentando así las habilidades técnicas requeridas por las tecnologías del proyecto. A través del liderazgo en turnos, adquirirán las habilidades interpersonales necesarias para la gestión del equipo y la documentación del proyecto.
 Seguiremos las prácticas de la metodología **SCRUM**, organizando el trabajo en sprints y celebrando las ceremonias pertinentes. Aplicaremos los valores propuestos por Scrum, incluyendo compromiso, respeto y transparencia en la comunicación, y proporcionando apoyo para superar los obstáculos durante el desarrollo del proyecto.
+
+
+## Instalación :gear:
+Antes de comenzar, se debe clonar el repositorio a una carpeta local.
+
+## Configuración del Backend :mag:
+Posicionarse en la carpeta `server` y ejecutar el comando
+```
+npm i
+```
+Esto instalará todas las dependencias listadas en el package.json.
+
+### Variables de entorno
+Este proyecto maneja las credenciales mediante variables de entorno, que deben ser creadas antes de levantar el servidor.
+
+#### Archivo .env
+Posicionarse en la carpeta `server` y crear un archivo con el nombre `.env`. Dentro de él se crearán las distintas variables que serán únicas en cada repositorio local.
+
+#### Conexión con base de datos
+Variables de entorno:
+
+- `USER`: Usuario del gestor de la base de datos.
+- `PASSWORD`: Contraseña del gestor de la base de datos.
+- `SERVER`: Número de puerto en el que se realiza la conexión de la base de datos.
+- `DATABASE`: Nombre de la base de datos.
+
+### Levantar servidor
+Una vez instaladas las dependencias y creadas las variables de entorno, ejecutar el siguiente comando en la consola.
+```
+npm start
+```
+
+*Nota:* Se recomienda tener 2 consolas abiertas para levantar los servidores de Frontend y Backend simultáneamente.
+
+## Configuración del Frontend :desktop_computer:
+Posicionarse en la carpeta `client` y ejecutar el siguiente comando en la consola para instalar las dependencias:
+
+```
+npm i
+```
+
+### Levantar servidor
+Sobre la carpeta `client`, correr el comando
+```
+npm run dev
+```
