@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 const loginControllers = {
 	showLogin: async function (req, res) {
 		if (req.session.loggedIn) {
+			console.log(req.session.loggedIn);
 			res.status(200).json({ message: 'Estas logeado' });
 		} else {
 			res.status(404).json({ message: 'No estas logeado' });
@@ -43,7 +44,9 @@ const loginControllers = {
 						req.session.loggedIn = {
 							username: resp[0].username,
 							password: resp[0].password,
+							role: resp[0].permission,
 						};
+						console.log(req.session.loggedIn);
 						return res
 							.status(200)
 							.json({ status: 200, message: 'Usuario encontrado' });
