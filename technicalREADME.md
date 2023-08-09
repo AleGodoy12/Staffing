@@ -48,7 +48,7 @@ Variables de entorno:
 
 - `USER`: Usuario del gestor de la base de datos.
 - `PASSWORD`: Contraseña del gestor de la base de datos.
-- `SERVER`: Número de puerto en el que se realiza la conexión de la base de datos.
+- `SERVER`: Nombre del servidor. Usualmente es 'localhost'.
 - `DATABASE`: Nombre de la base de datos.
 
 ### Levantar servidor
