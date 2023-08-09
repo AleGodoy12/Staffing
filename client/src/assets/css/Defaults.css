@@ -1,0 +1,51 @@
+/* Reset styles */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Config root div */
+#root {
+  height: 100vh;
+}
+
+/* Fonts - Roboto*/
+@font-face {
+  font-family: "Roboto-Bold-700";
+  src: url("../fonts/Roboto-Bold.woff");
+  display: swap;
+}
+@font-face {
+  font-family: "Roboto-Medium-500";
+  src: url("../fonts/Roboto-Medium.woff");
+}
+@font-face {
+  font-family: "Roboto-Regular-400";
+  src: url("../fonts/Roboto-Regular.woff");
+  display: swap;
+}
+@font-face {
+  font-family: "Roboto-Light-300";
+  src: url("../fonts/Roboto-Light.woff");
+  display: swap;
+}
+/* Fonts - Rubik */
+@font-face {
+  font-family: "Rubik-Bold-700";
+  src: url("../fonts/Rubik-Bold.woff");
+}
+@font-face {
+  font-family: "Rubik-Medium-500";
+  src: url("../fonts/Roboto-Medium.woff");
+}
+@font-face {
+  font-family: "Rubik-Regular-400";
+  src: url("../fonts/Rubik-Regular.woff");
+}
+@font-face {
+  font-family: "Rubik-Light-300";
+  src: url("../fonts/Rubik-Light.woff");
+}
