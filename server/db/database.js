@@ -1,7 +1,7 @@
 const sql = require('mssql');
 
 const connectDb = async () => {
-    try{
+    try {
         await sql.connect({
             user: process.env.USER,
             password: process.env.PASSWORD,
@@ -10,14 +10,14 @@ const connectDb = async () => {
             options: {
                 encrypt: true, // for azure
                 trustServerCertificate: true // change to true for local dev / self-signed certs
-              }
-        })
+            }
+        });
         console.log('Db conectada');
-    } catch(error){
+    } catch (error) {
         console.log(error);
     } finally {
         sql.close();
     }
-}
+};
 
-module.exports = connectDb
+module.exports = connectDb;
