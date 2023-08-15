@@ -1,10 +1,12 @@
 import LogoArbusta from '../assets/icons/arbusta-icon.png'
+import '../assets/css/Login.css'
 
 export default function Login() {
   return (
     <>
       <main className="main-login">
         <section className="login">
+
           <div className="container">
             <div className="logo">
               <img src={LogoArbusta} alt="logo" />
@@ -20,6 +22,7 @@ export default function Login() {
               <input type="submit" value="Iniciar sesión" />
             </form>
           </div>
+          
         </section>
       </main>
     </>

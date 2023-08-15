@@ -105,14 +105,46 @@
 @media screen and (max-width: 500px){
   .main-login {
     background-image: url("../images/bg-login-mobile.png");
+    min-height: 640px;
+    padding: 8px;
   }
+  
 
   .main-login .login {
     max-width: 400px;
   }
   .main-login .container {
     min-width: auto;
-    padding: 48px 15px 24px 15px;
+    padding: 36px 18px 12px 18px;
   }
-  
+
+  .main-login .logo img {
+    width: 36px;
+  }
+  .main-login .logo p {
+    font-size: 28px;
+  }
+  .main-login .container > p {
+    font-size: 18px;
+    margin: 36px 0;
+  }
+  .main-login h1 {
+    font-size: 28px;
+    margin-bottom: 36px;
+  }
+  .main-login form label {
+    font-size: 14px;
+  }
+  .main-login form input {
+    height: 36px;
+  }
+  .main-login form input[type="submit"] {
+    font-size: 16px;
+    margin-top: 36px;
+  }
+  .main-login form input[type="password"], 
+  .main-login form input[type="text"] {
+    font-size: 16px;
+  }
+
 }
