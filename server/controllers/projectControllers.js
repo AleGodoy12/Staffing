@@ -1,5 +1,5 @@
 const database = require('../db/database');
-
+const { validationResult } = require('express-validator');
 const projectControllers = {
 	viewAllProjects: async function (req, res) {
 		const pool = await database();
@@ -28,8 +28,14 @@ const projectControllers = {
 			hours_estimation,
 			id_user_admin,
 		} = req.body;
+
+		const errors = validationResult(req);
+
 		const pool = await database();
 		try {
+			if (errors.errors.length > 0) {
+				return res.status(422).json({ status: 422, error: errors.errors });
+			}
 			const result = await pool
 				.request()
 				.query(
@@ -57,8 +63,12 @@ const projectControllers = {
 			end_date_project,
 			hours_estimation,
 		} = req.body;
+		const errors = validationResult(req);
 		const pool = await database();
 		try {
+			if (errors.errors.length > 0) {
+				return res.status(422).json({ status: 422, error: errors.errors });
+			}
 			const request = await pool
 				.request()
 				.query(

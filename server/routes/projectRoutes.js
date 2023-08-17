@@ -5,10 +5,12 @@ const {
 	editProject,
 	deleteProject,
 } = require('../controllers/projectControllers');
+const validateProject = require('../middlewares/validateProject');
+
 const route = express.Router();
 
 route.get('/', viewAllProjects);
-route.post('/createProject', createProject);
+route.post('/createProject', validateProject, createProject);
 route.patch('/editProject', editProject);
 route.delete('/deleteProject', deleteProject);
 
