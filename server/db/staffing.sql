@@ -32,41 +32,69 @@ CREATE TABLE dbo.projects(
 );
 
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 6);
+VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 2);
 
 SELECT * FROM dbo.projects;
-
-
-IF OBJECT_ID('dbo.SP_CHECK_USER') IS NOT NULL
-   BEGIN DROP PROCEDURE dbo.SP_CHECK_USER END;
+ 
+IF OBJECT_ID('dbo.employees') IS NOT NULL
+	DROP TABLE dbo.employees;
 GO
- CREATE PROCEDURE dbo.SP_CHECK_USER
- (@username VARCHAR(30),
-  @password VARCHAR(60)
-  )
-  AS 
-  BEGIN
-  	DECLARE @userId INT;
-  
-  SELECT @userId = id_user
-  FROM dbo.users
-  WHERE username = @username AND password = @password;
- 
- IF @userId IS NOT NULL
- BEGIN
- 	SELECT id_user, username, mail, permission
- 	FROM dbo.users
- 	WHERE id_user = @userId
- END 
- ELSE 
- BEGIN 
-	 PRINT 'El usuario no existe'; 
-	 RETURN
- END
-END;
+CREATE TABLE dbo.employees(
+	id_employee INT IDENTITY(1,1),
+	name VARCHAR(30) NOT NULL,
+	lastname VARCHAR(50) NOT NULL,
+	mail VARCHAR(150) NOT NULL,
+	used_hours INT NOT NULL,
+	free_hours INT NOT NULL,
+	total_hours INT NOT NULL,
+	company VARCHAR(150),
+	PRIMARY KEY (id_employee)
+);
 
-  
-EXEC dbo.SP_CHECK_USER 'admin', '12345';
+IF OBJECT_ID('dbo.project_employees') IS NOT NULL
+	DROP TABLE dbo.project_employees;
+GO
+CREATE TABLE dbo.project_employees(
+	id_project_employee INT IDENTITY(1,1),
+	id_employee INT,
+	id_project INT 
+	PRIMARY KEY(id_project_employee)
+	FOREIGN KEY(id_employee) REFERENCES dbo.employees(id_employee),
+	FOREIGN KEY(id_project) REFERENCES dbo.projects(id_project)
+);
 
-EXEC dbo.SP_CHECK_USER 'visual', '12345';
- 
+IF OBJECT_ID('dbo.skills') IS NOT NULL
+	DROP TABLE dbo.skills;
+GO
+CREATE TABLE dbo.skills(
+	id_skill INT IDENTITY(1,1),
+	skill_name VARCHAR(50),
+	PRIMARY KEY(id_skill)
+);
+
+IF OBJECT_ID('dbo.employee_skills') IS NOT NULL
+	DROP TABLE dbo.employee_skills;
+GO
+CREATE TABLE dbo.employee_skills(
+	id_employee_skill INT IDENTITY(1,1),
+	employee_id INT,
+	skill_id INT,
+	PRIMARY KEY(id_employee_skill),
+	FOREIGN KEY (employee_id) REFERENCES dbo.employees(id_employee),
+	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
+);
+
+INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,2),(2,3),(1,3)
+INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3),(1,4),(1,5),(1,6)
+
+SELECT * FROM dbo.projects
+GO
+SELECT * FROM dbo.employees
+GO
+SELECT * FROM dbo.skills
+GO
+SELECT * FROM dbo.employee_skills
+GO
+SELECT * FROM dbo.project_employees
