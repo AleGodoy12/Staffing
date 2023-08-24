@@ -12,6 +12,6 @@ const route = express.Router();
 route.get('/', viewAllProjects);
 route.post('/createProject', validateProject, createProject);
 route.patch('/editProject', editProject);
-route.delete('/deleteProject', deleteProject);
+route.delete('/deleteProject/:id_project', deleteProject);
 
 module.exports = route;

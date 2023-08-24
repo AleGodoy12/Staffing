@@ -1,5 +1,6 @@
 const database = require('../db/database');
 const { validationResult } = require('express-validator');
+
 const projectControllers = {
 	viewAllProjects: async function (req, res) {
 		const pool = await database();
@@ -91,7 +92,7 @@ const projectControllers = {
 	deleteProject: async function (req, res) {
 		const pool = await database();
 		try {
-			const { id_project } = req.body;
+			const { id_project } = req.params;
 			const request = await pool
 				.request()
 				.query(`DELETE FROM projects WHERE id_project = ${id_project} `);
