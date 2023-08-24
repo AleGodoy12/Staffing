@@ -1,0 +1,66 @@
+.sidebar-left {
+  flex: 0 0 250px;
+  height: 100%;
+  min-height: 700px;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 20px;
+  position: relative;
+}
+.sidebar-left .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:  10px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+.sidebar-left .logo img {
+  width: 36px;
+}
+.sidebar-left .logo p {
+  font-family: "Rubik-Bold-700";
+  font-size: 24px;
+  color: #c1437f;
+}
+.sidebar-left .nav a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-family: "Roboto-Regular-400";
+  gap: 10px;
+  color: #878787;
+  margin-bottom: 14px;
+}
+.sidebar-left > p {
+  font-family: "Rubik-Regular-400";
+  font-size: 18px;
+  border-top: 1px solid #878787;
+  padding-top: 14px;
+  margin-bottom: 14px;
+}
+.sidebar-left >  a {
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Roboto-Regular-400";
+  font-size: 14px;
+  background-color: #c1437f;
+  display: block;
+  position: absolute;
+  width: calc(100% - 32px);
+  padding: 8px;
+  text-align: center;
+  border-radius: 8px;
+  bottom: 16px;
+}
+
+@media screen and (max-width: 900px) {
+  .sidebar-left {
+    height: min-content;
+    min-height: min-content;
+  }
+  .sidebar-left > a {
+    position: initial;
+    width: 100%;
+  }
+}
