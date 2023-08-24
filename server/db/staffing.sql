@@ -14,6 +14,7 @@ CREATE TABLE dbo.users (
     CONSTRAINT pk_users PRIMARY KEY CLUSTERED (id_user)
 );
 GO
+
 SELECT * FROM dbo.users
 
 IF OBJECT_ID('dbo.projects') IS NOT NULL
@@ -32,7 +33,7 @@ CREATE TABLE dbo.projects(
 );
 
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 2);
+VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 6);
 
 SELECT * FROM dbo.projects;
  
@@ -84,11 +85,13 @@ CREATE TABLE dbo.employee_skills(
 	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
 );
 
-INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,2),(2,3),(1,3)
+INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,2),(1,2),(1,2)
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
-INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3),(1,4),(1,5),(1,6)
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3),(1,4),(1,5),(1,5)
 
+SELECT * FROM dbo.users
+GO
 SELECT * FROM dbo.projects
 GO
 SELECT * FROM dbo.employees
@@ -100,3 +103,60 @@ GO
 SELECT * FROM dbo.employee_skills
 
 SELECT * FROM dbo.project_employees WHERE id_project = 2;
+
+
+IF OBJECT_ID('dbo.check_project_availability') IS NOT NULL
+	DROP PROCEDURE dbo.check_project_availability
+GO
+CREATE PROCEDURE dbo.check_project_availability
+	@selectedProject INT,
+	@selectedHours INT
+AS
+BEGIN
+	DECLARE @freeHours INT
+	DECLARE @result VARCHAR(100)
+
+	SET @freeHours = (SELECT hours_estimation FROM dbo.projects WHERE id_project = @selectedProject) - @selectedHours
+	IF @freeHours > 0
+		BEGIN
+			SET @result = 'Horas libres para asignar: '+ CONVERT(VARCHAR(10), @freeHours) 
+			SELECT @result AS horas_libres
+		END
+	ELSE 
+		BEGIN
+			SET @result = 'Sin horas libres para asignar'
+			SELECT @result AS horas_libres
+		END
+END
+GO
+EXEC dbo.check_project_availability @selectedProject = 2, @selectedHours = 20
+
+
+IF OBJECT_ID('dbo.check_employee_availability') IS NOT NULL
+	DROP PROCEDURE dbo.check_employee_availability
+GO
+CREATE PROCEDURE dbo.check_employee_availability
+	@employeeId INT,
+	@newProjectHoursRequired INT
+AS
+BEGIN
+	DECLARE @employeeFreeHours INT
+	DECLARE @employeeFreeHoursAfterCheck INT
+	DECLARE @result VARCHAR(150)
+
+	SET @employeeFreeHours = (SELECT free_hours FROM employees WHERE id_employee = @employeeId)
+	SET @employeeFreeHoursAfterCheck = @employeeFreeHours - @newProjectHoursRequired
+
+	IF @employeeFreeHoursAfterCheck > 0
+		BEGIN
+			SET @result = 'Las horas libres del empleado son ' + CONVERT(VARCHAR(10), @employeeFreeHours) + ' y, con el nuevo proyecto pasarían a ser un total de ' + CONVERT(VARCHAR(10), @employeeFreeHoursAfterCheck) + ' horas libres restantes.'
+			SELECT @result
+		END
+	ELSE
+		BEGIN
+			SET @result = 'No alcanzan las horas libres del empleado para cubrir el proyecto solicitado.'
+			SELECT @result
+		END
+END
+GO
+EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = 39
