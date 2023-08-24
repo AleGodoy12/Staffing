@@ -93,8 +93,10 @@ SELECT * FROM dbo.projects
 GO
 SELECT * FROM dbo.employees
 GO
+SELECT * FROM dbo.project_employees
+GO
 SELECT * FROM dbo.skills
 GO
 SELECT * FROM dbo.employee_skills
-GO
-SELECT * FROM dbo.project_employees
+
+SELECT * FROM dbo.project_employees WHERE id_project = 2;
