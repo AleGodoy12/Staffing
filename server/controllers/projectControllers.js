@@ -1,5 +1,6 @@
 const database = require('../db/database');
 const { validationResult } = require('express-validator');
+
 const projectControllers = {
 	viewAllProjects: async function (req, res) {
 		const pool = await database();
@@ -18,11 +19,13 @@ const projectControllers = {
 		} finally {
 			pool.close();
 		}
-  },
-  viewOneProject: async function (req,res) {
-    const pool = await database();
+	},
+	viewOneProject: async function (req, res) {
+		const pool = await database();
 		try {
-			const result = await pool.request().query(`SELECT * FROM projects where id_project = ${req.params.id}`);
+			const result = await pool
+				.request()
+				.query(`SELECT * FROM projects where id_project = ${req.params.id}`);
 			res.status(200).json({
 				status: 200,
 				msg: 'Conexión realizada',
@@ -36,7 +39,7 @@ const projectControllers = {
 		} finally {
 			pool.close();
 		}
-  },
+	},
 	createProject: async function (req, res) {
 		const {
 			name_project,
@@ -73,8 +76,8 @@ const projectControllers = {
 		}
 	},
 	editProject: async function (req, res) {
-    console.log(req.body)
-    console.log('pepe')
+		console.log(req.body);
+		console.log('pepe');
 		const {
 			id_project,
 			name_project,
@@ -82,7 +85,7 @@ const projectControllers = {
 			start_date_project,
 			end_date_project,
 			hours_estimation,
-    } = req.body;
+		} = req.body;
 		const errors = validationResult(req);
 		const pool = await database();
 		try {
@@ -111,7 +114,7 @@ const projectControllers = {
 	deleteProject: async function (req, res) {
 		const pool = await database();
 		try {
-      const { id_project } = req.params;
+			const { id_project } = req.params;
 			const request = await pool
 				.request()
 				.query(`DELETE FROM projects WHERE id_project = ${id_project} `);
