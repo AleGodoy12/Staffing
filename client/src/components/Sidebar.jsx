@@ -26,7 +26,7 @@ export default function Sidebar() {
             <img src={ UsersIcon} alt="" />
             Asignar Empleados
           </Link>
-          <Link to="/panel/proyects">
+          <Link to="/panel/projects">
             <img src={BagIcon} alt="" />
             Administrar Proyectos
           </Link>
