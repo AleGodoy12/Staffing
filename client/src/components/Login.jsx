@@ -71,14 +71,14 @@ export default function Login() {
         username,
 				password,
       });
-      /* console.log(response) */
+      
       navigate('/panel');
 
     } catch (error) {
       
-      console.log('hola')
-      setErrorMessageBack(error.response.data.errorDetail);
-      /* console.log(error.response.data.errorDetail) */
+      let err = error.response.data.errorDetail;
+      setErrorMessageBack(err);
+      
 		}
 	};
 

@@ -1,6 +1,3 @@
-.projects-section {
-  
-}
 .projects-section > div {
   padding: 0 16px;
 }
@@ -70,6 +67,7 @@
 }
 .projects-section .table .td:nth-child(6) button {
   background-color: #ff1212;
+  cursor: pointer;
 }
 
 

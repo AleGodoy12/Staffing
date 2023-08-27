@@ -27,17 +27,22 @@ export default function CreateProject() {
   const [projectStart, setProjectStart] = useState(fechaActual)
   const [projectEnd, setProjectEnd] = useState(fechaReferencia)
   const [projectHours, setProjectHours] = useState(0)
+  const [errorBack, setErrorBack] = useState([])
+  const [statusOk, setStatusOk] = useState('')
 
   const newName = (event) => {
     setProjectName(event.target.value)
+    setErrorBack([])
   }
   
   const newAreaName = (event) => {
     setProjectArea(event.target.value)
+    setErrorBack([])
   }
   
   const newHours = (event) => {
     setProjectHours(event.target.value)
+    setErrorBack([])
   }
 
   
@@ -53,14 +58,30 @@ export default function CreateProject() {
 
   const createProject = async (e) => {
 		e.preventDefault();
-		await axios.post(url, {
-			name_project: projectName,
-			area_project: projectArea,
-			start_date_project: projectStart,
-			end_date_project: projectEnd,
-      hours_estimation: projectHours,
-      id_user_admin: 2,
-		});
+		try {
+      const response = await axios.post(url, {
+				name_project: projectName,
+				area_project: projectArea,
+				start_date_project: projectStart,
+				end_date_project: projectEnd,
+				hours_estimation: projectHours,
+				id_user_admin: 2,
+      });
+
+      setProjectName('')
+      setProjectArea('')
+      setProjectStart(fechaActual)
+      setProjectEnd(fechaReferencia)
+      setProjectHours(0)
+      setErrorBack([])
+      setStatusOk(response.statusText)
+
+    } catch (error) {
+      setStatusOk('');
+      let err = error.response.data.error;
+      setErrorBack(err)
+      console.log(err)
+    }
 	};
 
 
@@ -78,32 +99,37 @@ export default function CreateProject() {
 						</div>
 						<form onSubmit={createProject}>
 							<label htmlFor="">Nombre del proyecto</label>
-							<br />
-							<input type="text" value={projectName} onChange={newName} />
-              <br />
-              
+
+              <input type="text" value={projectName} onChange={newName} />
+              {errorBack ? errorBack.map((e, index) => e.path === 'name_project' ? <span className='errorCreate' key={index}>{e.msg}</span> : '') : ''}
+
 							<label htmlFor="">Área del proyecto</label>
-							<br />
+
 							<input type="text" value={projectArea} onChange={newAreaName} />
-							<br />
+						{errorBack ? errorBack.map((e, index) => e.path === 'area_project' ? <span className='errorCreate' key={index}>{e.msg}</span> : '')	: ''}
 
 							<label htmlFor="">Tiempo estimado</label>
-							<br />
-							<label htmlFor="">Inicio</label>
-							<input type="date" value={projectStart} onChange={startDate} />
-							<br />
 
-							<label htmlFor="">Fin</label>
-							<input type="date" value={projectEnd} onChange={endDate} />
-							<br />
+							<label htmlFor="">
+								Inicio:
+								<input type="date" value={projectStart} onChange={startDate} />
+							</label>
+
+							<label htmlFor="">
+								Fin:
+								<input type="date" value={projectEnd} onChange={endDate} />
+							</label>
 
 							<label htmlFor="">Horas estimadas</label>
-							<br />
-							<input type="number" value={projectHours} onChange={newHours} />
-							<br />
 
-							<button type='submit'>Crear Proyecto</button>
+							<input type="number" value={projectHours} onChange={newHours} />
+              {errorBack ? errorBack.map((e, index) => e.path === 'hours_estimation' ? <span className='errorCreate' key={index}>{e.msg}</span> : '') : ''}
+              
+              {statusOk === 'OK' ? <span className='createSucces'>Proyecto creado con éxito</span> : ""}
+							<button type="submit">Crear Proyecto</button>
 						</form>
+
+            
 					</section>
 				</section>
 			</main>

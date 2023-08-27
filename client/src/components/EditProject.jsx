@@ -2,19 +2,120 @@ import Sidebar from "./Sidebar"
 import '../assets/css/EditProject.css'
 import Header from "./Header"
 import BackIcon from "../assets/icons/back-icon.svg"
-import { Link } from "react-router-dom"
-import { useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
+
+/* Llamo al endpoint del proyecto */
+const url = 'http://localhost:3000/'
+/* Llamo al endpoint para actualizar el proyecto */
+const urlUpdate = 'http://localhost:3000/editProject';
+
+let fechaActual = new Date();
+
+let fechaReferencia = new Date(fechaActual);
+fechaReferencia.setMonth(fechaReferencia.getMonth() + 3);
+
+/* Formateo YYYY-MM-DD */
+fechaActual = fechaActual.toISOString().split('T')[0];
+fechaReferencia = fechaReferencia.toISOString().split('T')[0];
 
 export default function EditProject() {
+
+  /* useStates para el nombre actual del blog */
+  const [projectName, setProjectName] = useState('');
+  const [projectArea, setProjectArea] = useState('');
+  const [projectStart, setProjectStart] = useState(fechaActual);
+  const [projectEnd, setProjectEnd] = useState(fechaReferencia);
+  const [projectHours, setProjectHours] = useState(0);
+
+  /* useStates para el futuro nombre del blog */
   const [newProjectName, setNewProjectName] = useState('')
   const [newProjectArea, setNewProjectArea] = useState('')
-  const [newProjectStart, setNewProjectStart] = useState()
-  const [newProjectEnd, setNewProjectEnd] = useState()
-  const [newProjectHours, setNewProjectHours] = useState()
+  const [newProjectStart, setNewProjectStart] = useState(fechaActual)
+  const [newProjectEnd, setNewProjectEnd] = useState(fechaReferencia)
+  const [newProjectHours, setNewProjectHours] = useState(0)
+
+  /* useState para la solicitud ok del proyecto */
+  const [status, setStatus] = useState('')
+
+  /* Handles para actualizar el input con el nuevo valor */
+  const newName = (event) => {
+    setNewProjectName(event.target.value);
+    setStatus('')
+	};
+  
+	const newAreaName = (event) => {
+    setNewProjectArea(event.target.value);
+    setStatus('')
+	};
+  
+	const newHours = (event) => {
+    setNewProjectHours(event.target.value);
+    setStatus('')
+	};
+  
+	const startDate = (event) => {
+    setNewProjectStart(new Date(event.target.value).toISOString().split('T')[0]);
+    setStatus('')
+	};
+  
+	const endDate = (event) => {
+    setNewProjectEnd(new Date(event.target.value).toISOString().split('T')[0]);
+    setStatus('')
+	};
 
 
+  /* obtengo el id del blog */
+  const { id } = useParams();
+  /* obtengo haciendo una solicitud al back, los datos del proyecto a editar */
+  const getBlogById = async () => {
+    const res = await axios.get(url + id);
+    const data = res.data.projects[0];
+    setProjectName(data.name_project);
+    setProjectArea(data.area_project);
+    setProjectStart(data.start_date_project.split('T')[0])
+    setProjectEnd(data.end_date_project.split('T')[0])
+    setProjectHours(data.hours_estimation)
+  };
+  
+  useEffect(() => {
+    getBlogById();
+  }, [])
+  
 
+  /* Funcion para actualizar un blog */
+
+  const updateProject = async (e) => {
+		e.preventDefault();
+    try {
+      const response = await axios.patch(urlUpdate, {
+				name_project: newProjectName,
+				area_project: newProjectArea,
+				start_date_project: newProjectStart,
+				end_date_project: newProjectEnd,
+        hours_estimation: newProjectHours,
+        id_project: id,
+      });
+      
+      setNewProjectName('');
+			setNewProjectArea('');
+			setNewProjectStart(fechaActual);
+			setNewProjectEnd(fechaReferencia);
+			setNewProjectHours(0);
+
+      
+
+      setStatus(response.statusText);
+
+      getBlogById();
+
+
+    } catch (error) {
+      console.log(error);
+    }
+	};
   return (
 		<>
 			<main className="main-home">
@@ -27,33 +128,51 @@ export default function EditProject() {
 								<img src={BackIcon} alt="" />
 							</Link>
 						</div>
-						<form >
-							<label htmlFor="">Nombre del proyecto</label>
+						<form onSubmit={updateProject}>
+							<label htmlFor="">
+								Nombre del proyecto: <span>{projectName}</span>
+							</label>
 							<br />
-							<input type="text" value={newProjectName} />
+							<input type="text" value={newProjectName} onChange={newName} />
 							<br />
 
-							<label htmlFor="">Área del proyecto</label>
+							<label htmlFor="">
+								Área del proyecto: <span> {projectArea} </span>
+							</label>
 							<br />
-							<input type="text" value={newProjectArea} />
+							<input
+								type="text"
+								value={newProjectArea}
+								onChange={newAreaName}
+							/>
 							<br />
 
 							<label htmlFor="">Tiempo estimado</label>
 							<br />
-							<label htmlFor="">Inicio</label>
-							<input type="date" value={newProjectStart} />
+							<label htmlFor="">
+								Inicio: <span> {projectStart}</span>
+							</label>
+							<input type="date" value={newProjectStart} onChange={startDate} />
 							<br />
 
-							<label htmlFor="">Fin</label>
-							<input type="date" value={newProjectEnd}  />
+							<label htmlFor="">
+								Fin: <span> {projectEnd}</span>
+							</label>
+							<input type="date" value={newProjectEnd} onChange={endDate} />
 							<br />
 
-							<label htmlFor="">Horas estimadas</label>
+							<label htmlFor="">
+								Horas estimadas: <span>{projectHours}hs</span>
+							</label>
 							<br />
-							<input type="number" value={newProjectHours} />
+							<input
+								type="number"
+								value={newProjectHours}
+								onChange={newHours}
+							/>
 							<br />
-
-							<button type="submit">Crear Proyecto</button>
+              {status === 'OK' ? <span className='createSucces'>Proyecto actualizado con éxito</span> : ""}
+							<button type="submit">Guardar Proyecto</button>
 						</form>
 					</section>
 				</section>
