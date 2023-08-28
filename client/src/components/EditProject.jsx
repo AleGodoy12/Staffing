@@ -78,6 +78,12 @@ export default function EditProject() {
     setProjectStart(data.start_date_project.split('T')[0])
     setProjectEnd(data.end_date_project.split('T')[0])
     setProjectHours(data.hours_estimation)
+
+    setNewProjectName(data.name_project);
+    setNewProjectArea(data.area_project);
+    setNewProjectStart(data.start_date_project.split('T')[0])
+    setNewProjectEnd(data.end_date_project.split('T')[0])
+    setNewProjectHours(data.hours_estimation)
   };
   
   useEffect(() => {
@@ -127,52 +133,50 @@ export default function EditProject() {
 							<Link to="/panel/projects">
 								<img src={BackIcon} alt="" />
 							</Link>
+							<p>Editar proyecto</p>
 						</div>
 						<form onSubmit={updateProject}>
-							<label htmlFor="">
-								Nombre del proyecto: <span>{projectName}</span>
-							</label>
-							<br />
+							<label htmlFor="">Nombre del proyecto:</label>
+							<span>{projectName}</span>
 							<input type="text" value={newProjectName} onChange={newName} />
-							<br />
 
-							<label htmlFor="">
-								Área del proyecto: <span> {projectArea} </span>
-							</label>
-							<br />
+							<label htmlFor="">Área del proyecto:</label>
+							<span> {projectArea} </span>
 							<input
 								type="text"
 								value={newProjectArea}
 								onChange={newAreaName}
 							/>
-							<br />
 
 							<label htmlFor="">Tiempo estimado</label>
-							<br />
-							<label htmlFor="">
-								Inicio: <span> {projectStart}</span>
-							</label>
+							<div>
+								<label htmlFor="">Inicio:</label>
+								<span> {projectStart}</span>
+							</div>
 							<input type="date" value={newProjectStart} onChange={startDate} />
-							<br />
 
-							<label htmlFor="">
-								Fin: <span> {projectEnd}</span>
-							</label>
+							<div>
+								<label htmlFor="">Fin:</label>
+								<span> {projectEnd}</span>
+							</div>
 							<input type="date" value={newProjectEnd} onChange={endDate} />
-							<br />
 
-							<label htmlFor="">
-								Horas estimadas: <span>{projectHours}hs</span>
-							</label>
-							<br />
+							<label htmlFor="">Horas estimadas:</label>
+							<span>{projectHours}hs</span>
 							<input
 								type="number"
 								value={newProjectHours}
 								onChange={newHours}
 							/>
-							<br />
-              {status === 'OK' ? <span className='createSucces'>Proyecto actualizado con éxito</span> : ""}
-							<button type="submit">Guardar Proyecto</button>
+
+							{status === 'OK' ? (
+								<span className="createSucces">
+									Proyecto actualizado con éxito
+								</span>
+							) : (
+								''
+							)}
+							<button type="submit">Confirmar edición</button>
 						</form>
 					</section>
 				</section>

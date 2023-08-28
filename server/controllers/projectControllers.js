@@ -18,7 +18,25 @@ const projectControllers = {
 		} finally {
 			pool.close();
 		}
-	},
+  },
+  viewOneProject: async function (req,res) {
+    const pool = await database();
+		try {
+			const result = await pool.request().query(`SELECT * FROM projects where id_project = ${req.params.id}`);
+			res.status(200).json({
+				status: 200,
+				msg: 'Conexión realizada',
+				projects: result.recordset,
+			});
+		} catch (error) {
+			res.status(404).json({
+				status: 404,
+				msg: error.message,
+			});
+		} finally {
+			pool.close();
+		}
+  },
 	createProject: async function (req, res) {
 		const {
 			name_project,
@@ -55,6 +73,8 @@ const projectControllers = {
 		}
 	},
 	editProject: async function (req, res) {
+    console.log(req.body)
+    console.log('pepe')
 		const {
 			id_project,
 			name_project,
@@ -62,7 +82,7 @@ const projectControllers = {
 			start_date_project,
 			end_date_project,
 			hours_estimation,
-		} = req.body;
+    } = req.body;
 		const errors = validationResult(req);
 		const pool = await database();
 		try {
@@ -91,7 +111,7 @@ const projectControllers = {
 	deleteProject: async function (req, res) {
 		const pool = await database();
 		try {
-			const { id_project } = req.body;
+      const { id_project } = req.params;
 			const request = await pool
 				.request()
 				.query(`DELETE FROM projects WHERE id_project = ${id_project} `);
