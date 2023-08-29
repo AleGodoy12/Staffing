@@ -40,20 +40,27 @@ export default function Login() {
     try {
       /* Validaciones del front */
       
-      if (username.length < 3) {
+      if (username.length < 3 && username !== '') {
         setErrorMessageFrontU('El usuario no puede tener menos de 3 caracteres');
         document.querySelector('input[name=username]').style.borderColor = "red";
-      } else if (username.length > 15) {
-        setErrorMessageFrontU('El usuario no puede tener más de 15 caracteres');
-        document.querySelector('input[name=username]').style.borderColor = "red";
-      }
-      if (password.length < 8) {
-        setErrorMessageFrontP('La contraseña no puede tener menos de 8 caracteres');
-        document.querySelector('input[name=password]').style.borderColor = "red";
-      } else if (password.length > 15) {
-        setErrorMessageFrontP('La contraseña no puede tener más de 15 caracteres')
-        document.querySelector('input[name=password]').style.borderColor = "red";
-      }
+      } else if (username.length > 15 && username !== '') {
+				setErrorMessageFrontU('El usuario no puede tener más de 15 caracteres');
+				document.querySelector('input[name=username]').style.borderColor =
+					'red';
+			}
+      if (password.length < 8 && password !== '') {
+				setErrorMessageFrontP(
+					'La contraseña no puede tener menos de 8 caracteres'
+				);
+				document.querySelector('input[name=password]').style.borderColor =
+					'red';
+			} else if (password.length > 15 && password !== '') {
+				setErrorMessageFrontP(
+					'La contraseña no puede tener más de 15 caracteres'
+				);
+				document.querySelector('input[name=password]').style.borderColor =
+					'red';
+			}
 
 
       if (errorMessageFrontP !== '' || errorMessageFrontU !== '') {
@@ -64,14 +71,14 @@ export default function Login() {
         username,
 				password,
       });
-      /* console.log(response) */
+      
       navigate('/panel');
 
     } catch (error) {
       
-      console.log('hola')
-      setErrorMessageBack(error.response.data.errorDetail);
-      /* console.log(error.response.data.errorDetail) */
+      let err = error.response.data.errorDetail;
+      setErrorMessageBack(err);
+      
 		}
 	};
 
