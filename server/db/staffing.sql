@@ -125,11 +125,7 @@ BEGIN
 			RETURN @freeHours
 		END
 	ELSE 
-		BEGIN
-			/* SET @result = 'Sin horas libres para asignar'
-			SELECT @result AS horas_libres */
-			RETURN @freeHours
-		END
+		THROW 51000, 'Horas insuficientes para el proyecto', 1;
 END
 GO
 DECLARE @freeHours INT
@@ -161,11 +157,7 @@ BEGIN
 			RETURN @employeeFreeHoursAfterCheck
 		END
 	ELSE
-		BEGIN
-			/* SET @result = 'No alcanzan las horas libres del empleado para cubrir el proyecto solicitado.'
-			SELECT @result AS horas_libres_empleado */
-			RETURN @employeeFreeHoursAfterCheck
-		END
+		THROW 51000, 'Horas insuficientes para el empleado', 1;
 END
 GO
 DECLARE @employeeFreeHoursAfterCheck INT
@@ -223,24 +215,24 @@ BEGIN
 					UPDATE dbo.employees SET dbo.employees.free_hours = @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 				END
 			ELSE 
-				SELECT 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado'
+			THROW 51000, 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
 		END
 	ELSE
-		BEGIN
-			SELECT 'No hay horas disponibles'
-		END
+		THROW 51000, 'No hay horas disponibles', 1;
 END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
 EXEC dbo.assign_employee_to_project @selectedProject = 2, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
+SELECT * FROM dbo.project_employees
+GO
+GO
 SELECT * FROM dbo.projects WHERE id_project = 2
 GO
 SELECT * FROM dbo.employees WHERE id_employee = 1
 GO
 UPDATE dbo.employees SET dbo.employees.free_hours = 40 WHERE dbo.employees.id_employee = 1
-
 
 
 
@@ -261,7 +253,7 @@ BEGIN
 			SELECT 'Empleado removido del proyecto exitosamente'
 		END
 	ELSE
-		SELECT 'No hay empleado asignado al proyecto seleccionado'
+	THROW 51000, 'No hay empleado asignado al proyecto seleccionado', 1;
 END
 GO
 DECLARE @employeeId INT
@@ -270,3 +262,19 @@ EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 2
 SELECT * FROM dbo.project_employees
 
 DELETE FROM dbo.project_employees
+
+
+/* DROP PROCEDURE dbo.testing
+GO
+CREATE PROCEDURE dbo.testing
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 1/0;
+	END TRY
+	BEGIN CATCH
+
+	END CATCH
+END
+GO
+EXEC dbo.testing */
