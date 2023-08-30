@@ -29,6 +29,6 @@ app.use(
 
 app.use('/login', loginRoutes);
 app.use('/', projectRoutes);
-app.use('/projects', assignEmployeeRoutes);
+app.use('/project', assignEmployeeRoutes);
 
 module.exports = app;
