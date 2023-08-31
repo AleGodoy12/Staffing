@@ -116,7 +116,7 @@ CREATE PROCEDURE dbo.check_project_availability
 AS
 BEGIN
 	DECLARE @result VARCHAR(100)
-
+	
 	SET @freeHours = (SELECT hours_estimation FROM dbo.projects WHERE id_project = @selectedProject) - @selectedHours
 	IF @freeHours > 0
 		BEGIN
@@ -262,19 +262,3 @@ EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 2
 SELECT * FROM dbo.project_employees
 
 DELETE FROM dbo.project_employees
-
-
-/* DROP PROCEDURE dbo.testing
-GO
-CREATE PROCEDURE dbo.testing
-AS
-BEGIN
-	BEGIN TRY
-		SELECT 1/0;
-	END TRY
-	BEGIN CATCH
-
-	END CATCH
-END
-GO
-EXEC dbo.testing */

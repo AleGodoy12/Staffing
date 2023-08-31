@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
-const validateLogin = [
+const validateProject = [
 	body('name_project')
 		.matches('^(?!^[0-9]+$)[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+| [a-zA-Z0-9]+)*$')
 		.withMessage('Solo caracteres alfanumericos y guiones son permitidos.')
@@ -21,4 +21,4 @@ const validateLogin = [
 		.withMessage('Por favor ingrese un número de administrador válido'),
 ];
 
-module.exports = validateLogin;
+module.exports = validateProject;

@@ -1,7 +1,7 @@
 const database = require('../db/database');
 // const sql = require('mssql')
 const assignEmployee = {
-	showSelectedProject: async function (req, res) {
+	assignEmployeeToProject: async function (req, res) {
 		const { employee_id, hours_to_assign, project_id } = req.body;
 		console.log(employee_id, hours_to_assign, project_id);
 		const pool = await database();
@@ -20,6 +20,25 @@ const assignEmployee = {
 		} catch (error) {
 			const { message } = error.originalError.info;
 			res.status(404).json({ status: 404, error: message });
+		} finally {
+			pool.close();
+		}
+	},
+	removeEmployeeFromProject: async function (req, res) {
+		const { employee_id, project_id } = req.body;
+		const pool = await database();
+		try {
+			const response = await pool
+				.request()
+				.input('employeeId', employee_id)
+				.input('selectedProject', project_id)
+				.execute(`remove_employee_from_project`);
+
+			console.log(response);
+			res.status(200).json({ status: 200, msg: response });
+		} catch (error) {
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, msg: message });
 		} finally {
 			pool.close();
 		}
