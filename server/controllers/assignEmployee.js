@@ -1,36 +1,44 @@
 const database = require('../db/database');
-
+// const sql = require('mssql')
 const assignEmployee = {
-	showSelectedProject: async function (req, res) {
-		const { selectedProject } = req.query;
+	assignEmployeeToProject: async function (req, res) {
+		const { employee_id, hours_to_assign, project_id } = req.body;
+		console.log(employee_id, hours_to_assign, project_id);
 		const pool = await database();
 		try {
 			const result = await pool
 				.request()
-				.query(
-					`SELECT * FROM dbo.projects WHERE id_project = ${selectedProject}`
-				);
-			res.status(200).json({ status: 200, data: result.recordset[0] });
+				.input('selectedProject', project_id)
+				.input('selectedHours', hours_to_assign)
+				.input('employeeId', employee_id)
+				.input('newProjectHoursRequired', hours_to_assign)
+				.output('freeHours')
+				.output('employeeFreeHoursAfterCheck')
+				.execute(`assign_employee_to_project`);
+			console.log(result);
+			res.status(200).json({ status: 200, data: result });
 		} catch (error) {
-			res.status(404).json({ status: 404, error: error });
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, error: message });
 		} finally {
 			pool.close();
 		}
 	},
-	assignEmployee: async function (req, res) {
-		const { selectedProject } = req.query;
-		console.log(selectedProject);
+	removeEmployeeFromProject: async function (req, res) {
+		const { employee_id, project_id } = req.body;
 		const pool = await database();
 		try {
-			const result = await pool
+			const response = await pool
 				.request()
-				.query(
-					`SELECT * FROM dbo.project_employees WHERE id_project = ${selectedProject}`
-				);
+				.input('employeeId', employee_id)
+				.input('selectedProject', project_id)
+				.execute(`remove_employee_from_project`);
 
-			res.status(200).json({ status: 200, data: result.recordset });
+			console.log(response);
+			res.status(200).json({ status: 200, msg: response });
 		} catch (error) {
-			res.status(404).json({ status: 404, error: error });
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, msg: message });
 		} finally {
 			pool.close();
 		}

@@ -2,6 +2,8 @@ CREATE DATABASE staffing;
 GO
 USE staffing;
 GO
+
+
 IF OBJECT_ID('dbo.users') IS NOT NULL
     DROP TABLE dbo.users;
 GO
@@ -15,7 +17,6 @@ CREATE TABLE dbo.users (
 );
 GO
 
-SELECT * FROM dbo.users
 
 IF OBJECT_ID('dbo.projects') IS NOT NULL
 	DROP TABLE dbo.projects;
@@ -32,11 +33,7 @@ CREATE TABLE dbo.projects(
 	FOREIGN KEY(id_user_admin) REFERENCES dbo.users(id_user)
 );
 
-INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 6);
 
-SELECT * FROM dbo.projects;
- 
 IF OBJECT_ID('dbo.employees') IS NOT NULL
 	DROP TABLE dbo.employees;
 GO
@@ -52,6 +49,7 @@ CREATE TABLE dbo.employees(
 	PRIMARY KEY (id_employee)
 );
 
+
 IF OBJECT_ID('dbo.project_employees') IS NOT NULL
 	DROP TABLE dbo.project_employees;
 GO
@@ -64,6 +62,7 @@ CREATE TABLE dbo.project_employees(
 	FOREIGN KEY(id_project) REFERENCES dbo.projects(id_project)
 );
 
+
 IF OBJECT_ID('dbo.skills') IS NOT NULL
 	DROP TABLE dbo.skills;
 GO
@@ -72,6 +71,7 @@ CREATE TABLE dbo.skills(
 	skill_name VARCHAR(50),
 	PRIMARY KEY(id_skill)
 );
+
 
 IF OBJECT_ID('dbo.employee_skills') IS NOT NULL
 	DROP TABLE dbo.employee_skills;
@@ -85,6 +85,8 @@ CREATE TABLE dbo.employee_skills(
 	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
 );
 
+INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
+VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 2);
 INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,2),(1,2),(1,2)
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
@@ -102,9 +104,6 @@ SELECT * FROM dbo.skills
 GO
 SELECT * FROM dbo.employee_skills
 GO
-SELECT * FROM dbo.project_employees WHERE id_project = 2;
-
-
 
 
 IF OBJECT_ID('dbo.check_project_availability') IS NOT NULL
@@ -117,7 +116,7 @@ CREATE PROCEDURE dbo.check_project_availability
 AS
 BEGIN
 	DECLARE @result VARCHAR(100)
-
+	
 	SET @freeHours = (SELECT hours_estimation FROM dbo.projects WHERE id_project = @selectedProject) - @selectedHours
 	IF @freeHours > 0
 		BEGIN
@@ -126,11 +125,7 @@ BEGIN
 			RETURN @freeHours
 		END
 	ELSE 
-		BEGIN
-			/* SET @result = 'Sin horas libres para asignar'
-			SELECT @result AS horas_libres */
-			RETURN @freeHours
-		END
+		THROW 51000, 'Horas insuficientes para el proyecto', 1;
 END
 GO
 DECLARE @freeHours INT
@@ -162,11 +157,7 @@ BEGIN
 			RETURN @employeeFreeHoursAfterCheck
 		END
 	ELSE
-		BEGIN
-			/* SET @result = 'No alcanzan las horas libres del empleado para cubrir el proyecto solicitado.'
-			SELECT @result AS horas_libres_empleado */
-			RETURN @employeeFreeHoursAfterCheck
-		END
+		THROW 51000, 'Horas insuficientes para el empleado', 1;
 END
 GO
 DECLARE @employeeFreeHoursAfterCheck INT
@@ -223,26 +214,25 @@ BEGIN
 					UPDATE dbo.projects SET dbo.projects.hours_estimation = @freeHours WHERE dbo.projects.id_project = @selectedProject
 					UPDATE dbo.employees SET dbo.employees.free_hours = @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 				END
+			ELSE 
+			THROW 51000, 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
 		END
 	ELSE
-		BEGIN
-			SELECT 'No hay horas disponibles'
-		END
+		THROW 51000, 'No hay horas disponibles', 1;
 END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
 EXEC dbo.assign_employee_to_project @selectedProject = 2, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
-
-
-
-
-SELECT * FROM dbo.projects
 GO
-SELECT * FROM dbo.employees
+SELECT * FROM dbo.project_employees
+GO
+GO
+SELECT * FROM dbo.projects WHERE id_project = 2
+GO
+SELECT * FROM dbo.employees WHERE id_employee = 1
 GO
 UPDATE dbo.employees SET dbo.employees.free_hours = 40 WHERE dbo.employees.id_employee = 1
-
 
 
 
@@ -263,10 +253,12 @@ BEGIN
 			SELECT 'Empleado removido del proyecto exitosamente'
 		END
 	ELSE
-		SELECT 'No hay empleado asignado al proyecto seleccionado'
+	THROW 51000, 'No hay empleado asignado al proyecto seleccionado', 1;
 END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
 EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 2
 SELECT * FROM dbo.project_employees
+
+DELETE FROM dbo.project_employees

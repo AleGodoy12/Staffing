@@ -1,11 +1,11 @@
 const express = require('express');
 const {
-	showSelectedProject,
-	assignEmployee,
+	assignEmployeeToProject,
+	removeEmployeeFromProject,
 } = require('../controllers/assignEmployee');
 const route = express.Router();
 
-route.get('/', showSelectedProject);
-route.post('/', assignEmployee);
+route.post('/', assignEmployeeToProject);
+route.delete('/', removeEmployeeFromProject);
 
 module.exports = route;

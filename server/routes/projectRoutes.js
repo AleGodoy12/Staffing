@@ -3,8 +3,8 @@ const {
 	viewAllProjects,
 	createProject,
 	editProject,
-  deleteProject,
-  viewOneProject,
+	deleteProject,
+	viewOneProject,
 } = require('../controllers/projectControllers');
 const validateProject = require('../middlewares/validateProject');
 
