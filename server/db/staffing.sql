@@ -3,6 +3,25 @@ GO
 USE staffing;
 GO
 
+IF OBJECT_ID('dbo.employee_skills') IS NOT NULL
+    DROP TABLE dbo.employee_skills;
+GO
+IF OBJECT_ID('dbo.skills') IS NOT NULL
+    DROP TABLE dbo.skills;
+GO
+IF OBJECT_ID('dbo.project_employees') IS NOT NULL
+    DROP TABLE dbo.project_employees;
+GO
+IF OBJECT_ID('dbo.employees') IS NOT NULL
+    DROP TABLE dbo.employees;
+GO
+IF OBJECT_ID('dbo.projects') IS NOT NULL
+    DROP TABLE dbo.projects;
+GO
+IF OBJECT_ID('dbo.users') IS NOT NULL
+    DROP TABLE dbo.users;
+GO
+
 
 IF OBJECT_ID('dbo.users') IS NOT NULL
     DROP TABLE dbo.users;
@@ -32,7 +51,7 @@ CREATE TABLE dbo.projects(
 	PRIMARY KEY(id_project),
 	FOREIGN KEY(id_user_admin) REFERENCES dbo.users(id_user)
 );
-
+GO
 
 IF OBJECT_ID('dbo.employees') IS NOT NULL
 	DROP TABLE dbo.employees;
@@ -48,7 +67,7 @@ CREATE TABLE dbo.employees(
 	company VARCHAR(150),
 	PRIMARY KEY (id_employee)
 );
-
+GO
 
 IF OBJECT_ID('dbo.project_employees') IS NOT NULL
 	DROP TABLE dbo.project_employees;
@@ -61,7 +80,7 @@ CREATE TABLE dbo.project_employees(
 	FOREIGN KEY(id_employee) REFERENCES dbo.employees(id_employee),
 	FOREIGN KEY(id_project) REFERENCES dbo.projects(id_project)
 );
-
+GO
 
 IF OBJECT_ID('dbo.skills') IS NOT NULL
 	DROP TABLE dbo.skills;
@@ -71,7 +90,7 @@ CREATE TABLE dbo.skills(
 	skill_name VARCHAR(50),
 	PRIMARY KEY(id_skill)
 );
-
+GO
 
 IF OBJECT_ID('dbo.employee_skills') IS NOT NULL
 	DROP TABLE dbo.employee_skills;
@@ -84,14 +103,14 @@ CREATE TABLE dbo.employee_skills(
 	FOREIGN KEY (employee_id) REFERENCES dbo.employees(id_employee),
 	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
 );
-
+GO
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 2);
-INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,2),(1,2),(1,2)
+VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,1)
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
-INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3),(1,4),(1,5),(1,5)
-
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5),(1,5)
+GO
 SELECT * FROM dbo.users
 GO
 SELECT * FROM dbo.projects
@@ -129,7 +148,7 @@ BEGIN
 END
 GO
 DECLARE @freeHours INT
-EXEC dbo.check_project_availability @selectedProject = 2, @selectedHours = 20, @freeHours = @freeHours OUTPUT
+EXEC dbo.check_project_availability @selectedProject = 1, @selectedHours = 20, @freeHours = @freeHours OUTPUT
 SELECT @freeHours AS horas_libres_proyecto
 
 
@@ -223,7 +242,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 2, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -258,7 +277,22 @@ END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
-EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 2
+EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 1
 SELECT * FROM dbo.project_employees
+GO
 
-DELETE FROM dbo.project_employees
+
+
+IF OBJECT_ID('dbo.getEmployeesFromProject') IS NOT NULL
+	DROP PROCEDURE dbo.getEmployeesFromProject
+GO
+CREATE PROCEDURE dbo.getEmployeesFromProject
+AS
+BEGIN
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours
+	FROM dbo.employees AS E
+	JOIN dbo.project_employees AS P
+	ON E.id_employee = P.id_employee
+END
+GO
+EXEC dbo.getEmployeesFromProject
