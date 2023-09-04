@@ -1,6 +1,19 @@
 const database = require('../db/database');
-// const sql = require('mssql')
 const assignEmployee = {
+	viewEmployeesFromSelectedProject: async function (req, res) {
+		const pool = await database();
+		try {
+			const response = await pool
+				.request()
+				.execute(`dbo.getEmployeesFromProject`);
+			console.log(response);
+			res.status(200).json({ status: 200, data: response.recordsets[0] });
+		} catch (error) {
+			res.status(500).json({ status: 500, msg: error });
+		} finally {
+			pool.close();
+		}
+	},
 	assignEmployeeToProject: async function (req, res) {
 		const { employee_id, hours_to_assign, project_id } = req.body;
 		console.log(employee_id, hours_to_assign, project_id);
