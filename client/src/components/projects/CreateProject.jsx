@@ -1,10 +1,10 @@
-import Sidebar from './Sidebar';
-import '../assets/css/CreateProject.css';
-import BackIcon from '../assets/icons/back-icon.svg'
+import Sidebar from '../Sidebar';
+import '../../assets/css/CreateProject.css';
+import BackIcon from '../../assets/icons/back-icon.svg'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import Header from './Header';
+import Header from '../Header';
 
 
 
@@ -33,16 +33,19 @@ export default function CreateProject() {
   const newName = (event) => {
     setProjectName(event.target.value)
     setErrorBack([])
+    setStatusOk('')
   }
   
   const newAreaName = (event) => {
     setProjectArea(event.target.value)
     setErrorBack([])
+    setStatusOk('')
   }
   
   const newHours = (event) => {
     setProjectHours(event.target.value)
     setErrorBack([])
+    setStatusOk('')
   }
 
   
@@ -65,7 +68,7 @@ export default function CreateProject() {
 				start_date_project: projectStart,
 				end_date_project: projectEnd,
 				hours_estimation: projectHours,
-				id_user_admin: 2,
+				id_user_admin: 1,
       });
 
       setProjectName('')

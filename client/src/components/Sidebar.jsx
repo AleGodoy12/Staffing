@@ -22,7 +22,7 @@ export default function Sidebar() {
         </nav>
         <p>Proyectos</p>
         <nav className='nav'>
-          <Link to="/panel/employee">
+          <Link to="/panel/assignment">
             <img src={ UsersIcon} alt="" />
             Asignar Empleados
           </Link>
