@@ -107,7 +107,6 @@ GO
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.project_employees(id_employee, id_project)VALUES(1,1)
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5),(1,5)
 GO
@@ -242,7 +241,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 5, @employeeId = 8, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -287,12 +286,29 @@ IF OBJECT_ID('dbo.getEmployeesFromProject') IS NOT NULL
 	DROP PROCEDURE dbo.getEmployeesFromProject
 GO
 CREATE PROCEDURE dbo.getEmployeesFromProject
+	@id_project INT
 AS
 BEGIN
 	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours
 	FROM dbo.employees AS E
 	JOIN dbo.project_employees AS P
-	ON E.id_employee = P.id_employee
+	ON E.id_employee = P.id_employee WHERE P.id_project = @id_project
 END
 GO
-EXEC dbo.getEmployeesFromProject
+DECLARE @id_project INT
+EXEC dbo.getEmployeesFromProject @id_project = 1
+
+
+IF OBJECT_ID('dbo.viewFreeEmployes') IS NOT NULL
+	DROP PROCEDURE dbo.viewFreeEmployes
+GO
+CREATE PROCEDURE dbo.viewFreeEmployes
+AS
+BEGIN
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, P.id_project
+	FROM dbo.employees AS E
+	LEFT JOIN dbo.project_employees AS P
+	ON E.id_employee = P.id_employee WHERE id_project IS NULL
+END
+GO
+EXEC dbo.viewFreeEmployes
