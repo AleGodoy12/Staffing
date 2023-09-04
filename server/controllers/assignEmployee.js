@@ -1,10 +1,12 @@
 const database = require('../db/database');
 const assignEmployee = {
 	viewEmployeesFromSelectedProject: async function (req, res) {
+		const { id_project } = req.body;
 		const pool = await database();
 		try {
 			const response = await pool
 				.request()
+				.input(`id_project`, id_project)
 				.execute(`dbo.getEmployeesFromProject`);
 			console.log(response);
 			res.status(200).json({ status: 200, data: response.recordsets[0] });
