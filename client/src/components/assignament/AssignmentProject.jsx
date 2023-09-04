@@ -9,15 +9,19 @@ import axios from 'axios';
 
 /* Llamo al endpoint del proyecto */
 const url = 'http://localhost:3000/';
-/* Llamo al endpoint del proyecto que me trae empleados */
-const urlEmployee = 'http://localhost:3000/showEmployees';
+/* Llamo al endpoint del proyecto que me trae empleados libres */
+const urlEmployee = 'http://localhost:3000/project/viewFreeEmployes';
+/* Llamo al endpoint del proyecto que me trae empleados asignados al proyecto  */
+const urlEmployeeFromProject = 'http://localhost:3000/project/showEmployees';
 
 export default function AssignmentProject() {
   const [projectName, setProjectName] = useState('');
 	const [projectArea, setProjectArea] = useState('');
 	const [projectStart, setProjectStart] = useState('');
 	const [projectEnd, setProjectEnd] = useState('');
-	const [projectHours, setProjectHours] = useState(0);
+  const [projectHours, setProjectHours] = useState(0);
+  /* empleados */
+  const [employee, setEmployee] = useState([])
 
   /* Obtener datos del proyecto */
   const { id } = useParams()
@@ -33,8 +37,25 @@ export default function AssignmentProject() {
 		setProjectHours(data.hours_estimation);
   }
 
+  const getFreeEmployees = async () => {
+    const res = await axios.get(urlEmployee);
+    const data = res.data.data;
+    setEmployee(data);
+    console.log(data);
+  }
+
+  
+  const viewEmployeeFromSelectedProject = async () => {
+    const res = await axios.get(urlEmployeeFromProject, {
+      params: { id }
+    })
+    console.log(res);
+  }
+
   useEffect(() => {
-		getProjectById();
+    getProjectById();
+    getFreeEmployees();
+    viewEmployeeFromSelectedProject();
 	}, []);
 
 	return (
@@ -78,7 +99,15 @@ export default function AssignmentProject() {
               </div>
             </section>
             <section className="employee">
-              
+              {employee.map((e,index) => (
+                <div className="card" key={index} style={{border: "1px solid black"}}>
+                  <h1>{e.name} {e.lastname }</h1>
+                  <p>Horas Disponibles: {e.free_hours }</p>
+                  <p>Horas Usadas: {e.used_hours} </p>
+                  <p>Horas Totales: {e.total_hours }</p>
+                </div>
+              )) }
+
             </section>
 					</section>
 				</section>
