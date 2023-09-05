@@ -1,0 +1,9 @@
+.show-projects-assignment > div {
+  padding: 0 16px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: "Rubik-Regular-400";
+  font-size: 24px;
+  
+}

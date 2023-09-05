@@ -1,0 +1,71 @@
+.projects-assignment {
+  margin: 16px;
+}
+
+.projects-assignment > div h2 {
+  font-family: "Rubik-Regular-400";
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.projects-assignment > div a {
+  text-decoration: none;
+  margin-right: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto-Regular-400";
+  font-size: 16px;
+  background-color: #c147af;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 50px;
+}
+.projects-assignment > section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  gap: 16px;
+} 
+
+.projects-assignment .card {
+  background-color: #f9f9f9;
+  width: 200px;
+  border-radius: 20px;
+}
+
+.projects-assignment .card h2 {
+  font-family: "Rubik-Light-300";
+  font-size: 16px;
+  padding: 8px;
+  text-align: center;
+  background-color: #c147af;
+  color: #fff;
+  border-radius: 20px 20px 0 0;
+}
+.projects-assignment .card > a {
+  text-align: center;
+  display: block;
+  background-color: #c147af;
+  margin: 0 8px 8px 8px;
+  color: #fff;
+  text-decoration: none;
+  font-family: "Roboto-Regular-400";
+  border-radius: 50px;
+  padding: 8px 0;
+}
+.projects-assignment .card > div {
+  padding: 16px;
+  font-family: "Roboto-Regular-400";
+}
+.projects-assignment .card > div p:nth-child(1) {
+  margin-bottom: 16px;
+}
+
+@media screen and (max-width: 900px) {
+  .projects-assignment > div a {
+    margin-bottom: 8px;
+  }
+  .projects-assignment > section {
+    justify-content: center;
+  }
+}
