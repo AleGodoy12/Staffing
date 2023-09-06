@@ -1,7 +1,7 @@
 const database = require('../db/database');
 const assignEmployee = {
 	viewEmployeesFromSelectedProject: async function (req, res) {
-		const { id_project } = req.body;
+		const { id_project } = req.params;
 		const pool = await database();
 		try {
 			const response = await pool
@@ -29,8 +29,8 @@ const assignEmployee = {
 		}
 	},
 	assignEmployeeToProject: async function (req, res) {
-		const { employee_id, hours_to_assign, project_id } = req.body;
-		console.log(employee_id, hours_to_assign, project_id);
+		const { project_id, employee_id, hours_to_assign } = req.params;
+		console.log(project_id, employee_id,hours_to_assign );
 		const pool = await database();
 		try {
 			const result = await pool
@@ -51,7 +51,7 @@ const assignEmployee = {
 		}
 	},
 	removeEmployeeFromProject: async function (req, res) {
-		const { employee_id, project_id } = req.body;
+		const { employee_id, project_id } = req.params;
 		const pool = await database();
 		try {
 			const response = await pool
