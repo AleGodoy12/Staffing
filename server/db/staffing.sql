@@ -47,6 +47,7 @@ CREATE TABLE dbo.projects(
 	start_date_project DATE NOT NULL,
 	end_date_project DATE NOT NULL,
 	hours_estimation INT NOT NULL,
+	assigned_hours INT NOT NULL,
 	id_user_admin INT,
 	PRIMARY KEY(id_project),
 	FOREIGN KEY(id_user_admin) REFERENCES dbo.users(id_user)
@@ -104,8 +105,8 @@ CREATE TABLE dbo.employee_skills(
 	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
 );
 GO
-INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
+INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, assigned_hours, id_user_admin)
+VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 0, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5),(1,5)
@@ -231,6 +232,8 @@ BEGIN
 					SELECT 'Empleado asignado al proyecto seleccionado'
 					UPDATE dbo.projects SET dbo.projects.hours_estimation = @freeHours WHERE dbo.projects.id_project = @selectedProject
 					UPDATE dbo.employees SET dbo.employees.free_hours = @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
+					/* Agregar assigned_hours a la tabla proyectos */
+					/* Agregar update de horas usadas */
 				END
 			ELSE 
 			THROW 51000, 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
@@ -305,7 +308,7 @@ GO
 CREATE PROCEDURE dbo.viewFreeEmployes
 AS
 BEGIN
-	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, P.id_project
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours, P.id_project
 	FROM dbo.employees AS E
 	LEFT JOIN dbo.project_employees AS P
 	ON E.id_employee = P.id_employee WHERE id_project IS NULL
