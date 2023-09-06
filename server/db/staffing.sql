@@ -76,8 +76,9 @@ GO
 CREATE TABLE dbo.project_employees(
 	id_project_employee INT IDENTITY(1,1),
 	id_employee INT,
-	id_project INT 
-	PRIMARY KEY(id_project_employee)
+	id_project INT,
+	hours_assigned_to_project INT,
+	PRIMARY KEY(id_project_employee),
 	FOREIGN KEY(id_employee) REFERENCES dbo.employees(id_employee),
 	FOREIGN KEY(id_project) REFERENCES dbo.projects(id_project)
 );
@@ -193,12 +194,13 @@ GO
 CREATE PROCEDURE dbo.check_if_employee_is_asigned
 	@employeeId INT,
 	@selectedProject INT,
+	@assigned_hours INT,
 	@isAsigned INT OUTPUT
 AS
 BEGIN
 	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject)
 	IF @isAsigned = 0
-			INSERT INTO dbo.project_employees(id_project, id_employee) VALUES(@selectedProject, @employeeId)
+			INSERT INTO dbo.project_employees(id_project, id_employee, hours_assigned_to_project) VALUES(@selectedProject, @employeeId, @assigned_hours)
 	RETURN @isAsigned
 END
 GO
@@ -226,14 +228,16 @@ BEGIN
 	IF @freeHours - @selectedHours >= 0 AND @employeeFreeHoursAfterCheck - @selectedHours >= 0
 		BEGIN
 			DECLARE @isAsigned INT
-			EXEC dbo.check_if_employee_is_asigned @employeeId = @employeeId, @selectedProject = @selectedProject, @isAsigned = @isAsigned OUTPUT
+			EXEC dbo.check_if_employee_is_asigned @employeeId = @employeeId, @selectedProject = @selectedProject, @assigned_hours = @newProjectHoursRequired,  @isAsigned = @isAsigned OUTPUT
 			IF @isAsigned = 0
 				BEGIN
 					SELECT 'Empleado asignado al proyecto seleccionado'
-					UPDATE dbo.projects SET dbo.projects.hours_estimation = @freeHours WHERE dbo.projects.id_project = @selectedProject
+					/* UPDATE dbo.projects SET dbo.projects.hours_estimation = @freeHours WHERE dbo.projects.id_project = @selectedProject */
 					UPDATE dbo.employees SET dbo.employees.free_hours = @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 					/* Agregar assigned_hours a la tabla proyectos */
+					UPDATE dbo.projects SET dbo.projects.assigned_hours = dbo.projects.assigned_hours + @newProjectHoursRequired WHERE dbo.projects.id_project = @selectedProject
 					/* Agregar update de horas usadas */
+					UPDATE dbo.employees SET dbo.employees.used_hours = dbo.employees.total_hours - @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 				END
 			ELSE 
 			THROW 51000, 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
@@ -244,12 +248,11 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 5, @employeeId = 8, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
-GO
-SELECT * FROM dbo.projects WHERE id_project = 2
+SELECT * FROM dbo.projects WHERE id_project = 1
 GO
 SELECT * FROM dbo.employees WHERE id_employee = 1
 GO
@@ -270,7 +273,21 @@ BEGIN
 	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject)
 	IF @isAsigned = 1
 		BEGIN
+			DECLARE @getUsedHoursInProject INT
+
+			SET @getUsedHoursInProject = (SELECT P.hours_assigned_to_project
+			FROM employees AS E
+			JOIN project_employees AS P
+			ON E.id_employee = P.id_employee WHERE P.id_employee = 1)
+			
+			UPDATE dbo.projects SET dbo.projects.assigned_hours = dbo.projects.assigned_hours - @getUsedHoursInProject WHERE dbo.projects.id_project = @selectedProject
+
+			UPDATE dbo.employees SET dbo.employees.used_hours = dbo.employees.used_hours - @getUsedHoursInProject WHERE dbo.employees.id_employee = @employeeId
+
+			UPDATE dbo.employees SET dbo.employees.free_hours = dbo.employees.free_hours + @getUsedHoursInProject WHERE dbo.employees.id_employee = @employeeId
+
 			DELETE FROM dbo.project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject
+			
 			SELECT 'Empleado removido del proyecto exitosamente'
 		END
 	ELSE
@@ -282,6 +299,11 @@ DECLARE @selectedProject INT
 EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 1
 SELECT * FROM dbo.project_employees
 GO
+SELECT * FROM dbo.projects WHERE id_project = 1
+GO
+SELECT * FROM dbo.employees WHERE id_employee = 1
+GO
+
 
 
 
