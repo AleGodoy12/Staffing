@@ -11,26 +11,28 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('12345678')
-  const [errorMessageFrontU, setErrorMessageFrontU] = useState('');
-  const [errorMessageFrontP, setErrorMessageFrontP] = useState('');
-  const [errorMessageBack, setErrorMessageBack] = useState('')
 
-	/* Actualizo el estado del nombre y de la contraseña */
-  const handleUsernameChange = (event) => {
-    setErrorMessageFrontU('');
-		setErrorMessageFrontP('');
-		setErrorMessageBack('');
-    document.querySelector('input[name=username]').style.borderColor = "#afa2c3";
-		setUsername(event.target.value); 
-	}
-  const handlePasswordChange = (event) => {
-    setErrorMessageFrontU('');
-		setErrorMessageFrontP('');
-		setErrorMessageBack('');
-    document.querySelector('input[name=password]').style.borderColor = "#afa2c3";
-    setPassword(event.target.value);
+  const [err, setErr] = useState({
+    back: '',
+    frontUser: '',
+    frontPassword: ''
+  })
+  const [data, setData] = useState({
+    username: 'admin',
+    password:'12345678'
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value
+    })
+    setErr({
+      back: '',
+      frontUser: '',
+      frontPassword: ''
+    })
   }
   
   
@@ -40,44 +42,59 @@ export default function Login() {
     try {
       /* Validaciones del front */
       
-      if (username.length < 3 && username !== '') {
-        setErrorMessageFrontU('El usuario no puede tener menos de 3 caracteres');
+      if (data.username.length < 3 && data.username !== '') {
+        setErr({
+					...err,
+					frontUser: 'El usuario no puede tener menos de 3 caracteres',
+				});
         document.querySelector('input[name=username]').style.borderColor = "red";
-      } else if (username.length > 15 && username !== '') {
-				setErrorMessageFrontU('El usuario no puede tener más de 15 caracteres');
+      } else if (data.username.length > 15 && data.username !== '') {
+        setErr({
+					...err,
+					frontUser: 'El usuario no puede tener más de 15 caracteres',
+				});
 				document.querySelector('input[name=username]').style.borderColor =
 					'red';
 			}
-      if (password.length < 8 && password !== '') {
-				setErrorMessageFrontP(
-					'La contraseña no puede tener menos de 8 caracteres'
-				);
+      if (data.password.length < 8 && data.password !== '') {
+        setErr({
+					...err,
+					frontPassword: 'La contraseña no puede tener menos de 8 caracteres',
+				});
 				document.querySelector('input[name=password]').style.borderColor =
 					'red';
-			} else if (password.length > 15 && password !== '') {
-				setErrorMessageFrontP(
-					'La contraseña no puede tener más de 15 caracteres'
-				);
+			} else if (data.password.length > 15 && data.password !== '') {
+        setErr({
+          ...err,
+          frontPassword:'La contraseña no puede tener más de 15 caracteres'
+        })
 				document.querySelector('input[name=password]').style.borderColor =
 					'red';
 			}
 
 
-      if (errorMessageFrontP !== '' || errorMessageFrontU !== '') {
+      if (err.frontPassword !== '' || err.frontUser !== '') {
         return;
       }
-
+      
+      console.log(data.username)
+      console.log(data.password)
       const response = await axios.post(url, {
-        username,
-				password,
+        username: data.username,
+				password: data.password,
       });
+      console.log(response);
       
       navigate('/panel');
 
     } catch (error) {
-      
-      let err = error.response.data.errorDetail;
-      setErrorMessageBack(err);
+      console.log(error)
+      let errorResponse = error.response.data.errorDetail;
+      console.log(errorResponse)
+      setErr({
+        back: errorResponse,
+        ...err,
+      });
       
 		}
 	};
@@ -95,26 +112,25 @@ export default function Login() {
 						<p> Una nueva forma de gestionar nuestros equipos y proyectos</p>
 						<h1>Inicio de sesión</h1>
 						<form action="#">
-              <label htmlFor="user">Usuario: <span>{ errorMessageFrontU }</span></label>
+              <label htmlFor="user">Usuario: <span>{ err.frontUser }</span></label>
 							<input
 								type="text"
 								name="username"
-								value={username}
-								onChange={handleUsernameChange}
+								value={data.username}
+								onChange={handleChange}
 								id="user"
 							/>
-
-              <label htmlFor="password">Contraseña: <span>{ errorMessageFrontP }</span> </label>
+              <label htmlFor="password">Contraseña: <span>{ err.frontPassword }</span> </label>
 							<input
 								type="password"
 								name="password"
 								id="password"
-								value={password}
-								onChange={handlePasswordChange}
+								value={data.password}
+								onChange={handleChange}
 							/>
 							<button onClick={handleLogin}>Iniciar sesión</button>
 						</form>
-            <span>{ errorMessageBack }</span>
+            <span>{ err.back }</span>
 					</div>
 				</section>
 			</main>
