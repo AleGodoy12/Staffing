@@ -328,12 +328,20 @@ IF OBJECT_ID('dbo.viewFreeEmployes') IS NOT NULL
 	DROP PROCEDURE dbo.viewFreeEmployes
 GO
 CREATE PROCEDURE dbo.viewFreeEmployes
+	@selected_project INT
 AS
 BEGIN
-	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours, P.id_project
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
 	FROM dbo.employees AS E
-	LEFT JOIN dbo.project_employees AS P
-	ON E.id_employee = P.id_employee WHERE id_project IS NULL
+	LEFT JOIN dbo.project_employees AS PRO
+	ON E.id_employee = PRO.id_employee
+	LEFT JOIN dbo.projects AS P
+	ON PRO.id_project = P.id_project
+	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project)
 END
 GO
-EXEC dbo.viewFreeEmployes
+DECLARE @selected_project INT
+EXEC dbo.viewFreeEmployes @selected_project = 5
+SELECT * FROM employees
+SELECT * FROM projects
+SELECT * FROM project_employees
