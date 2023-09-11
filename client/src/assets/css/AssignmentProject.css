@@ -7,3 +7,77 @@
   font-size: 24px;
   
 }
+.data {
+  display: flex;
+  gap: 16px;
+}
+.data .table {
+  margin: 0 0 16px 16px;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: max-content;
+}
+.data .table h3 {
+  font-family: "Rubik-Light-300";
+  color: #c147af;
+  font-size: 14px;
+  text-align: left;
+  padding-bottom: 8px;
+}
+.data .table p {
+  font-family: "Roboto-Regular-400";
+  font-size: 14px;
+  text-align: left;
+}
+
+.data .bar {
+  margin: 16px 0 16px 16px;
+}
+.data .bar h2 {
+  font-family: "Rubik-Light-300";
+  font-size: 24px;
+}
+.data .bar > p {
+  margin-top: 8px;
+  font-family: "Roboto-Regular-400";
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.data .bar > div {
+  position: relative;
+  overflow: hidden;
+  height: 30px;
+  max-width: 420px;
+}
+.data .bar > div progress {
+  -webkit-appearance: none;
+  height: 30px;
+  border-radius: 50px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid black;
+}
+.data .bar > div ::-webkit-progress-bar {
+  background-color: white;
+}
+.data .bar > div ::-webkit-progress-value {
+  background-color: #c147afac;
+  
+}
+.data .bar > div p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto-Regular-400";
+  font-size: 20px;
+}

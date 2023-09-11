@@ -24,8 +24,6 @@
   background-color: #f9f9f9;
   padding: 16px;
   border-radius: 20px;
-}
-.projects-section .table {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
