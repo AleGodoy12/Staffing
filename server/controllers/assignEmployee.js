@@ -17,9 +17,13 @@ const assignEmployee = {
 		}
 	},
 	viewFreeEmployes: async function (req, res) {
+		const { selected_project } = req.params;
 		const pool = await database();
 		try {
-			const response = await pool.request().execute(`dbo.viewFreeEmployes`);
+			const response = await pool
+				.request()
+				.input('selected_project', selected_project)
+				.execute(`dbo.viewFreeEmployes`);
 			console.log(response);
 			res.status(200).json({ status: 200, data: response.recordsets[0] });
 		} catch (error) {
@@ -30,7 +34,7 @@ const assignEmployee = {
 	},
 	assignEmployeeToProject: async function (req, res) {
 		const { project_id, employee_id, hours_to_assign } = req.params;
-		console.log(project_id, employee_id,hours_to_assign );
+		console.log(project_id, employee_id, hours_to_assign);
 		const pool = await database();
 		try {
 			const result = await pool
