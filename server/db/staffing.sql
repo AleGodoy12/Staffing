@@ -169,8 +169,9 @@ BEGIN
 
 	SET @employeeFreeHours = (SELECT free_hours FROM employees WHERE id_employee = @employeeId)
 	SET @employeeFreeHoursAfterCheck = @employeeFreeHours - @newProjectHoursRequired
+	SELECT @employeeFreeHoursAfterCheck
 
-	IF @employeeFreeHoursAfterCheck > 0
+	IF @employeeFreeHoursAfterCheck >= 0
 		BEGIN
 			/* SET @result = 'Las horas libres del empleado son ' + CONVERT(VARCHAR(10), @employeeFreeHours) + ' y, con el nuevo proyecto pasarían a ser un total de ' + CONVERT(VARCHAR(10), @employeeFreeHoursAfterCheck) + ' horas libres restantes.'
 			 SELECT @result AS horas_libres_empleado */
@@ -181,7 +182,7 @@ BEGIN
 END
 GO
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = 39, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = 40, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 SELECT @employeeFreeHoursAfterCheck AS horas_libres
 GO
 
@@ -225,7 +226,7 @@ BEGIN
 	EXEC dbo.check_project_availability @selectedProject = @selectedProject, @selectedHours = @selectedHours, @freeHours = @freeHours OUTPUT
 	EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = @newProjectHoursRequired, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 
-	IF @freeHours - @selectedHours >= 0 AND @employeeFreeHoursAfterCheck - @selectedHours >= 0
+	IF @freeHours - @selectedHours >= 0 AND @employeeFreeHoursAfterCheck >= 0
 		BEGIN
 			DECLARE @isAsigned INT
 			EXEC dbo.check_if_employee_is_asigned @employeeId = @employeeId, @selectedProject = @selectedProject, @assigned_hours = @newProjectHoursRequired,  @isAsigned = @isAsigned OUTPUT
@@ -248,7 +249,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 35, @employeeId = 1, @newProjectHoursRequired = 35, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -278,7 +279,7 @@ BEGIN
 			SET @getUsedHoursInProject = (SELECT P.hours_assigned_to_project
 			FROM employees AS E
 			JOIN project_employees AS P
-			ON E.id_employee = P.id_employee WHERE P.id_employee = 1)
+			ON E.id_employee = P.id_employee WHERE P.id_employee = @employeeId)
 			
 			UPDATE dbo.projects SET dbo.projects.assigned_hours = dbo.projects.assigned_hours - @getUsedHoursInProject WHERE dbo.projects.id_project = @selectedProject
 
@@ -328,12 +329,20 @@ IF OBJECT_ID('dbo.viewFreeEmployes') IS NOT NULL
 	DROP PROCEDURE dbo.viewFreeEmployes
 GO
 CREATE PROCEDURE dbo.viewFreeEmployes
+	@selected_project INT
 AS
 BEGIN
-	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours, P.id_project
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
 	FROM dbo.employees AS E
-	LEFT JOIN dbo.project_employees AS P
-	ON E.id_employee = P.id_employee WHERE id_project IS NULL
+	LEFT JOIN dbo.project_employees AS PRO
+	ON E.id_employee = PRO.id_employee
+	LEFT JOIN dbo.projects AS P
+	ON PRO.id_project = P.id_project
+	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project)
 END
 GO
-EXEC dbo.viewFreeEmployes
+DECLARE @selected_project INT
+EXEC dbo.viewFreeEmployes @selected_project = 5
+SELECT * FROM employees
+SELECT * FROM projects
+SELECT * FROM project_employees
