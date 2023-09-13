@@ -108,7 +108,8 @@ CREATE TABLE dbo.employee_skills(
 GO
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
-INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('diego','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5),(1,5)
 GO
@@ -140,8 +141,6 @@ BEGIN
 	SET @freeHours = (SELECT hours_estimation FROM dbo.projects WHERE id_project = @selectedProject) - @selectedHours
 	IF @freeHours > 0
 		BEGIN
-			/* SET @result = 'Horas libres para asignar: '+ CONVERT(VARCHAR(10), @freeHours) 
-			SELECT @result AS horas_libres */
 			RETURN @freeHours
 		END
 	ELSE 
@@ -173,8 +172,6 @@ BEGIN
 
 	IF @employeeFreeHoursAfterCheck >= 0
 		BEGIN
-			/* SET @result = 'Las horas libres del empleado son ' + CONVERT(VARCHAR(10), @employeeFreeHours) + ' y, con el nuevo proyecto pasarían a ser un total de ' + CONVERT(VARCHAR(10), @employeeFreeHoursAfterCheck) + ' horas libres restantes.'
-			 SELECT @result AS horas_libres_empleado */
 			RETURN @employeeFreeHoursAfterCheck
 		END
 	ELSE
@@ -182,7 +179,7 @@ BEGIN
 END
 GO
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = 40, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.check_employee_availability @employeeId = 2, @newProjectHoursRequired = 80, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 SELECT @employeeFreeHoursAfterCheck AS horas_libres
 GO
 
@@ -224,7 +221,7 @@ BEGIN
 	/* Check project and employee availability */
 
 	EXEC dbo.check_project_availability @selectedProject = @selectedProject, @selectedHours = @selectedHours, @freeHours = @freeHours OUTPUT
-	EXEC dbo.check_employee_availability @employeeId = 1, @newProjectHoursRequired = @newProjectHoursRequired, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+	EXEC dbo.check_employee_availability @employeeId = @employeeId, @newProjectHoursRequired = @newProjectHoursRequired, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 
 	IF @freeHours - @selectedHours >= 0 AND @employeeFreeHoursAfterCheck >= 0
 		BEGIN
@@ -249,13 +246,13 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 35, @employeeId = 1, @newProjectHoursRequired = 35, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 40, @employeeId = 3, @newProjectHoursRequired = 40, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
 GO
-SELECT * FROM dbo.employees WHERE id_employee = 1
+SELECT * FROM dbo.employees WHERE id_employee = 2
 GO
 UPDATE dbo.employees SET dbo.employees.free_hours = 40 WHERE dbo.employees.id_employee = 1
 
@@ -302,7 +299,7 @@ SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
 GO
-SELECT * FROM dbo.employees WHERE id_employee = 1
+SELECT * FROM dbo.employees WHERE id_employee = 2
 GO
 
 
@@ -346,3 +343,36 @@ EXEC dbo.viewFreeEmployes @selected_project = 5
 SELECT * FROM employees
 SELECT * FROM projects
 SELECT * FROM project_employees
+
+
+IF OBJECT_ID('dbo.get_all_info_from_project') IS NOT NULL
+	DROP PROCEDURE dbo.get_all_info_from_project
+GO
+CREATE PROCEDURE dbo.get_all_info_from_project
+	@project_id INT
+AS
+BEGIN
+	DECLARE @projectExists INT
+	SET @projectExists = (SELECT COUNT(id_project) FROM projects WHERE id_project = @project_id)
+	IF @projectExists > 0 
+		BEGIN
+			SELECT P.id_project, P.name_project, P.area_project, P.start_date_project, P.end_date_project, P.hours_estimation, P.assigned_hours, E.id_employee, E.name, E.lastname, E.mail, E.company, E.total_hours, E.used_hours, E.free_hours
+			FROM projects AS P
+			LEFT JOIN project_employees AS PRO
+			ON P.id_project = PRO.id_project
+			LEFT JOIN employees AS E
+			ON E.id_employee = PRO.id_employee
+			WHERE P.id_project = @project_id
+		END
+	ELSE
+		THROW 51000, 'Proyecto inválido', 1
+END
+GO
+DECLARE @project_id INT
+EXEC dbo.get_all_info_from_project @project_id = 1
+
+SELECT * FROM dbo.project_employees
+GO
+SELECT * FROM dbo.projects
+GO
+SELECT * FROM dbo.employees
