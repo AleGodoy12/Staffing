@@ -17,7 +17,7 @@ export default function AssignModal({ children }) {
 
   return (
     <>
-      <button onClick={openM} >OpenModal</button>
+      <button onClick={openM} >Asignar</button>
       <article className={`modal`} style={ open ? {display:'block'} : {display:'none'}}>
         <div className="modal-container">
           <button className="modal-close" onClick={closeM}>
