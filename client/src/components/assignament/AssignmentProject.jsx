@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import AssignModal from './AssignModal';
+import user from '../../assets/images/user-2.png'
 
 
 /* Llamo al endpoint del proyecto */
@@ -25,8 +26,7 @@ export default function AssignmentProject() {
 		assignedHours: 0,
 		idProject: 0
 	})
-	/* Horas a asignar */
-	const [hoursToAssign, setHoursToAssign] = useState(0)
+	
 	/* Empleados del proyecto */
 	const [employee, setEmployee] = useState([])
 	/* Empleados del proyecto asignado */
@@ -60,7 +60,6 @@ export default function AssignmentProject() {
 		console.log(data, 'Empleados libres');
 	}
 
-
 	const viewEmployeeFromSelectedProject = async () => {
 		const id_project = id;
 		const res = await axios.get(urlEmployeeFromProject + id_project)
@@ -69,20 +68,13 @@ export default function AssignmentProject() {
 		console.log(data, 'Empleados del proyecto seleccionado');
 	}
 
-	const assignEmployee = async (proyecto, empleado, horas) => {
-		let project_id = proyecto;
-		let employee_id = empleado;
-		let hours_to_assign = horas;
-
-		const res = await axios.post(`${url}project/${project_id}/${employee_id}/${hours_to_assign}`)
-		setHoursToAssign(0)
-		load()
-	}
-
 	const deleteEmployee = async(proyecto, empleado) => {
 		let project_id = proyecto
 		let employee_id = empleado 
-		await axios.delete(`${url}project/${project_id}/${employee_id}`)
+    console.log(project_id);
+    console.log(employee_id);
+    await axios.delete(`${url}project/${project_id}/${employee_id}`)
+    
 		load()
 	}
 
@@ -147,8 +139,8 @@ export default function AssignmentProject() {
 									</div>
 								</div>
 							</div>
-							<div>
-								<p>Staff Seleccionado</p>
+							<div className='staff'>
+								<h2>Staff Seleccionado</h2>
 								{
 									employeeAssign.map((e,index)=>(
 										<div key={index}>
@@ -159,31 +151,32 @@ export default function AssignmentProject() {
 								}
 							</div>
 						</section>
-						<section className="employee">
+            <h2 className='title-employee'>Empleados: </h2>
+            <section className="employee">
 							{employee.map((e, index) => (
 								<div
 									className="cardEmployee"
 									key={index}
 								>
-									<h1>
+									<h3>
 										{e.name} {e.lastname}
-									</h1>
-									<p>Horas Disponibles: {e.free_hours}</p>
-									<p>Horas Usadas: {e.used_hours} </p>
-									<p>Horas Totales: {e.total_hours}</p>
-									<AssignModal>
-										<p>Seleccione la cantidad de horas</p>
-										<input
-											onChange={(e) => setHoursToAssign(e.target.value)}
-											type="number"
-											name="assignHours"
-											id=""
-											required
-										/>
-										{hoursToAssign}
-										{project.idProject}
-										<button onClick={() => assignEmployee(project.idProject, e.id_employee, hoursToAssign)}> Aceptar </button>
-									</AssignModal>
+                  </h3>
+                  <div>
+                    <img src={user} alt="" />
+                    <div className="text">
+                      <p>Horas Disponibles: {e.free_hours}</p>
+                      <p>Horas Usadas: {e.used_hours} </p>
+                      <p>Horas Totales: {e.total_hours}</p>
+                    </div>
+                  </div>
+                  <AssignModal
+                    idProject={project.idProject}
+                    idEmployee={e.id_employee}
+                    load={load}
+                    nameSurname={`${e.name} ${e.lastname}`}
+                    freeHours={e.free_hours}
+                    usedHours={e.used_hours}
+                  ></AssignModal>
 								</div>
 							))}
 						</section>

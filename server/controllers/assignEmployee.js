@@ -67,8 +67,8 @@ const assignEmployee = {
 			console.log(response);
 			res.status(200).json({ status: 200, msg: response });
 		} catch (error) {
-			const { message } = error.originalError.info;
-			res.status(404).json({ status: 404, msg: message });
+			/* const { message } = error.originalError.info; */
+			res.status(404).json({ status: 404, msg: error });
 		} finally {
 			pool.close();
 		}
