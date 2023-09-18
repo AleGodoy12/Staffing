@@ -4,6 +4,7 @@
   padding: 16px;
   overflow-y: scroll;
   display: flex;
+  position: relative;
 }
 .section-right {
   width: 100%;

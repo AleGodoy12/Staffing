@@ -81,3 +81,65 @@
   font-family: "Roboto-Regular-400";
   font-size: 20px;
 }
+
+.staff {
+  margin-left: 16px;
+}
+.staff > h2 {
+  font-family: "Rubik-Light-300";
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.staff > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.staff > div p {
+  font-family: "Roboto-Regular-400";
+  text-transform: capitalize;
+}
+.staff > div button {
+  outline: none;
+  border: none;
+  background-color: #ff1212;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+
+
+.title-employee {
+  font-family: "Rubik-Light-300";
+  margin: 8px 0 16px 16px;
+}
+.employee {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 300px);
+  gap: 16px;
+  margin: 0 0 16px 16px;
+}
+.cardEmployee {
+  background: #f9f9f9;
+  padding: 8px;
+  border-radius: 8px;
+}
+.cardEmployee h3 {
+  font-family: "Roboto-Light-300";
+  font-size: 16px;
+  text-transform: capitalize;
+}
+.cardEmployee > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0;
+}
+.cardEmployee > div p {
+  margin-bottom: 4px;
+  font-family: "Roboto-Regular-400";
+  font-size: 14px;
+}
