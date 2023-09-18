@@ -11,12 +11,12 @@ const assignEmployee = {
 			console.log(response);
 			res.status(200).json({ status: 200, data: response.recordsets[0] });
 		} catch (error) {
-			res.status(500).json({ status: 500, msg: error });
+			res.status(500).json({ status: 500, error: error });
 		} finally {
 			pool.close();
 		}
 	},
-	viewFreeEmployes: async function (req, res) {
+	viewFreeEmployees: async function (req, res) {
 		const { selected_project } = req.params;
 		const pool = await database();
 		try {
@@ -27,7 +27,7 @@ const assignEmployee = {
 			console.log(response);
 			res.status(200).json({ status: 200, data: response.recordsets[0] });
 		} catch (error) {
-			res.status(500).json({ status: 500, msg: error });
+			res.status(500).json({ status: 500, error: error });
 		} finally {
 			pool.close();
 		}
@@ -65,10 +65,10 @@ const assignEmployee = {
 				.execute(`remove_employee_from_project`);
 
 			console.log(response);
-			res.status(200).json({ status: 200, msg: response });
+			res.status(200).json({ status: 200, data: response });
 		} catch (error) {
-			/* const { message } = error.originalError.info; */
-			res.status(404).json({ status: 404, msg: error });
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, error: message });
 		} finally {
 			pool.close();
 		}

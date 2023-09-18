@@ -108,10 +108,15 @@ CREATE TABLE dbo.employee_skills(
 GO
 INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-3', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
+INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
+VALUES('jump SMG-4', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
+INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_date_project, hours_estimation, id_user_admin)
+VALUES('jump SMG-5', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
-INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5),(1,5)
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5)
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3)
 GO
 SELECT * FROM dbo.users
 GO
@@ -276,7 +281,7 @@ BEGIN
 			SET @getUsedHoursInProject = (SELECT P.hours_assigned_to_project
 			FROM employees AS E
 			JOIN project_employees AS P
-			ON E.id_employee = P.id_employee WHERE P.id_employee = @employeeId)
+			ON E.id_employee = P.id_employee WHERE P.id_employee = @employeeId AND P.id_project = @selectedProject)
 			
 			UPDATE dbo.projects SET dbo.projects.assigned_hours = dbo.projects.assigned_hours - @getUsedHoursInProject WHERE dbo.projects.id_project = @selectedProject
 
@@ -329,17 +334,21 @@ CREATE PROCEDURE dbo.viewFreeEmployes
 	@selected_project INT
 AS
 BEGIN
-	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours, S.skill_name
 	FROM dbo.employees AS E
+	JOIN dbo.employee_skills AS EM
+	ON  EM.employee_id = E.id_employee
+	JOIN dbo.skills AS S
+	ON S.id_skill = EM.skill_id
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee
 	LEFT JOIN dbo.projects AS P
 	ON PRO.id_project = P.id_project
-	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project)
+	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project) 
 END
 GO
 DECLARE @selected_project INT
-EXEC dbo.viewFreeEmployes @selected_project = 5
+EXEC dbo.viewFreeEmployes @selected_project = 1
 SELECT * FROM employees
 SELECT * FROM projects
 SELECT * FROM project_employees
