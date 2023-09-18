@@ -14,7 +14,7 @@ const projectControllers = {
 		} catch (error) {
 			res.status(404).json({
 				status: 404,
-				msg: error.message,
+				error: error.message,
 			});
 		} finally {
 			pool.close();
@@ -34,7 +34,7 @@ const projectControllers = {
 		} catch (error) {
 			res.status(404).json({
 				status: 404,
-				msg: error.message,
+				error: error.message,
 			});
 		} finally {
 			pool.close();
@@ -69,7 +69,7 @@ const projectControllers = {
 		} catch (error) {
 			res.status(404).json({
 				status: 404,
-				msg: error.message,
+				error: error.message,
 			});
 		} finally {
 			pool.close();
@@ -105,7 +105,7 @@ const projectControllers = {
 			console.log(error);
 			res.status(404).json({
 				status: 404,
-				msg: error.message,
+				error: error.message,
 			});
 		} finally {
 			pool.close();
@@ -125,7 +125,7 @@ const projectControllers = {
 		} catch (error) {
 			res.status(200).json({
 				status: 200,
-				msg: error.message,
+				error: error.message,
 			});
 		} finally {
 			pool.close();
