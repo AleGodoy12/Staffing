@@ -334,17 +334,23 @@ CREATE PROCEDURE dbo.viewFreeEmployes
 	@selected_project INT
 AS
 BEGIN
-	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours, S.skill_name
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
 	FROM dbo.employees AS E
-	JOIN dbo.employee_skills AS EM
-	ON  EM.employee_id = E.id_employee
-	JOIN dbo.skills AS S
-	ON S.id_skill = EM.skill_id
+
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee
 	LEFT JOIN dbo.projects AS P
 	ON PRO.id_project = P.id_project
 	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project) 
+	
+	SELECT E.id_employee, S.skill_name
+	FROM skills AS S
+	JOIN employee_skills AS EM
+	ON S.id_skill = EM.skill_id
+	JOIN employees AS E
+	ON E.id_employee = EM.employee_id
+	GROUP BY S.skill_name, E.name
+
 END
 GO
 DECLARE @selected_project INT

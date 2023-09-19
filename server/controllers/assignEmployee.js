@@ -24,8 +24,19 @@ const assignEmployee = {
 				.request()
 				.input('selected_project', selected_project)
 				.execute(`dbo.viewFreeEmployes`);
-			console.log(response);
-			res.status(200).json({ status: 200, data: response.recordsets[0] });
+			// console.log(response.recordsets);
+			const employees = response.recordsets[0];
+			const skills = response.recordsets[1];
+
+			employees.map((employee) => {
+				employee.skills = [];
+				skills.map(
+					(skill) =>
+						skill.id_employee == employee.id_employee &&
+						employee.skills.push(skill.skill_name)
+				);
+			});
+			res.status(200).json({ status: 200, data: employees });
 		} catch (error) {
 			res.status(500).json({ status: 500, error: error });
 		} finally {
