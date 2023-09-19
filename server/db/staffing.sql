@@ -114,9 +114,11 @@ INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_dat
 VALUES('jump SMG-5', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('Santiago','Baliño', 'santiaguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5)
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3)
+INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(3,1),(3,2),(3,3),(3,4),(3,5)
 GO
 SELECT * FROM dbo.users
 GO
@@ -336,25 +338,26 @@ AS
 BEGIN
 	SELECT E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
 	FROM dbo.employees AS E
-
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee
 	LEFT JOIN dbo.projects AS P
 	ON PRO.id_project = P.id_project
-	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project) 
-	
+	WHERE E.free_hours > 0 AND E.id_employee NOT IN (SELECT id_employee FROM project_employees WHERE project_employees.id_project = @selected_project)
+	GROUP BY E.id_employee, E.name, E.lastname, E.mail, E.company, E.used_hours, E.free_hours, E.total_hours
+
 	SELECT E.id_employee, S.skill_name
 	FROM skills AS S
 	JOIN employee_skills AS EM
 	ON S.id_skill = EM.skill_id
 	JOIN employees AS E
 	ON E.id_employee = EM.employee_id
-	GROUP BY S.skill_name, E.name
+	GROUP BY S.skill_name, E.id_employee
+	ORDER BY E.id_employee
 
 END
 GO
 DECLARE @selected_project INT
-EXEC dbo.viewFreeEmployes @selected_project = 1
+EXEC dbo.viewFreeEmployes @selected_project = 3
 SELECT * FROM employees
 SELECT * FROM projects
 SELECT * FROM project_employees
@@ -384,7 +387,7 @@ BEGIN
 END
 GO
 DECLARE @project_id INT
-EXEC dbo.get_all_info_from_project @project_id = 1
+EXEC dbo.get_all_info_from_project @project_id = 3
 
 SELECT * FROM dbo.project_employees
 GO
