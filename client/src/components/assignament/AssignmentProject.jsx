@@ -30,8 +30,18 @@ export default function AssignmentProject() {
 	/* Empleados del proyecto */
 	const [employee, setEmployee] = useState([])
 	/* Empleados del proyecto asignado */
-	const [employeeAssign, setEmployeeAssign] = useState([])
+  const [employeeAssign, setEmployeeAssign] = useState([])
+  /* Valores de los checkboxes de skills */
+  const [skillSelected, setSkillSelected] = useState([])
 	
+  const inputChange = (e) => {
+		if (e.target.checked) {
+			setSkillSelected([...skillSelected, e.target.name]);
+		} else {
+			setSkillSelected(skillSelected.filter((skill) => skill !== e.target.name));
+		}
+	};
+
 
 	/* Obtener datos del proyecto */
 	const { id } = useParams()
@@ -139,48 +149,98 @@ export default function AssignmentProject() {
 									</div>
 								</div>
 							</div>
-							<div className='staff'>
+							<div className="staff">
 								<h2>Staff Seleccionado</h2>
-								{
-									employeeAssign.map((e,index)=>(
-										<div key={index}>
-											<p>{e.name} {e.lastname}</p>
-											<button onClick={() => deleteEmployee(project.idProject, e.id_employee)} >Quitar</button>
-										</div>
-									))
-								}
+								{employeeAssign.map((e, index) => (
+									<div key={index}>
+										<p>
+											{e.name} {e.lastname}
+										</p>
+										<button
+											onClick={() =>
+												deleteEmployee(project.idProject, e.id_employee)
+											}
+										>
+											Quitar
+										</button>
+									</div>
+								))}
 							</div>
 						</section>
-            <h2 className='title-employee'>Empleados: </h2>
-            <section className="employee">
+						<h2 className="title-filter">Filtros</h2>
+						<section className="filter">
+							<div>
+								<input
+									type="checkbox"
+									id="css"
+									name="css"
+                  onChange={inputChange}
+								/>
+								<label htmlFor="css">CSS</label>
+							</div>
+							<div>
+								<input
+									type="checkbox"
+									id="javascript"
+									name="javascript"
+                  onChange={inputChange}
+								/>
+								<label htmlFor="javascript">JavaScript</label>
+							</div>
+							<div>
+								<input
+									type="checkbox"
+									id="node"
+									name="node"
+                  onChange={inputChange}
+								/>
+								<label htmlFor="node">Node</label>
+							</div>
+							<div>
+								<input
+									type="checkbox"
+									id="react"
+									name="react"
+                  onChange={inputChange}
+								/>
+								<label htmlFor="react">React</label>
+							</div>
+							<div>
+								<input
+									type="checkbox"
+									id="sql"
+									name="sql"
+                  onChange={inputChange}
+								/>
+								<label htmlFor="sql">SQL</label>
+							</div>
+            </section>
+						<h2 className="title-employee">Empleados: </h2>
+						<section className="employee">
 							{employee.map((e, index) => (
-								<div
-									className="cardEmployee"
-									key={index}
-								>
+								<div className="cardEmployee" key={index}>
 									<h3>
 										{e.name} {e.lastname}
-                  </h3>
-                  <div>
-                    <img src={user} alt="" />
-                    <div className="text">
-                      <p>Horas Disponibles: {e.free_hours}</p>
-                      <p>Horas Usadas: {e.used_hours} </p>
-                      <p>Horas Totales: {e.total_hours}</p>
-                    </div>
-                  </div>
-                  <AssignModal
-                    idProject={project.idProject}
-                    idEmployee={e.id_employee}
-                    load={load}
-                    nameSurname={`${e.name} ${e.lastname}`}
-                    freeHours={e.free_hours}
-                    usedHours={e.used_hours}
-                  ></AssignModal>
+									</h3>
+									<div>
+										<img src={user} alt="" />
+										<div className="text">
+											<p>Horas Disponibles: {e.free_hours}</p>
+											<p>Horas Usadas: {e.used_hours} </p>
+											<p>Horas Totales: {e.total_hours}</p>
+										</div>
+									</div>
+									<AssignModal
+										idProject={project.idProject}
+										idEmployee={e.id_employee}
+										load={load}
+										nameSurname={`${e.name} ${e.lastname}`}
+										freeHours={e.free_hours}
+										usedHours={e.used_hours}
+									></AssignModal>
 								</div>
 							))}
 						</section>
-
 					</section>
 				</section>
 			</main>
