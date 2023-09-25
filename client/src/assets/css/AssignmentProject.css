@@ -5,7 +5,9 @@
   gap: 16px;
   font-family: "Rubik-Regular-400";
   font-size: 24px;
-  
+}
+.show-projects-assignment > div a {
+  height: 48px;
 }
 .data {
   display: flex;
@@ -111,7 +113,36 @@
 
 }
 
-
+.filter {
+  max-width: 420px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px 16px;
+}
+.filter > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c147af;
+  padding: 8px 10px;
+  border-radius: 50px;
+  gap: 8px;
+  font-family: "Roboto-Regular-400";
+}
+.filter > div input,
+.filter > div label {
+  cursor: pointer;
+  user-select: none;
+}
+.filter > div label {
+  font-size: 14px;
+}
+.filter > div input[type="checkbox"] {
+  accent-color: #c147af;
+  
+}
+.title-filter,
 .title-employee {
   font-family: "Rubik-Light-300";
   margin: 8px 0 16px 16px;
