@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-
-/* Llamo al endpoint del proyecto */
 const url = 'http://localhost:3000/';
 
 export default function ShowProjectsA() {
@@ -21,20 +19,15 @@ export default function ShowProjectsA() {
     setBool(false)
   }
 
-
-  //procedimiento que trae todos los proyectos
   const getProjects = async () => {
     const res = await axios.get(url);
     setProjects(res.data.projects);
     return;
   };
 
-
-
   useEffect(() => {
     getProjects();
   }, []);
-
 
   return (
     <>

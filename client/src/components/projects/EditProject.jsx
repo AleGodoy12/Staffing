@@ -18,7 +18,7 @@ fechaActual = fechaActual.toISOString().split('T')[0];
 fechaReferencia = fechaReferencia.toISOString().split('T')[0];
 
 export default function EditProject() {
-  /* useState para el nombre actual del blog */
+
   const [project, setProject] = useState({
     name: '',
     area: '',
@@ -26,7 +26,7 @@ export default function EditProject() {
     start: fechaActual,
     end: fechaReferencia
   })
-  /* useStates para el futuro nombre del blog */
+
   const [newProject, setNewProject] = useState({
     name: '',
     area: '',
@@ -36,7 +36,7 @@ export default function EditProject() {
   })
   const [status, setStatus] = useState('');
 
-  /* Handles para actualizar el input con el nuevo valor */
+
   const newValue = (e) => {
     const { name, value } = e.target
     setNewProject({
@@ -54,9 +54,8 @@ export default function EditProject() {
     setStatus('');
   }
 
-  /* obtengo el id del blog */
   const { id } = useParams();
-  /* obtengo haciendo una solicitud al back, los datos del proyecto a editar */
+
   const getBlogById = async () => {
     const res = await axios.get(url + id);
     const data = res.data.projects[0];
