@@ -1,4 +1,4 @@
-CREATE DATABASE staffing;
+ï»¿CREATE DATABASE staffing;
 GO
 USE staffing;
 GO
@@ -52,7 +52,7 @@ CREATE TABLE dbo.projects(
 	PRIMARY KEY(id_project),
 	FOREIGN KEY(id_user_admin) REFERENCES dbo.users(id_user)
 );
-GO
+GOs
 
 IF OBJECT_ID('dbo.employees') IS NOT NULL
 	DROP TABLE dbo.employees;
@@ -114,8 +114,8 @@ INSERT INTO dbo.projects(name_project, area_project, start_date_project, end_dat
 VALUES('jump SMG-5', 'Jump', '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('Santiago','Baliño', 'santiaguito@hotmail.com',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.skills(skill_name)VALUES('CSS'),('Javascript'),('React'),('Node'),('SQL')
+INSERT INTO dbo.employees(name, lastname, mail, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.skills(skill_name)VALUES('css'),('javascript'),('react'),('node'),('sql')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5)
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3)
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(3,1),(3,2),(3,3),(3,4),(3,5)
@@ -245,7 +245,7 @@ BEGIN
 					UPDATE dbo.employees SET dbo.employees.used_hours = dbo.employees.total_hours - @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 				END
 			ELSE 
-			THROW 51000, 'No se puede añadir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
+			THROW 51000, 'No se puede aï¿½adir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
 		END
 	ELSE
 		THROW 51000, 'No hay horas disponibles', 1;
@@ -383,14 +383,26 @@ BEGIN
 			WHERE P.id_project = @project_id
 		END
 	ELSE
-		THROW 51000, 'Proyecto inválido', 1
+		THROW 51000, 'Proyecto invï¿½lido', 1
 END
 GO
 DECLARE @project_id INT
-EXEC dbo.get_all_info_from_project @project_id = 3
+EXEC dbo.get_all_info_from_project @project_id = 1
 
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects
 GO
 SELECT * FROM dbo.employees
+
+insert into OPENROWSET('Microsoft.ACE.OLEDB.12.0', 
+'Text;Database=C:\;', 
+'SELECT * FROM projects.txt')
+select * from dbo.projects
+
+
+insert into OPENROWSET('Microsoft.ACE.OLEDB.12.0', 
+'Excel 8.0;Database=C:\projects.xlsx;', 
+'SELECT * FROM projects.xlsx')
+select * from dbo.projects
+select * from sys.tables
