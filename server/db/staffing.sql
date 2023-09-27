@@ -52,7 +52,7 @@ CREATE TABLE dbo.projects(
 	PRIMARY KEY(id_project),
 	FOREIGN KEY(id_user_admin) REFERENCES dbo.users(id_user)
 );
-GOs
+GO
 
 IF OBJECT_ID('dbo.employees') IS NOT NULL
 	DROP TABLE dbo.employees;
@@ -253,9 +253,11 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 40, @employeeId = 3, @newProjectHoursRequired = 40, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 1, @selectedHours = 5, @employeeId = 1, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
+GO
+SELECT * FROM dbo.employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
 GO
@@ -406,3 +408,43 @@ insert into OPENROWSET('Microsoft.ACE.OLEDB.12.0',
 'SELECT * FROM projects.xlsx')
 select * from dbo.projects
 select * from sys.tables
+
+GO
+
+IF OBJECT_ID('dbo.getInfo') IS NOT NULL
+	DROP PROCEDURE dbo.getInfo
+GO
+CREATE PROCEDURE dbo.getInfo
+	@selectedQuery VARCHAR(25)
+AS
+BEGIN
+	IF @selectedQuery = 'projects-employees' 
+		SELECT P.*, E.* 
+		FROM dbo.projects AS P
+		JOIN dbo.project_employees AS PRO
+		ON P.id_project = PRO.id_project
+		JOIN dbo.employees AS E
+		ON E.id_employee = PRO.id_employee
+	ELSE IF @selectedQuery = 'employees-skills'
+		SELECT E.*, S.* 
+		FROM dbo.employees AS E
+		JOIN dbo.employee_skills AS EMP
+		ON E.id_employee = EMP.employee_id
+		JOIN dbo.skills AS S
+		ON S.id_skill = EMP.skill_id
+	ELSE IF @selectedQuery = 'projects'
+		SELECT * FROM dbo.projects
+	ELSE IF @selectedQuery = 'assigned-employees'
+		SELECT E.*
+		FROM dbo.employees AS E
+		WHERE EXISTS(SELECT 1 FROM dbo.project_employees AS PRO WHERE E.id_employee = PRO.id_employee)
+	ELSE IF @selectedQuery = 'free-employees'
+		SELECT E.*
+		FROM dbo.employees AS E
+		WHERE NOT EXISTS(SELECT 1 FROM dbo.project_employees AS PRO WHERE E.id_employee = PRO.id_employee)
+	ELSE 
+		THROW 51000, 'Número de búsqueda incorrecto', 1;
+END
+GO
+DECLARE @selectedQuery VARCHAR(25)
+EXEC dbo.getInfo @selectedQuery = 'projects-employees'

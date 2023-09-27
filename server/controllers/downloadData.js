@@ -1,19 +1,39 @@
-const fs = require('fs');
 const database = require('../db/database');
-// Require library
-var xl = require('excel4node');
+const xl = require('excel4node');
 const wb = new xl.Workbook();
 const columnTitleStyle = wb.createStyle({
+	alignment: {
+		horizontal: 'center',
+	},
 	font: {
-		color: '#000000',
-		size: 11,
+		color: '#FFFFFF',
+		size: 12,
 		bold: true,
 	},
 	fill: {
 		type: 'pattern',
 		patternType: 'solid',
-		bgColor: '#e0ffff',
-		fgColor: '#e0ffff',
+		bgColor: '#439ACF',
+		fgColor: '#439ACF',
+	},
+	border: {
+		left: {
+			style: 'medium',
+			color: 'black',
+		},
+		right: {
+			style: 'medium',
+			color: 'black',
+		},
+		top: {
+			style: 'medium',
+			color: 'black',
+		},
+		bottom: {
+			style: 'medium',
+			color: 'black',
+		},
+		outline: true,
 	},
 });
 
@@ -21,6 +41,31 @@ const rowStyle = wb.createStyle({
 	font: {
 		color: '#000000',
 		size: 10,
+	},
+	fill: {
+		type: 'pattern',
+		patternType: 'solid',
+		bgColor: '#FFCD00',
+		fgColor: '#FFCD00',
+	},
+	border: {
+		left: {
+			style: 'medium',
+			color: 'black',
+		},
+		right: {
+			style: 'medium',
+			color: 'black',
+		},
+		top: {
+			style: 'medium',
+			color: 'black',
+		},
+		bottom: {
+			style: 'medium',
+			color: 'black',
+		},
+		outline: true,
 	},
 });
 
@@ -32,7 +77,6 @@ const downloadData = {
 
 			const ws = wb.addWorksheet('employees');
 
-			// Iterate over the keys and write them to the worksheet
 			keys.forEach((key, index) => {
 				ws.cell(1, index + 1)
 					.string(key)
@@ -65,10 +109,8 @@ const downloadData = {
 			const jsonData = response.recordset;
 			const wb = new xl.Workbook();
 			const ws = wb.addWorksheet('projects');
-
 			const keys = Object.keys(jsonData[0]);
 
-			// Iterate over the keys and write them to the worksheet
 			keys.forEach((key, index) => {
 				ws.cell(1, index + 1)
 					.string(key)
@@ -85,6 +127,44 @@ const downloadData = {
 			});
 
 			wb.write('projects.xlsx');
+			res.status(200).json({ status: 200, data: 'Projects file created!' });
+		} catch (error) {
+			res.status(400).json({ status: 404, error: error });
+		} finally {
+			pool.close();
+		}
+	},
+	downloadSelectedInfo: async function (req, res) {
+		const pool = await database();
+		try {
+			const { selectedQuery } = req.params;
+			const response = await pool
+				.request()
+				.input(`selectedQuery`, selectedQuery)
+				.execute(`dbo.getInfo`);
+			const jsonData = response.recordset;
+			const wb = new xl.Workbook();
+			const ws = wb.addWorksheet(`${selectedQuery}`);
+			if (jsonData.length > 0) {
+				const keys = Object.keys(jsonData[0]);
+
+				keys.forEach((key, index) => {
+					ws.cell(1, index + 1)
+						.string(key)
+						.style(columnTitleStyle);
+				});
+
+				jsonData.forEach((employee, rowIndex) => {
+					const employeeValues = Object.values(employee);
+					employeeValues.forEach((emp, index) => {
+						ws.cell(rowIndex + 2, index + 1)
+							.string(employeeValues[index].toString())
+							.style(rowStyle);
+					});
+				});
+
+				wb.write(`${selectedQuery}.xlsx`);
+			}
 			res.status(200).json({ status: 200, data: 'Projects file created!' });
 		} catch (error) {
 			res.status(400).json({ status: 404, error: error });
