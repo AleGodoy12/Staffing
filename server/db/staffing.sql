@@ -113,7 +113,7 @@ VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-5', 'Jump', 6, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-5', 'Jump', 3, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com', 'project manager',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
@@ -256,7 +256,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 5, @selectedHours = 5, @employeeId = 5, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 4, @selectedHours = 5, @employeeId = 4, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -400,19 +400,6 @@ SELECT * FROM dbo.projects
 GO
 SELECT * FROM dbo.employees
 
-insert into OPENROWSET('Microsoft.ACE.OLEDB.12.0', 
-'Text;Database=C:\;', 
-'SELECT * FROM projects.txt')
-select * from dbo.projects
-
-
-insert into OPENROWSET('Microsoft.ACE.OLEDB.12.0', 
-'Excel 8.0;Database=C:\projects.xlsx;', 
-'SELECT * FROM projects.xlsx')
-select * from dbo.projects
-select * from sys.tables
-
-GO
 
 IF OBJECT_ID('dbo.getInfo') IS NOT NULL
 	DROP PROCEDURE dbo.getInfo
@@ -507,7 +494,7 @@ GO
 CREATE PROCEDURE dbo.viewEmployeesInfo
 AS
 BEGIN
-	SELECT E.*
+	SELECT E.*, P.name_project, (SELECT name FROM employees WHERE id_employee = P.leader) AS 'Project Manager'
 	FROM dbo.employees AS E
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee
@@ -515,6 +502,7 @@ BEGIN
 	ON PRO.id_project = P.id_project
 	WHERE E.id_employee != 1 AND E.role NOT LIKE 'project manager'
 END
+GO
 EXEC dbo.viewEmployeesInfo
 
 SELECT * FROM dbo.users

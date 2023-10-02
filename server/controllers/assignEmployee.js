@@ -24,7 +24,6 @@ const assignEmployee = {
 				.request()
 				.input('selected_project', selected_project)
 				.execute(`dbo.viewFreeEmployes`);
-			// console.log(response.recordsets);
 			const employees = response.recordsets[0];
 			const skills = response.recordsets[1];
 
