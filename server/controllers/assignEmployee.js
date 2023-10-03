@@ -83,6 +83,19 @@ const assignEmployee = {
 			pool.close();
 		}
 	},
+	viewEmployeesInfo: async function (req, res) {
+		const pool = await database();
+		try {
+			const response = await pool.request().execute(`dbo.viewEmployeesInfo`);
+			const data = response.recordset;
+			res.status(200).json({ status: 200, data: data });
+		} catch (error) {
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, error: message });
+		} finally {
+			pool.close();
+		}
+	},
 };
 
 module.exports = assignEmployee;
