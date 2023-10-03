@@ -111,12 +111,12 @@ GO
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', 7, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-5', 'Jump', 3, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com', 'project manager',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','project manager',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Melanie','Aquino', 'santiago@hotmail.com','project manager',120, 40, 160, 'Banco Frances');
 INSERT INTO dbo.skills(skill_name)VALUES('css'),('javascript'),('react'),('node'),('sql')
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5)
@@ -485,7 +485,28 @@ EXEC dbo.createUser @username = 'Santiago', @id_employee = 4, @mail = 'santiagui
 GO
 SELECT * FROM dbo.users
 SELECT * FROM dbo.employees
-DELETE FROM dbo.users WHERE id_user != 1
+
+GO
+IF OBJECT_ID('dbo.deleteUser') IS NOT NULL
+	DROP PROCEDURE dbo.deleteUser
+GO
+CREATE PROCEDURE dbo.deleteUser
+	@id_user INT
+AS
+BEGIN
+	DECLARE @isAccountCreated BIT
+	SET @isAccountCreated = (SELECT COUNT(id_user) FROM dbo.users WHERE id_user = @id_user)
+	IF @isAccountCreated = 1
+		DELETE FROM dbo.users WHERE id_user = @id_user
+	ELSE
+		THROW 51000, 'Usuario no encontrado', 1
+END
+GO
+DECLARE @id_user INT
+EXEC dbo.deleteUser @id_user = 3
+
+
+
 
 /* Vista de todos los empleados con su PM */
 IF OBJECT_ID('dbo.viewEmployeesInfo') IS NOT NULL
