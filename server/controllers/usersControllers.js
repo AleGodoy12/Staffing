@@ -25,14 +25,31 @@ const usersControllers = {
 		}
 	},
 	deleteUser: async function (req, res) {
+		const { id_employee } = req.params;
+		const pool = await database();
+		try {
+			const response = await pool
+				.request()
+				.input('id_employee', id_employee)
+				.execute(`dbo.deleteUser`);
+			const message = 'Usuario eliminado correctamente';
+			res.status(200).json({ status: 200, data: message });
+		} catch (error) {
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, error: message });
+		} finally {
+			pool.close();
+		}
+	},
+	getProjectManagerInfo: async function (req, res) {
 		const { id_user } = req.params;
 		const pool = await database();
 		try {
 			const response = await pool
 				.request()
 				.input('id_user', id_user)
-				.execute(`dbo.deleteUser`);
-			const message = 'Usuario eliminado correctamente';
+				.execute(`dbo.getInfoForSelectedPM`);
+			const message = response.recordsets;
 			res.status(200).json({ status: 200, data: message });
 		} catch (error) {
 			const { message } = error.originalError.info;

@@ -113,7 +113,7 @@ VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-4', 'Jump', 7, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-5', 'Jump', 3, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-5', 'Jump', 5, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com', 'project manager',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','project manager',120, 40, 160, 'Banco Galicia');
@@ -246,6 +246,8 @@ BEGIN
 					UPDATE dbo.projects SET dbo.projects.assigned_hours = dbo.projects.assigned_hours + @newProjectHoursRequired WHERE dbo.projects.id_project = @selectedProject
 					/* Agregar update de horas usadas */
 					UPDATE dbo.employees SET dbo.employees.used_hours = dbo.employees.total_hours - @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
+					IF (SELECT COUNT(id_employee) FROM dbo.employees WHERE id_employee = @employeeId AND role = 'project manager') > 0
+						UPDATE dbo.projects SET leader = @employeeId WHERE id_project = @selectedProject 
 				END
 			ELSE 
 			THROW 51000, 'No se puede a�adir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
@@ -256,7 +258,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 4, @selectedHours = 5, @employeeId = 4, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 7, @selectedHours = 5, @employeeId = 5, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -297,8 +299,13 @@ BEGIN
 			UPDATE dbo.employees SET dbo.employees.free_hours = dbo.employees.free_hours + @getUsedHoursInProject WHERE dbo.employees.id_employee = @employeeId
 
 			DELETE FROM dbo.project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject
-			
-			SELECT 'Empleado removido del proyecto exitosamente'
+			IF(SELECT COUNT(id_employee) FROM dbo.employees WHERE id_employee = @employeeId AND role = 'project manager') > 0
+				BEGIN
+					UPDATE dbo.projects SET leader = NULL WHERE leader = @employeeId
+					SELECT 'Project manager removido del proyecto exitosamente'
+				END
+			ELSE	
+				SELECT 'Empleado removido del proyecto exitosamente'
 		END
 	ELSE
 	THROW 51000, 'No hay empleado asignado al proyecto seleccionado', 1;
@@ -306,7 +313,7 @@ END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
-EXEC dbo.remove_employee_from_project @employeeId = 1, @selectedProject = 1
+EXEC dbo.remove_employee_from_project @employeeId = 7, @selectedProject = 7
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
@@ -491,19 +498,21 @@ IF OBJECT_ID('dbo.deleteUser') IS NOT NULL
 	DROP PROCEDURE dbo.deleteUser
 GO
 CREATE PROCEDURE dbo.deleteUser
-	@id_user INT
+	@id_employee INT
 AS
 BEGIN
 	DECLARE @isAccountCreated BIT
-	SET @isAccountCreated = (SELECT COUNT(id_user) FROM dbo.users WHERE id_user = @id_user)
+	SET @isAccountCreated = (SELECT COUNT(id_user) FROM dbo.users WHERE id_employee = @id_employee)
 	IF @isAccountCreated = 1
-		DELETE FROM dbo.users WHERE id_user = @id_user
+		BEGIN
+			DELETE FROM dbo.users WHERE id_user = @id_employee
+		END
 	ELSE
 		THROW 51000, 'Usuario no encontrado', 1
 END
 GO
 DECLARE @id_user INT
-EXEC dbo.deleteUser @id_user = 3
+EXEC dbo.deleteUser @id_employee = 5
 
 
 
@@ -515,7 +524,7 @@ GO
 CREATE PROCEDURE dbo.viewEmployeesInfo
 AS
 BEGIN
-	SELECT E.*, P.name_project, (SELECT name FROM employees WHERE id_employee = P.leader) AS 'Project Manager'
+	SELECT E.*, P.name_project, P.id_project, (SELECT name FROM employees WHERE id_employee = P.leader) AS 'Project Manager', PRO.hours_assigned_to_project
 	FROM dbo.employees AS E
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee
@@ -525,6 +534,37 @@ BEGIN
 END
 GO
 EXEC dbo.viewEmployeesInfo
+GO
+
+IF OBJECT_ID('dbo.getInfoForSelectedPM') IS NOT NULL
+	DROP PROCEDURE dbo.getInfoForSelectedPM
+GO
+CREATE PROCEDURE dbo.getInfoForSelectedPM
+	@id_user INT
+AS
+BEGIN
+	IF (SELECT COUNT(id_user) FROM dbo.users WHERE id_user = @id_user) = 1
+		BEGIN
+			SELECT E.*, P.id_project
+			FROM employees AS E
+			JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
+			JOIN projects AS P ON PRO.id_project = P.id_project
+			JOIN users AS U ON E.id_employee = U.id_employee
+			WHERE U.id_user = @id_user
+	
+			SELECT P.*
+			FROM employees AS E
+			JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
+			JOIN projects AS P ON PRO.id_project = P.id_project
+			JOIN users AS U ON E.id_employee = U.id_employee
+			WHERE U.id_user = @id_user
+		END
+	ELSE
+		THROW 51000, 'Project manager inexistente', 1
+END
+GO
+DECLARE @id_user INT
+EXEC dbo.getInfoForSelectedPM @id_user = 7
 
 SELECT * FROM dbo.users
 SELECT * FROM dbo.projects
