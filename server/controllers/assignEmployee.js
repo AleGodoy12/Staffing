@@ -24,7 +24,6 @@ const assignEmployee = {
 				.request()
 				.input('selected_project', selected_project)
 				.execute(`dbo.viewFreeEmployes`);
-			// console.log(response.recordsets);
 			const employees = response.recordsets[0];
 			const skills = response.recordsets[1];
 
@@ -77,6 +76,19 @@ const assignEmployee = {
 
 			console.log(response);
 			res.status(200).json({ status: 200, data: response });
+		} catch (error) {
+			const { message } = error.originalError.info;
+			res.status(404).json({ status: 404, error: message });
+		} finally {
+			pool.close();
+		}
+	},
+	viewEmployeesInfo: async function (req, res) {
+		const pool = await database();
+		try {
+			const response = await pool.request().execute(`dbo.viewEmployeesInfo`);
+			const data = response.recordset;
+			res.status(200).json({ status: 200, data: data });
 		} catch (error) {
 			const { message } = error.originalError.info;
 			res.status(404).json({ status: 404, error: message });

@@ -10,6 +10,8 @@ require('dotenv').config();
 const loginRoutes = require('./routes/loginRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const assignEmployeeRoutes = require('./routes/assignEmployeeRoutes');
+const downloadDataRoutes = require('./routes/downloadDataRoutes');
+const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 app.use(cors());
@@ -30,5 +32,7 @@ app.use(
 app.use('/login', loginRoutes);
 app.use('/', projectRoutes);
 app.use('/project', assignEmployeeRoutes);
+app.use('/download', downloadDataRoutes);
+app.use('/users', userRoutes);
 
 module.exports = app;
