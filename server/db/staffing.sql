@@ -206,7 +206,9 @@ CREATE PROCEDURE dbo.check_if_employee_is_asigned
 	@isAsigned INT OUTPUT
 AS
 BEGIN
-	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject)
+	DECLARE @setBench INT
+	SET @setBench = (SELECT )
+	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject AND @checkBench = 0)
 	IF @isAsigned = 0
 			INSERT INTO dbo.project_employees(id_project, id_employee, hours_assigned_to_project) VALUES(@selectedProject, @employeeId, @assigned_hours)
 	RETURN @isAsigned
@@ -258,7 +260,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 7, @selectedHours = 5, @employeeId = 5, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 5, @selectedHours = 5, @employeeId = 2, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO

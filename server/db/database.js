@@ -37,6 +37,18 @@ const connectDb = async function () {
 					`INSERT INTO users(username, id_employee, mail, password, permission) VALUES('admin', 1, 'admin@gmail.com', '${hashedPassword}', 'administrador') `
 				);
 		}
+		const checkBench = await pool
+			.request()
+			.query(
+				`SELECT name_project FROM dbo.projects WHERE name_project = 'Bench'`
+			);
+		if (checkBench.recordset.length === 0) {
+			await pool
+				.request()
+				.query(
+					`INSERT INTO projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)VALUES('Bench', 'Arbusta', 1, '2023-08-16', '2030-10-16', 1000, 1)`
+				);
+		}
 		return pool;
 	} catch (error) {
 		console.log(error);
