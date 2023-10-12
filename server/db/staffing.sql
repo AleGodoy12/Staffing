@@ -54,6 +54,8 @@ CREATE TABLE dbo.users (
 );
 GO
 
+
+
 IF OBJECT_ID('dbo.projects') IS NOT NULL
 	DROP TABLE dbo.projects;
 GO
@@ -206,9 +208,7 @@ CREATE PROCEDURE dbo.check_if_employee_is_asigned
 	@isAsigned INT OUTPUT
 AS
 BEGIN
-	DECLARE @setBench INT
-	SET @setBench = (SELECT )
-	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject AND @checkBench = 0)
+	SET @isAsigned = (SELECT COUNT(*) FROM project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject)
 	IF @isAsigned = 0
 			INSERT INTO dbo.project_employees(id_project, id_employee, hours_assigned_to_project) VALUES(@selectedProject, @employeeId, @assigned_hours)
 	RETURN @isAsigned
@@ -507,14 +507,14 @@ BEGIN
 	SET @isAccountCreated = (SELECT COUNT(id_user) FROM dbo.users WHERE id_employee = @id_employee)
 	IF @isAccountCreated = 1
 		BEGIN
-			DELETE FROM dbo.users WHERE id_user = @id_employee
+			DELETE FROM dbo.users WHERE id_employee = @id_employee
 		END
 	ELSE
 		THROW 51000, 'Usuario no encontrado', 1
 END
 GO
-DECLARE @id_user INT
-EXEC dbo.deleteUser @id_employee = 5
+DECLARE @id_employee INT
+EXEC dbo.deleteUser @id_employee = 4
 
 
 
