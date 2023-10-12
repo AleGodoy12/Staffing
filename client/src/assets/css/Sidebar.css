@@ -39,7 +39,9 @@
   padding-top: 14px;
   margin-bottom: 14px;
 }
-.sidebar-left >  a {
+.sidebar-left >  button {
+  outline: none;
+  border: none;
   text-decoration: none;
   color: #ffffff;
   font-family: "Roboto-Regular-400";
@@ -52,6 +54,7 @@
   text-align: center;
   border-radius: 8px;
   bottom: 16px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
@@ -59,7 +62,7 @@
     height: min-content;
     min-height: min-content;
   }
-  .sidebar-left > a {
+  .sidebar-left > button {
     position: initial;
     width: 100%;
   }

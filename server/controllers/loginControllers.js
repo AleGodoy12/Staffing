@@ -44,12 +44,12 @@ const loginControllers = {
 						req.session.loggedIn = {
 							username: resp[0].username,
 							password: resp[0].password,
-							role: resp[0].permission,
+							permission: resp[0].permission,
 						};
 						console.log(req.session.loggedIn);
 						return res
 							.status(200)
-							.json({ status: 200, message: 'Usuario encontrado' });
+							.json({ status: 200, message: 'Usuario encontrado', data: req.session.loggedIn });
 					} else {
 						return res.status(403).json({
 							status: 403,

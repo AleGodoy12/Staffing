@@ -1,15 +1,16 @@
-import LogoArbusta from '../assets/icons/arbusta-icon.png'
-import '../assets/css/Login.css'
+import LogoArbusta from '../../../assets/icons/arbusta-icon.png'
+import '../../../assets/css/Login.css'
 import axios from 'axios'
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
+
 
 /* Llamo al endpoint del login */
 const url = 'http://localhost:3000/login';
 
 export default function Login() {
 
-  const navigate = useNavigate();
+  const { userData, setUserData } = useContext(AuthContext);
 
   const [data, setData] = useState({
     username: 'admin',
@@ -54,8 +55,24 @@ export default function Login() {
         username: data.username,
         password: data.password,
       });
+
+
+      const user = response.data.data;
       
-      navigate('/panel');
+      let permission = ""
+      if (user.permission === "administrador") {
+        permission = "admin"
+      }
+      if (user.permission === "project manager") {
+        permission = "pm"
+      }
+      
+      setUserData({
+        ...userData,
+        name: data.username,
+        permission,
+      })
+      
     } catch (error) {
       const errorResponse = error.response.data.errorDetail;
       setErrorMessageBack(errorResponse);

@@ -1,7 +1,7 @@
-import BellIcon from '../assets/icons/bell-icon.svg';
-import ProfileIcon from '../assets/icons/profile-icon.svg';
-import SearchIcon from '../assets/icons/search-icon.svg';
-import DropDownIcon from '../assets/icons/arrow-drop-down-line-icon.svg';
+import BellIcon from '../../assets/icons/bell-icon.svg';
+import ProfileIcon from '../../assets/icons/profile-icon.svg';
+import SearchIcon from '../../assets/icons/search-icon.svg';
+import DropDownIcon from '../../assets/icons/arrow-drop-down-line-icon.svg';
 
 export default function Header() {
   return (

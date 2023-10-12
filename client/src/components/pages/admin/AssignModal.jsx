@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../../assets/css/AssignModal.css'
+import '../../../assets/css/AssignModal.css'
 import axios from 'axios';
 
 const url = 'http://localhost:3000/';
