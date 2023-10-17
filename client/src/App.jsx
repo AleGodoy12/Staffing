@@ -9,6 +9,7 @@ import AssignmentProject from './components/pages/admin/AssignmentProject';
 import AuthContextProvider from './context/AuthContext';
 import ProtectedRoute from './components/routes/ProtectedRoute';
 import LoginRoute from './components/routes/LoginRoute';
+import ShowUsers from './components/pages/admin/ShowUsers';
 
 function App() {
 	return (
@@ -35,6 +36,7 @@ function App() {
 							<Route path="projects/edit/:id" element={<EditProject />} />
 							<Route path="assignment" element={<ShowProjectsA />} />
 							<Route path="assignment/:id" element={<AssignmentProject />} />
+							<Route path="users" element={<ShowUsers />} />
 						</Route>
 
 						<Route
