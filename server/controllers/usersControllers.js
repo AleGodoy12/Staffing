@@ -41,10 +41,10 @@ const usersControllers = {
 			pool.close();
 		}
 	},
-	viewAllProjectManagerEmployee: async function (req,res) {
+	viewFreeProjectManagerEmployee: async function (req,res) {
 		const pool = await database();
 		try {
-			const result = await pool.request().query(`SELECT * FROM employees WHERE role = 'project manager'`);
+			const result = await pool.request().execute(`dbo.viewFreePmEmployees`);
 			res.status(200).json({
 				status: 200,
 				msg: 'Conexión realizada',
