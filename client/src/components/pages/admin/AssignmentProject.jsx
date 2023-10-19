@@ -96,7 +96,7 @@ export default function AssignmentProject() {
 					<Header></Header>
 					<section className="show-projects-assignment">
 						<div>
-							<Link to="/panel/assignment">
+							<Link to="/admin/assignment">
 								<img src={BackIcon} alt="" />
 							</Link>
 							<p>Asignar a un proyecto</p>

@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  
 }
 .edit-project-section > div p {
   font-family: "Rubik-Regular-400";

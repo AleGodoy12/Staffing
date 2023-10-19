@@ -1,5 +1,12 @@
 .create-projects-section > div {
   padding: 0 16px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.create-projects-section > div p {
+  font-family: "Rubik-Regular-400";
+  font-size: 24px;
 }
 
 .create-projects-section form {

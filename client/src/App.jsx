@@ -10,6 +10,7 @@ import AuthContextProvider from './context/AuthContext';
 import ProtectedRoute from './components/routes/ProtectedRoute';
 import LoginRoute from './components/routes/LoginRoute';
 import ShowUsers from './components/pages/admin/ShowUsers';
+import CreateUsers from './components/pages/admin/CreateUsers';
 
 function App() {
 	return (
@@ -37,6 +38,7 @@ function App() {
 							<Route path="assignment" element={<ShowProjectsA />} />
 							<Route path="assignment/:id" element={<AssignmentProject />} />
 							<Route path="users" element={<ShowUsers />} />
+							<Route path="users/create" element={<CreateUsers />} />
 						</Route>
 
 						<Route
