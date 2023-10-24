@@ -110,17 +110,37 @@ CREATE TABLE dbo.employee_skills(
 	FOREIGN KEY (skill_id) REFERENCES dbo.skills(id_skill)
 );
 GO
+
+IF OBJECT_ID('dbo.employees_project_history') IS NOT NULL
+	DROP TABLE dbo.employees_project_history
+GO
+CREATE TABLE employees_project_history(
+	id_history INT IDENTITY(1,1),
+	employee_id INT,
+	employee_name VARCHAR(30),
+	project_name VARCHAR(50),
+	company_name VARCHAR(50),
+	PRIMARY KEY(id_history)
+);
+GO
+
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
 VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', 7, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', 1, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-5', 'Jump', 5, '2023-08-16', '2023-10-16', 720, 1);
-INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com','frontend junior',120, 40, 160, 'Banco Galicia');
+VALUES('jump SMG-4', 'Jump', 2, '2023-08-16', '2023-10-16', 720, 1);
+INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
+VALUES('jump SMG-5', 'Jump', 3, '2023-08-16', '2023-10-16', 720, 1);
+
+INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'dieguito@hotmail.com','project manager',120, 40, 160, 'Banco Galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('MARUCHAN','suarez', 'dieguito@hotmail.com', 'project manager',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','project manager',120, 40, 160, 'Banco Galicia');
-INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Melanie','Aquino', 'santiago@hotmail.com','project manager',120, 40, 160, 'Banco Frances');
+INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Santiago','Balino', 'santiaguito@hotmail.com','frontend dev',120, 40, 160, 'Banco Galicia');
+INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('Melanie','Aquino', 'santiago@hotmail.com','backend dev',120, 40, 160, 'Banco Frances');
+INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('asd','asd', 'santiago@hotmail.com','backend dev',120, 40, 160, 'Banco Frances');
+
 INSERT INTO dbo.skills(skill_name)VALUES('css'),('javascript'),('react'),('node'),('sql')
+
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(1,1),(1,2),(1,3),(1,4),(1,5)
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(2,1),(2,2),(2,3)
 INSERT INTO dbo.employee_skills(employee_id, skill_id)VALUES(3,1),(3,2),(3,3),(3,4),(3,5)
@@ -250,6 +270,8 @@ BEGIN
 					UPDATE dbo.employees SET dbo.employees.used_hours = dbo.employees.total_hours - @employeeFreeHoursAfterCheck WHERE dbo.employees.id_employee = @employeeId
 					IF (SELECT COUNT(id_employee) FROM dbo.employees WHERE id_employee = @employeeId AND role = 'project manager') > 0
 						UPDATE dbo.projects SET leader = @employeeId WHERE id_project = @selectedProject 
+
+					INSERT INTO employees_project_history(employee_id, employee_name, project_name, company_name)VALUES(@employeeId, (SELECT name FROM employees WHERE id_employee = @employeeId ), (SELECT name_project FROM projects WHERE id_project = @selectedProject), (SELECT area_project FROM projects WHERE id_project = @selectedProject))
 				END
 			ELSE 
 			THROW 51000, 'No se puede a�adir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
@@ -260,15 +282,13 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 5, @selectedHours = 5, @employeeId = 2, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 2, @employeeId = 10, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.employees
 GO
-SELECT * FROM dbo.projects WHERE id_project = 1
-GO
-SELECT * FROM dbo.employees WHERE id_employee = 2
+SELECT * FROM dbo.employees_project_history
 GO
 UPDATE dbo.employees SET dbo.employees.free_hours = 40 WHERE dbo.employees.id_employee = 1
 
@@ -315,7 +335,7 @@ END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
-EXEC dbo.remove_employee_from_project @employeeId = 7, @selectedProject = 7
+EXEC dbo.remove_employee_from_project @employeeId = 10, @selectedProject = 2
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
@@ -593,3 +613,41 @@ EXEC dbo.deleteUser @id_employee = 4
 
 SELECT * FROM dbo.users;
 SELECT * FROM dbo.employees;
+GO
+
+IF OBJECT_ID('dbo.employeesWithoutAssignation') IS NOT NULL
+	DROP PROCEDURE dbo.employeesWithoutAssignation
+GO
+CREATE PROCEDURE dbo.employeesWithoutAssignation
+AS
+BEGIN
+	SELECT E.*, P.name_project
+	FROM employees AS E
+	LEFT JOIN project_employees AS PR ON PR.id_employee = E.id_employee
+	LEFT JOIN projects AS P ON P.id_project = PR.id_project
+	WHERE PR.id_employee IS NULL OR P.name_project = 'bench' AND E.id_employee != 1
+END
+GO
+EXEC dbo.employeesWithoutAssignation
+GO
+SELECT * FROM employees
+SELECT * FROM project_employees
+SELECT * FROM projects
+
+
+
+IF OBJECT_ID('dbo.allEmployeesIncludingBench') IS NOT NULL
+	DROP PROCEDURE dbo.allEmployeesIncludingBench
+GO
+CREATE PROCEDURE dbo.allEmployeesIncludingBench
+AS
+BEGIN
+	SELECT E.*, P.name_project
+	FROM employees AS E
+	LEFT JOIN project_employees AS PR ON PR.id_employee = E.id_employee
+	LEFT JOIN projects AS P ON P.id_project = PR.id_project
+	ORDER BY P.id_project
+END
+GO
+EXEC dbo.allEmployeesIncludingBench
+GO
