@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import AssignModal from './AssignModal';
 import user from '../../../assets/images/user-2.png';
+import Modal from '../../common/Modal'
 
 const url = 'http://localhost:3000/';
 const urlEmployee = 'http://localhost:3000/project/viewFreeEmployees/';
@@ -103,6 +104,7 @@ export default function AssignmentProject() {
 						</div>
 						<section className="data">
 							<div>
+								<h2>Datos del proyecto</h2>
 								<div className="table">
 									<div className="td">
 										<h3>Nombre del proyecto</h3>
@@ -139,23 +141,37 @@ export default function AssignmentProject() {
 									</div>
 								</div>
 							</div>
-							<div className="staff">
+							<section className="staff">
 								<h2>Staff Seleccionado</h2>
-								{employeeAssign.map((e, index) => (
-									<div key={index}>
-										<p>
-											{e.name} {e.lastname}
-										</p>
-										<button
-											onClick={() =>
-												deleteEmployee(project.idProject, e.id_employee)
-											}
-										>
-											Quitar
-										</button>
-									</div>
-								))}
-							</div>
+								<div>
+									{employeeAssign.map((e, index) => (
+										<section className="table-staff" key={index}>
+											<div>
+												<h3>Nombre</h3>
+												<p>{e.name}</p>
+											</div>
+											<div>
+												<h3>Apellido</h3>
+												<p>{e.lastname}</p>
+											</div>
+											<div>
+												<h3>Rol</h3>
+												<p>{e.role}</p>
+											</div>
+											<div>
+												<Modal
+													type={'danger'}
+													action={'Confirmar eliminación del staff'}
+													question={`¿Está seguro que desea eliminar al staff ${e.name} ${e.lastname} del proyecto ${project.name}? `}
+													msg={'Esta acción es irreversible'}
+													buttonText={'Eliminar staff'}
+													execute={() => deleteEmployee(project.idProject, e.id_employee)}
+												></Modal>
+											</div>
+										</section>
+									))}
+								</div>
+							</section>
 						</section>
 						<h2 className="title-filter">Filtros</h2>
 						<section className="filter">
