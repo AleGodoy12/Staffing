@@ -137,7 +137,7 @@ export default function CreateUsers() {
                   value={user.role}
                 />
 
-                <label htmlFor="">Crear contraseña</label>
+                <label htmlFor="">Ingresar una contraseña</label>
                 <input
                   name="password"
                   type="password"

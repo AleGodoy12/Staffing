@@ -4,6 +4,7 @@ import Sidebar from '../../common/Sidebar';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../../common/Modal';
+import '../../../assets/css/ShowUsers.css'
 
 
 const url = 'http://localhost:3000/users/getUsersInfo';
@@ -56,11 +57,16 @@ export default function ShowUsers() {
 										<h3>Tipo de permiso</h3>
 										<p>{user.permission}</p>
 									</div>
-									<Modal
-                      buttonText={"eliminar usuario"}
-                      msg={`¿Está seguro que desea eliminar al usuario ${user.username}? Esta acción es irreversible`}
-                      execute={() => deleteUser(user.id_employee)}
-                  ></Modal>
+									<div>
+                    <Modal
+                      type={'danger'}
+                      action={'Confirmar eliminación de usuario'}
+                      question={`¿Está seguro que desea eliminar al usuario ${user.username}?`}
+                      msg={'Esta acción es irreversible'}
+											buttonText={'Eliminar usuario'}
+											execute={() => deleteUser(user.id_employee)}
+										></Modal>
+									</div>
 								</section>
 							)
 						)}

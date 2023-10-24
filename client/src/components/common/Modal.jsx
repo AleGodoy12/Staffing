@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState } from 'react';
+import '../../assets/css/Modal.css';
+import Check from '../../assets/icons/check-circle-fill.svg';
+import Warning from '../../assets/icons/exclamation-triangle-fill.svg';
+import Danger from '../../assets/icons/x-circle-fill.svg';
 
-export default function Modal({msg, buttonText, execute}) {
-
-  const [open, setOpen] = useState(false);
+export default function Modal({
+	msg,
+	buttonText,
+	execute,
+	question,
+	action,
+	type,
+}) {
+	const [open, setOpen] = useState(false);
 
 	const openM = () => {
 		setOpen(true);
@@ -10,30 +20,35 @@ export default function Modal({msg, buttonText, execute}) {
 
 	const closeM = () => {
 		setOpen(false);
-  };
-  
-  const handleFunction = async () => {
-    setOpen(false)
-    await execute()
-  }
+	};
 
-  return (
+	const handleFunction = () => {
+		setOpen(false);
+		execute();
+	};
+
+	return (
 		<>
-			<button onClick={openM}>{buttonText}</button>
+			<button className="open-common-modal" onClick={openM}>
+				{buttonText}
+			</button>
 			<section
-				className="commonModal"
+				className="common-modal"
 				style={open ? { display: 'flex' } : { display: 'none' }}
 			>
-        <p>{ msg }</p>
-				<div>
-					<button onClick={closeM}>
-						<span>Cancelar</span>
-					</button>
-					<button
-						onClick={handleFunction}
-          >
-            Aceptar
-					</button>
+				<div className="common-modal-container">
+					<h2>{action}</h2>
+					<p>{question}</p>
+					<div className="icon-advise">
+						<img src={type === 'check' ? Check : type === 'warning' ? Warning : type === 'danger' ? Danger : ''} />
+					</div>
+					<p>{msg}</p>
+					<div>
+						<button onClick={closeM}>
+							<span>Cancelar</span>
+						</button>
+						<button onClick={handleFunction}>Aceptar</button>
+					</div>
 				</div>
 			</section>
 		</>

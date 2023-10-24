@@ -1,0 +1,66 @@
+.common-modal {
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.open-common-modal {
+  text-decoration: none;
+  display: block;
+  font-family: "Roboto-Regular-400";
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.common-modal-container {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.common-modal-container h2 {
+  font-family: "Rubik-Regular-400";
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.common-modal-container p {
+  font-size: 16px ;
+  font-family: "Roboto-Regular-400";
+  margin-bottom: 16px;
+}
+.common-modal-container .icon-advise {
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.common-modal-container > div {
+  display: flex;
+}
+.common-modal-container > div button{
+  outline: none;
+  border: none;
+  background-color: #c1437f;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.common-modal-container > div button:nth-child(1) {
+  margin-right: auto;
+}
+
