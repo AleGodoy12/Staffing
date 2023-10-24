@@ -41,6 +41,42 @@ const usersControllers = {
 			pool.close();
 		}
 	},
+	viewFreeProjectManagerEmployee: async function (req,res) {
+		const pool = await database();
+		try {
+			const result = await pool.request().execute(`dbo.viewFreePmEmployees`);
+			res.status(200).json({
+				status: 200,
+				msg: 'Conexión realizada',
+				projectManagers: result.recordset,
+			});
+		} catch (error) {
+			res.status(404).json({
+				status: 404,
+				error: error.message,
+			});
+		} finally {
+			pool.close();
+		}
+	},
+	getUsers: async function (req,res) {
+		const pool = await database();
+		try {
+			const result = await pool.request().query('SELECT * FROM users');
+			res.status(200).json({
+				status: 200,
+				msg: 'Conexión realizada',
+				users: result.recordset,
+			});
+		} catch (error) {
+			res.status(404).json({
+				status: 404,
+				error: error.message,
+			});
+		} finally {
+			pool.close();
+		}
+	},
 	getProjectManagerInfo: async function (req, res) {
 		const { id_user } = req.params;
 		const pool = await database();

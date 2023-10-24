@@ -46,10 +46,10 @@ export default function Sidebar() {
         </nav>
         <p>Usuarios</p>
         <nav className='nav'>
-          <a href="#">
-            <img src={UserIcon } alt="" />
+          <Link to="/admin/users">
+            <img src={ UserIcon } alt="" />
             Administrar usuarios
-          </a>
+          </Link>
         </nav>
         <button onClick={salir}>
           Salir

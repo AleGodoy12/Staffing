@@ -15,7 +15,7 @@
   justify-content: center;
   font-family: "Roboto-Regular-400";
   font-size: 16px;
-  background-color: #c147af;
+  background-color: #c1437f;
   color: #fff;
   padding: 8px 16px;
   border-radius: 50px;
@@ -39,14 +39,14 @@
   font-size: 16px;
   padding: 8px;
   text-align: center;
-  background-color: #c147af;
+  background-color: #c1437f;
   color: #fff;
   border-radius: 20px 20px 0 0;
 }
 .projects-assignment .card > a {
   text-align: center;
   display: block;
-  background-color: #c147af;
+  background-color: #c1437f;
   margin: 0 8px 8px 8px;
   color: #fff;
   text-decoration: none;

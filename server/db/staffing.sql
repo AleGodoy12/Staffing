@@ -572,3 +572,24 @@ SELECT * FROM dbo.users
 SELECT * FROM dbo.projects
 SELECT * FROM dbo.employees
 SELECT * FROM dbo.project_employees
+
+/* *************************************************** */
+/* SP que me muestra los empleados que no son usuarios */
+/* *************************************************** */
+IF OBJECT_ID('dbo.viewFreePmEmployees') IS NOT NULL
+	DROP PROCEDURE dbo.viewFreePmEmployees
+GO
+CREATE PROCEDURE dbo.viewFreePmEmployees
+AS
+BEGIN
+	SELECT * FROM employees e WHERE NOT EXISTS (SELECT * FROM users u where e.id_employee = u.id_employee ) and e.role = 'project manager';
+END
+GO
+EXEC dbo.viewFreePmEmployees
+GO
+
+DECLARE @id_employee INT
+EXEC dbo.deleteUser @id_employee = 4
+
+SELECT * FROM dbo.users;
+SELECT * FROM dbo.employees;

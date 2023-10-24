@@ -81,8 +81,9 @@ export default function CreateProject() {
 					<section className="create-projects-section">
 						<div>
 							<Link to="/admin/projects">
-								<img src={BackIcon} alt="" />
+                <img src={BackIcon} alt="" />
 							</Link>
+              <p>Crear proyecto</p>
 						</div>
 
 						<form onSubmit={createProject}>
