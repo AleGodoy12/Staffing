@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const url = 'http://localhost:3000/';
 
-export default function AssignModal({ idProject, idEmployee, load, nameSurname, freeHours, usedHours }) {
+export default function AssignModal({ idProject, idEmployee, load, nameSurname, freeHours, usedHours, totalHours }) {
   const [open, setOpen] = useState(false);
 
   const openM = () => {
@@ -39,7 +39,8 @@ export default function AssignModal({ idProject, idEmployee, load, nameSurname, 
           <p>Ingrese la cantidad de horas a asignar</p>
           <h3>{nameSurname}</h3>
           <p>Horas disponibles: <span>{ freeHours }</span></p>
-          <p>Horas ocupadas: <span>{ usedHours }</span></p>
+          <p>Horas ocupadas: <span>{usedHours}</span></p>
+          <p>Horas totales: <span>{ totalHours }</span></p>
           <input
               value={hoursToAssign || ''}
               onChange={(e) => setHoursToAssign(e.target.value)}

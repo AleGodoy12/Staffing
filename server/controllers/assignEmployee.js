@@ -15,7 +15,23 @@ const assignEmployee = {
 		} finally {
 			pool.close();
 		}
-	},
+  },
+  viewLeaderFromSelectedProject: async function (req,res) {
+    const { selected_project } = req.params;
+		const pool = await database();
+		try {
+			const response = await pool
+				.request()
+				.input(`selectedProject`, selected_project)
+				.execute(`dbo.viewLeaderDataFromSelectedProject`);
+			console.log(response);
+			res.status(200).json({ status: 200, data: response.recordsets[0] });
+		} catch (error) {
+			res.status(500).json({ status: 500, error: error });
+		} finally {
+			pool.close();
+		}
+  },
 	viewFreeEmployees: async function (req, res) {
 		const { selected_project } = req.params;
 		const pool = await database();
