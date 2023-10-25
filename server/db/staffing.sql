@@ -276,6 +276,8 @@ BEGIN
 						UPDATE dbo.projects SET leader = @employeeId WHERE id_project = @selectedProject 
 
 					INSERT INTO employees_project_history(employee_id, employee_name, project_name, company_name)VALUES(@employeeId, (SELECT name FROM employees WHERE id_employee = @employeeId ), (SELECT name_project FROM projects WHERE id_project = @selectedProject), (SELECT area_project FROM projects WHERE id_project = @selectedProject))
+
+					INSERT INTO employees_project_history(employee_id, employee_name, project_name, company_name)VALUES(@employeeId, (SELECT name FROM employees WHERE id_employee = @employeeId ), (SELECT name_project FROM projects WHERE id_project = @selectedProject), (SELECT area_project FROM projects WHERE id_project = @selectedProject))
 				END
 			ELSE 
 			THROW 51000, 'No se puede a�adir a un empleado que ya haya sido asignado al proyecto seleccionado', 1;
@@ -287,11 +289,13 @@ GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
 EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 2, @employeeId = 10, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 2, @employeeId = 10, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.employees
 GO
+SELECT * FROM dbo.employees_project_history
 SELECT * FROM dbo.employees_project_history
 GO
 UPDATE dbo.employees SET dbo.employees.free_hours = 40 WHERE dbo.employees.id_employee = 1
