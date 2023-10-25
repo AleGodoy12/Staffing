@@ -1,176 +1,205 @@
 .show-projects-assignment > div {
-  padding: 0 16px 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-family: "Rubik-Regular-400";
-  font-size: 24px;
+	padding: 0 16px 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	font-family: 'Rubik-Regular-400';
+	font-size: 24px;
 }
 .show-projects-assignment > div a {
-  height: 48px;
+	height: 48px;
 }
 .data {
-  display: flex;
-  gap: 16px;
+	display: flex;
+	gap: 16px;
+}
+.data > div > h2 {
+	font-family: 'Rubik-Light-300';
+	font-size: 20px;
+	margin: 16px;
 }
 .data .table {
+	margin: 0 0 16px 16px;
+	background-color: #f9f9f9;
+	padding: 16px;
+	border-radius: 20px;
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+	max-width: max-content;
+}
+.data .table h3 {
+	font-family: 'Rubik-Light-300';
+	color: #c147af;
+	font-size: 14px;
+	text-align: left;
+	padding-bottom: 8px;
+}
+.data .table p {
+	font-family: 'Roboto-Regular-400';
+	font-size: 14px;
+	text-align: left;
+}
+
+.data .bar {
+	margin: 16px 0 16px 16px;
+}
+.data .bar h2 {
+	font-family: 'Rubik-Light-300';
+	font-size: 20px;
+}
+.data .bar > p {
+	margin-top: 8px;
+	font-family: 'Roboto-Regular-400';
+	font-size: 16px;
+	margin-bottom: 4px;
+}
+
+.data .bar > div {
+	position: relative;
+	overflow: hidden;
+	height: 30px;
+	max-width: 420px;
+}
+.data .bar > div progress {
+	-webkit-appearance: none;
+	height: 30px;
+	border-radius: 50px;
+	width: 100%;
+	overflow: hidden;
+	border: 1px solid black;
+}
+.data .bar > div ::-webkit-progress-bar {
+	background-color: white;
+}
+.data .bar > div ::-webkit-progress-value {
+	background-color: #c147afac;
+}
+.data .bar > div p {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Roboto-Regular-400';
+	font-size: 20px;
+}
+
+.staff > h2 {
+  font-family: 'Rubik-Light-300';
+	font-size: 20px;
+	margin: 16px;
+}
+.staff > div {
+  max-height: 214px;
+  overflow-y: scroll;
+}
+.staff > div::-webkit-scrollbar {
+  display: none;
+}
+
+.table-leader,
+.staff .table-staff {
   margin: 0 0 16px 16px;
   background-color: #f9f9f9;
   padding: 16px;
   border-radius: 20px;
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
   max-width: max-content;
+  gap: 20px;
 }
-.data .table h3 {
+
+.table-leader h3,
+.staff .table-staff h3 {
   font-family: "Rubik-Light-300";
-  color: #c147af;
+  color: #cc1144;
   font-size: 14px;
   text-align: left;
   padding-bottom: 8px;
 }
-.data .table p {
+.table-leader p,
+.staff .table-staff p:not(.table > div:nth-child(4) p ){
   font-family: "Roboto-Regular-400";
   font-size: 14px;
   text-align: left;
 }
 
-.data .bar {
-  margin: 16px 0 16px 16px;
-}
-.data .bar h2 {
-  font-family: "Rubik-Light-300";
-  font-size: 24px;
-}
-.data .bar > p {
-  margin-top: 8px;
-  font-family: "Roboto-Regular-400";
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-
-.data .bar > div {
-  position: relative;
-  overflow: hidden;
-  height: 30px;
-  max-width: 420px;
-}
-.data .bar > div progress {
-  -webkit-appearance: none;
-  height: 30px;
-  border-radius: 50px;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid black;
-}
-.data .bar > div ::-webkit-progress-bar {
-  background-color: white;
-}
-.data .bar > div ::-webkit-progress-value {
-  background-color: #c147afac;
-  
-}
-.data .bar > div p {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+.staff .table-staff > div:nth-child(4) {
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: "Roboto-Regular-400";
-  font-size: 20px;
-}
-
-.staff {
-  margin-left: 16px;
-}
-.staff > h2 {
-  font-family: "Rubik-Light-300";
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-.staff > div {
-  display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
 }
-.staff > div p {
-  font-family: "Roboto-Regular-400";
-  text-transform: capitalize;
-}
-.staff > div button {
-  outline: none;
-  border: none;
+/* button modal color */
+.staff .table-staff > div:nth-child(4) > button {
   background-color: #ff1212;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-
 }
 
 .filter {
-  max-width: 420px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 16px 16px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 16px;
 }
 .filter > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #c147af;
-  padding: 8px 10px;
-  border-radius: 50px;
-  gap: 8px;
-  font-family: "Roboto-Regular-400";
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #c147af;
+	padding: 8px 10px;
+	border-radius: 50px;
+	gap: 8px;
+	font-family: 'Roboto-Regular-400';
 }
 .filter > div input,
 .filter > div label {
-  cursor: pointer;
-  user-select: none;
+	cursor: pointer;
+	user-select: none;
 }
 .filter > div label {
-  font-size: 14px;
+	font-size: 14px;
 }
-.filter > div input[type="checkbox"] {
-  accent-color: #c147af;
-  
+.filter > div input[type='checkbox'] {
+	accent-color: #c147af;
 }
+.title-leader,
 .title-filter,
 .title-employee {
-  font-family: "Rubik-Light-300";
-  margin: 8px 0 16px 16px;
+	font-family: 'Rubik-Light-300';
+	margin: 8px 0 16px 16px;
+  font-size: 20px;
+}
+.title-leader + p {
+  margin: 16px;
+  font-family: "Roboto-Regular-400";
 }
 .employee {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
-  gap: 16px;
-  margin: 0 0 16px 16px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 300px);
+	gap: 16px;
+	margin: 0 0 16px 16px;
 }
 .cardEmployee {
-  background: #f9f9f9;
-  padding: 8px;
-  border-radius: 8px;
+	background: #f9f9f9;
+	padding: 8px;
+	border-radius: 8px;
 }
 .cardEmployee h3 {
-  font-family: "Roboto-Light-300";
-  font-size: 16px;
-  text-transform: capitalize;
+	font-family: 'Roboto-Light-300';
+	font-size: 16px;
+	text-transform: capitalize;
 }
 .cardEmployee > div {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 8px 0;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin: 8px 0;
 }
 .cardEmployee > div p {
-  margin-bottom: 4px;
-  font-family: "Roboto-Regular-400";
-  font-size: 14px;
+	margin-bottom: 4px;
+	font-family: 'Roboto-Regular-400';
+	font-size: 14px;
 }
