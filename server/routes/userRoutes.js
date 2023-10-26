@@ -4,7 +4,7 @@ const {
 	deleteUser,
 	getProjectManagerInfo,
 	viewFreeProjectManagerEmployee,
-	getUsers
+	getUsers,
 } = require('../controllers/usersControllers');
 const router = express.Router();
 

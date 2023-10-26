@@ -125,13 +125,13 @@ CREATE TABLE employees_project_history(
 GO
 
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-3', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-5', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-5', 'Jump', 6, '2023-08-16', '2023-10-16', 720, 1);
 
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'juan@hotmail.com','frontend dev',120, 40, 160, 'banco galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('emanuel','suarez', 'emanuel@hotmail.com', 'qa automation',120, 40, 160, 'banco galicia');
@@ -288,12 +288,13 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 2, @employeeId = 10, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
-EXEC dbo.assign_employee_to_project @selectedProject = 3, @selectedHours = 2, @employeeId = 10, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 4, @selectedHours = 2, @employeeId = 5, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.employees
+GO
+SELECT * FROM dbo.projects
 GO
 SELECT * FROM dbo.employees_project_history
 SELECT * FROM dbo.employees_project_history
@@ -343,7 +344,8 @@ END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
-EXEC dbo.remove_employee_from_project @employeeId = 10, @selectedProject = 2
+EXEC dbo.remove_employee_from_project @employeeId = 16, @selectedProject = 16
+GO
 SELECT * FROM dbo.project_employees
 GO
 SELECT * FROM dbo.projects WHERE id_project = 1
@@ -575,26 +577,28 @@ AS
 BEGIN
 	IF (SELECT COUNT(id_user) FROM dbo.users WHERE id_user = @id_user) = 1
 		BEGIN
-			SELECT E.*, P.id_project
+			SELECT E.*, P.id_project, P.*, PRO.*
+			FROM employees AS E
+			LEFT JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
+			LEFT JOIN projects AS P ON PRO.id_project = P.id_project
+			LEFT JOIN users AS U ON E.id_employee = U.id_employee
+			WHERE U.id_user = @id_user
+
+			DECLARE @project_manager_employee_id INT
+			SET @project_manager_employee_id = (SELECT id_employee FROM employees WHERE id_employee IN (SELECT id_employee FROM users WHERE id_user = @id_user))
+			
+			SELECT E.*
 			FROM employees AS E
 			JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
 			JOIN projects AS P ON PRO.id_project = P.id_project
-			JOIN users AS U ON E.id_employee = U.id_employee
-			WHERE U.id_user = @id_user
-	
-			SELECT P.*
-			FROM employees AS E
-			JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
-			JOIN projects AS P ON PRO.id_project = P.id_project
-			JOIN users AS U ON E.id_employee = U.id_employee
-			WHERE U.id_user = @id_user
+			WHERE P.leader = @project_manager_employee_id AND role != 'project manager'
 		END
 	ELSE
 		THROW 51000, 'Project manager inexistente', 1
 END
 GO
 DECLARE @id_user INT
-EXEC dbo.getInfoForSelectedPM @id_user = 7
+EXEC dbo.getInfoForSelectedPM @id_user = 2
 
 SELECT * FROM dbo.users
 SELECT * FROM dbo.projects
