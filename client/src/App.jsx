@@ -11,6 +11,8 @@ import ProtectedRoute from './components/routes/ProtectedRoute';
 import LoginRoute from './components/routes/LoginRoute';
 import ShowUsers from './components/pages/admin/ShowUsers';
 import CreateUsers from './components/pages/admin/CreateUsers';
+import IndexPm from './components/pages/project-manager/IndexPm';
+import ShowAssignedProjects from './components/pages/project-manager/ShowAssignedProjects';
 
 function App() {
 	return (
@@ -45,7 +47,10 @@ function App() {
 							path="/pm"
 							element={<ProtectedRoute requiredPermission="pm" />}
 						>
-							<Route index element={<h1>Bienvenido Pm</h1>} />
+              <Route index element={<IndexPm/>} />
+              <Route path="projects" element={<ShowAssignedProjects/>}/>
+              <Route path="employees" element={<h1>hola</h1>}/>
+              <Route path="downloads" element={<h1>hola</h1>}/>
 						</Route>
 
 						<Route
