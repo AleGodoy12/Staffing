@@ -45,11 +45,14 @@ const loginControllers = {
 							username: resp[0].username,
 							password: resp[0].password,
 							permission: resp[0].permission,
+							id_user: resp[0].id_user,
 						};
 						console.log(req.session.loggedIn);
-						return res
-							.status(200)
-							.json({ status: 200, message: 'Usuario encontrado', data: req.session.loggedIn });
+						return res.status(200).json({
+							status: 200,
+							message: 'Usuario encontrado',
+							data: req.session.loggedIn,
+						});
 					} else {
 						return res.status(403).json({
 							status: 403,

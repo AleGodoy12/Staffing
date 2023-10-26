@@ -125,13 +125,13 @@ CREATE TABLE employees_project_history(
 GO
 
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-3', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-3', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-4', 'Jump', 4, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-4', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 INSERT INTO dbo.projects(name_project, area_project, leader, start_date_project, end_date_project, hours_estimation, id_user_admin)
-VALUES('jump SMG-5', 'Jump', 6, '2023-08-16', '2023-10-16', 720, 1);
+VALUES('jump SMG-5', 'Jump', NULL, '2023-08-16', '2023-10-16', 720, 1);
 
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('juan','suarez', 'juan@hotmail.com','frontend dev',120, 40, 160, 'banco galicia');
 INSERT INTO dbo.employees(name, lastname, mail, role, used_hours, free_hours, total_hours, company)VALUES('emanuel','suarez', 'emanuel@hotmail.com', 'qa automation',120, 40, 160, 'banco galicia');
@@ -577,7 +577,7 @@ AS
 BEGIN
 	IF (SELECT COUNT(id_user) FROM dbo.users WHERE id_user = @id_user) = 1
 		BEGIN
-			SELECT E.*, P.id_project, P.*, PRO.*
+			SELECT P.*
 			FROM employees AS E
 			LEFT JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
 			LEFT JOIN projects AS P ON PRO.id_project = P.id_project
@@ -586,8 +586,10 @@ BEGIN
 
 			DECLARE @project_manager_employee_id INT
 			SET @project_manager_employee_id = (SELECT id_employee FROM employees WHERE id_employee IN (SELECT id_employee FROM users WHERE id_user = @id_user))
-			
-			SELECT E.*
+
+			SELECT * FROM employees WHERE id_employee = @project_manager_employee_id;
+
+			SELECT E.*, PRO.id_project
 			FROM employees AS E
 			JOIN project_employees AS PRO ON E.id_employee = PRO.id_employee
 			JOIN projects AS P ON PRO.id_project = P.id_project
