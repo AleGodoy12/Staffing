@@ -12,6 +12,7 @@ const projectRoutes = require('./routes/projectRoutes');
 const assignEmployeeRoutes = require('./routes/assignEmployeeRoutes');
 const downloadDataRoutes = require('./routes/downloadDataRoutes');
 const userRoutes = require('./routes/userRoutes');
+const employeesInfoRoutes = require('./routes/employeesInfoRoutes');
 const app = express();
 
 app.use(cors());
@@ -34,5 +35,6 @@ app.use('/', projectRoutes);
 app.use('/project', assignEmployeeRoutes);
 app.use('/download', downloadDataRoutes);
 app.use('/users', userRoutes);
+app.use('/employees', employeesInfoRoutes);
 
 module.exports = app;

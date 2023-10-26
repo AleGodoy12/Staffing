@@ -654,11 +654,15 @@ GO
 CREATE PROCEDURE dbo.allEmployeesIncludingBench
 AS
 BEGIN
-	SELECT E.*, P.name_project
+	SELECT E.id_employee, E.name, E.lastname, E.mail, E.role, E.used_hours, E.free_hours, E.total_hours, E.company, P.name_project
 	FROM employees AS E
-	LEFT JOIN project_employees AS PR ON PR.id_employee = E.id_employee
+	LEFT JOIN (
+		SELECT id_employee, MIN(id_project) AS id_project
+		FROM project_employees
+		GROUP BY id_employee
+	) AS PR ON PR.id_employee = E.id_employee
 	LEFT JOIN projects AS P ON P.id_project = PR.id_project
-	ORDER BY P.id_project
+	WHERE E.id_employee != 1
 END
 GO
 EXEC dbo.allEmployeesIncludingBench
