@@ -288,7 +288,7 @@ END
 GO
 DECLARE @freeHours INT
 DECLARE @employeeFreeHoursAfterCheck INT
-EXEC dbo.assign_employee_to_project @selectedProject = 4, @selectedHours = 2, @employeeId = 5, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
+EXEC dbo.assign_employee_to_project @selectedProject = 4, @selectedHours = 2, @employeeId = 3, @newProjectHoursRequired = 5, @freeHours = @freeHours OUTPUT, @employeeFreeHoursAfterCheck = @employeeFreeHoursAfterCheck OUTPUT
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -344,7 +344,7 @@ END
 GO
 DECLARE @employeeId INT
 DECLARE @selectedProject INT
-EXEC dbo.remove_employee_from_project @employeeId = 16, @selectedProject = 16
+EXEC dbo.remove_employee_from_project @employeeId = 3, @selectedProject = 4
 GO
 SELECT * FROM dbo.project_employees
 GO
@@ -486,6 +486,8 @@ GO
 DECLARE @selectedQuery VARCHAR(25)
 EXEC dbo.getInfo @selectedQuery = 'projects-employees'
 GO
+DELETE FROM projects where id_project = 2
+select * from projects
 
 /* Crear usuario únicamente para empleados con rol 'project manager' */
 IF OBJECT_ID('dbo.createUser') IS NOT NULL
@@ -520,7 +522,7 @@ DECLARE @mail VARCHAR(150)
 DECLARE @password VARCHAR(60)
 DECLARE @permission VARCHAR(50)
 GO
-EXEC dbo.createUser @username = 'Santiago', @id_employee = 4, @mail = 'santiaguito@hotmail.com', @password = '123asd', @permission = 'project manager'
+EXEC dbo.createUser @username = 'Santiago', @id_employee = 6, @mail = 'santiaguito@hotmail.com', @password = '123asd', @permission = 'project manager'
 GO
 SELECT * FROM dbo.users
 SELECT * FROM dbo.employees
