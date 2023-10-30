@@ -4,8 +4,7 @@ import Sidebar from '../../common/Sidebar';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../../common/Modal';
-import '../../../assets/css/ShowUsers.css'
-
+import '../../../assets/css/ShowUsers.css';
 
 const url = 'http://localhost:3000/users/getUsersInfo';
 const urlDeleteUser = 'http://localhost:3000/users/deleteUser/';
@@ -22,12 +21,12 @@ export default function ShowUsers() {
 
 	useEffect(() => {
 		getUsers();
-  }, []);
-  
-  const deleteUser = async (id) => {
-    await axios.delete(`${urlDeleteUser}${id}`);
-    getUsers()
-  }
+	}, []);
+
+	const deleteUser = async (id) => {
+		await axios.delete(`${urlDeleteUser}${id}`);
+		getUsers();
+	};
 
 	return (
 		<>
@@ -58,11 +57,11 @@ export default function ShowUsers() {
 										<p>{user.permission}</p>
 									</div>
 									<div>
-                    <Modal
-                      type={'danger'}
-                      action={'Confirmar eliminación de usuario'}
-                      question={`¿Está seguro que desea eliminar al usuario ${user.username}?`}
-                      msg={'Esta acción es irreversible'}
+										<Modal
+											type={'danger'}
+											action={'Confirmar eliminación de usuario'}
+											question={`¿Está seguro que desea eliminar al usuario ${user.username}?`}
+											msg={'Esta acción es irreversible'}
 											buttonText={'Eliminar usuario'}
 											execute={() => deleteUser(user.id_employee)}
 										></Modal>

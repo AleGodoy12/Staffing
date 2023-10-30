@@ -44,7 +44,7 @@
 	font-size: 16px;
 }
 .create-user-section > form input:nth-child(1) {
-  display: none;
+	display: none;
 }
 .create-user-section > form button {
 	outline: none;

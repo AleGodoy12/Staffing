@@ -4,7 +4,7 @@ import LogoArbusta from '../../assets/icons/arbusta-icon.png';
 import DashboardIcon from '../../assets/icons/dashboard-icon.svg';
 import BagIcon from '../../assets/icons/bag-icon.svg';
 import UsersIcon from '../../assets/icons/users-icon.svg';
-import DownloadIcon from '../../assets/icons/bx-cloud-download.svg'
+import DownloadIcon from '../../assets/icons/bx-cloud-download.svg';
 import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 
