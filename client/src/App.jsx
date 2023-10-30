@@ -18,7 +18,6 @@ import DownloadInfo from './components/pages/project-manager/DownloadInfo';
 import ShowEmployees from './components/pages/project-manager/ShowEmployees';
 import ShowPmEmployees from './components/pages/project-manager/ShowPmEmployees';
 
-
 function App() {
 	return (
 		<>
@@ -52,12 +51,15 @@ function App() {
 							path="/pm"
 							element={<ProtectedRoute requiredPermission="pm" />}
 						>
-              <Route index element={<IndexPm/>} />
-              <Route path="projects" element={<ShowAssignedProjects/>}/>
-              <Route path="projects/:id" element={<ShowAssignedProjectInfo />} />
-              <Route path="pm-employees" element={<ShowPmEmployees/>}/>
-              <Route path="employees" element={<ShowEmployees/>}/>
-              <Route path="downloads" element={<DownloadInfo/>}/>
+							<Route index element={<IndexPm />} />
+							<Route path="projects" element={<ShowAssignedProjects />} />
+							<Route
+								path="projects/:id"
+								element={<ShowAssignedProjectInfo />}
+							/>
+							<Route path="pm-employees" element={<ShowPmEmployees />} />
+							<Route path="employees" element={<ShowEmployees />} />
+							<Route path="downloads" element={<DownloadInfo />} />
 						</Route>
 
 						<Route
