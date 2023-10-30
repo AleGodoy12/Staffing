@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from '../../common/Modal';
 
 const url = 'http://localhost:3000/';
 const url2 = 'http://localhost:3000/deleteProject/';
@@ -65,9 +66,14 @@ export default function ShowProjects() {
 									</Link>
 								</div>
 								<div className="td">
-									<button onClick={() => deleteProject(e.id_project)}>
-										Eliminar
-									</button>
+									<Modal
+										type={'danger'}
+										action={'Confirmar eliminación del proyecto'}
+										question={`¿Está seguro que desea eliminar el proyecto ${e.name_project}?`}
+										msg={'Esta acción es irreversible'}
+										buttonText={'Eliminar'}
+										execute={() => deleteProject(e.id_project)}
+									></Modal>
 								</div>
 							</section>
 						))}

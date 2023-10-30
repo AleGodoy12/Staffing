@@ -63,7 +63,7 @@
 	border: none;
 	outline: none;
 }
-.projects-section .table .td:nth-child(6) button {
+.projects-section .table .td:nth-child(6) > button {
 	background-color: #ff1212;
 	cursor: pointer;
 }

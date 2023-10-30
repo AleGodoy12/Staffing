@@ -13,7 +13,11 @@ import ShowUsers from './components/pages/admin/ShowUsers';
 import CreateUsers from './components/pages/admin/CreateUsers';
 import IndexPm from './components/pages/project-manager/IndexPm';
 import ShowAssignedProjects from './components/pages/project-manager/ShowAssignedProjects';
-import ShowProjectInfo from './components/pages/project-manager/ShowProjectInfo';
+import ShowAssignedProjectInfo from './components/pages/project-manager/ShowAssignedProjectInfo';
+import DownloadInfo from './components/pages/project-manager/DownloadInfo';
+import ShowEmployees from './components/pages/project-manager/ShowEmployees';
+import ShowPmEmployees from './components/pages/project-manager/ShowPmEmployees';
+
 
 function App() {
 	return (
@@ -50,9 +54,10 @@ function App() {
 						>
               <Route index element={<IndexPm/>} />
               <Route path="projects" element={<ShowAssignedProjects/>}/>
-              <Route path="projects/:id" element={<ShowProjectInfo/>}/>
-              <Route path="employees" element={<h1>hola</h1>}/>
-              <Route path="downloads" element={<h1>hola</h1>}/>
+              <Route path="projects/:id" element={<ShowAssignedProjectInfo />} />
+              <Route path="pm-employees" element={<ShowPmEmployees/>}/>
+              <Route path="employees" element={<ShowEmployees/>}/>
+              <Route path="downloads" element={<DownloadInfo/>}/>
 						</Route>
 
 						<Route

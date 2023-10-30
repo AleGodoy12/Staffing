@@ -1,0 +1,56 @@
+.project-info-section > div {
+	padding: 0 16px 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+.project-info-section > div p {
+	font-family: 'Rubik-Regular-400';
+	font-size: 24px;
+}
+
+.project-employees > h2,
+.project-info-section .project-leader > h2,
+.project-info-section .leader > h2 {
+  font-family: "Rubik-Light-300";
+  font-size: 20px;
+  margin: 0 16px 16px 16px;
+}
+
+.project-employees > h3 {
+  font-family: 'Rubik-Regular-400';
+	font-size: 16px;
+	margin: 16px;
+  font-weight: 400;
+}
+
+.project-leader .table-leader-project-info,
+.project-employees .table-employee-info ,
+.leader .table-employee-info {
+  margin: 0 0 16px 16px;
+	background-color: #f9f9f9;
+	padding: 16px;
+	border-radius: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	max-width: max-content;
+	gap: 20px;
+}
+
+.project-leader .table-leader-project-info h3,
+.project-employees .table-employee-info h3,
+.leader .table-employee-info h3 {
+  font-family: 'Rubik-Light-300';
+	color: #cc1144;
+	font-size: 14px;
+	text-align: left;
+	padding-bottom: 8px;
+}
+
+.project-leader .table-leader-project-info p,
+.project-employees .table-employee-info p,
+.leader .table-employee-info p {
+  font-family: 'Roboto-Regular-400';
+	font-size: 14px;
+	text-align: left;
+}
