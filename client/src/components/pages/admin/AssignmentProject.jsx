@@ -250,31 +250,31 @@ export default function AssignmentProject() {
 									<div>
 										<h3>Apellido</h3>
 										<p>{e.lastname}</p>
-                  </div>
-                  <div>
-                    <h3>Mail</h3>
-                    <p>{e.mail }</p>
-                  </div>
+									</div>
+									<div>
+										<h3>Mail</h3>
+										<p>{e.mail}</p>
+									</div>
 									<div>
 										<h3>Rol</h3>
 										<p>{e.role}</p>
 									</div>
-                  <div>
-                    <h3>Compañía</h3>
-                    <p>{e.company }</p>
-                  </div>
-                  <div>
-                    <h3>Horas usadas</h3>
-                    <p>{e.used_hours }</p>
-                  </div>
-                  <div>
-                    <h3>Horas disponibles</h3>
-                    <p>{e.free_hours }</p>
-                  </div>
-                  <div>
-                    <h3>Horas totales</h3>
-                    <p>{e.total_hours }</p>
-                  </div>
+									<div>
+										<h3>Compañía</h3>
+										<p>{e.company}</p>
+									</div>
+									<div>
+										<h3>Horas usadas</h3>
+										<p>{e.used_hours}hs</p>
+									</div>
+									<div>
+										<h3>Horas disponibles</h3>
+										<p>{e.free_hours}hs</p>
+									</div>
+									<div>
+										<h3>Horas totales</h3>
+										<p>{e.total_hours}hs</p>
+									</div>
 								</section>
 							))
 						)}

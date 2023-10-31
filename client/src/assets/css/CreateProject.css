@@ -1,85 +1,84 @@
 .create-projects-section > div {
-  padding: 0 16px 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+	padding: 0 16px 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
 }
 .create-projects-section > div p {
-  font-family: "Rubik-Regular-400";
-  font-size: 24px;
+	font-family: 'Rubik-Regular-400';
+	font-size: 24px;
 }
 
 .create-projects-section form {
-  margin: 0 16px;
-  max-width: 300px;
-  
+	margin: 0 16px;
+	max-width: 300px;
 }
-.create-projects-section form input:not(input[type="date"]) {
-  width: 100%;
-  margin-bottom: 12px;
-  font-family: "Roboto-Light-300";
-  border: 1.5px solid #c1437f;
-  padding: 6px;
-  border-radius: 5px;
-  outline: none;
-  font-size: 16px;
+.create-projects-section form input:not(input[type='date']) {
+	width: 100%;
+	margin-bottom: 12px;
+	font-family: 'Roboto-Light-300';
+	border: 1.5px solid #c1437f;
+	padding: 6px;
+	border-radius: 5px;
+	outline: none;
+	font-size: 16px;
 }
 .create-projects-section form label {
-  display: block;
-  font-family: "Roboto-Regular-400";
-  margin-bottom: 8px;
+	display: block;
+	font-family: 'Roboto-Regular-400';
+	margin-bottom: 8px;
 }
 .create-projects-section form button {
-  outline: none;
-  border: none;
-  display: block;
-  width: 100%;
-  text-decoration: none;
-  color: #ffffff;
-  font-family: "Roboto-Regular-400";
-  font-size: 16px;
-  background-color: #c1437f;
-  padding: 8px;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
+	outline: none;
+	border: none;
+	display: block;
+	width: 100%;
+	text-decoration: none;
+	color: #ffffff;
+	font-family: 'Roboto-Regular-400';
+	font-size: 16px;
+	background-color: #c1437f;
+	padding: 8px;
+	text-align: center;
+	border-radius: 8px;
+	cursor: pointer;
 }
 .create-projects-section form label:nth-child(8),
 .create-projects-section form label:nth-child(9),
 .create-projects-section form label:nth-child(7),
 .create-projects-section form label:nth-child(6) {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
-.create-projects-section form label input[type="date"] {
-  margin-left: auto;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  border: 1px solid #c1437f;
-  padding: 6px;
-  border-radius: 5px;
-  width: 65%;
+.create-projects-section form label input[type='date'] {
+	margin-left: auto;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	border: 1px solid #c1437f;
+	padding: 6px;
+	border-radius: 5px;
+	width: 65%;
 }
 .create-projects-section form label:nth-child(8) {
-  margin-top: 12px;
+	margin-top: 12px;
 }
 .errorCreate {
-  display: block;
-  color: red;
-  font-family: "Rubik-Light-300";
-  margin: 0;
-  padding: 0;
-  font-size: 12px;
-  margin-top: -12px;
-  margin-bottom: 8px;
+	display: block;
+	color: red;
+	font-family: 'Rubik-Light-300';
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	margin-top: -12px;
+	margin-bottom: 8px;
 }
 .createSucces {
-  display: block;
-  color: green;
-  font-family: "Rubik-Light-300";
-  margin: 0;
-  padding: 0;
-  font-size: 14px;
-  margin-bottom: 8px;
+	display: block;
+	color: green;
+	font-family: 'Rubik-Light-300';
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	margin-bottom: 8px;
 }

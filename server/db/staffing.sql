@@ -332,7 +332,7 @@ BEGIN
 			DELETE FROM dbo.project_employees WHERE id_employee = @employeeId AND id_project = @selectedProject
 			IF(SELECT COUNT(id_employee) FROM dbo.employees WHERE id_employee = @employeeId AND role = 'project manager') > 0
 				BEGIN
-					UPDATE dbo.projects SET leader = NULL WHERE leader = @employeeId
+					UPDATE dbo.projects SET leader = NULL WHERE leader = @employeeId AND id_project = @selectedProject
 					SELECT 'Project manager removido del proyecto exitosamente'
 				END
 			ELSE	
@@ -558,7 +558,7 @@ GO
 CREATE PROCEDURE dbo.viewEmployeesInfo
 AS
 BEGIN
-	SELECT E.*, P.name_project, P.id_project, (SELECT name FROM employees WHERE id_employee = P.leader) AS 'Project Manager', PRO.hours_assigned_to_project
+	SELECT E.*, P.name_project, P.id_project, (SELECT name FROM employees WHERE id_employee = P.leader) AS 'project_manager', PRO.hours_assigned_to_project
 	FROM dbo.employees AS E
 	LEFT JOIN dbo.project_employees AS PRO
 	ON E.id_employee = PRO.id_employee

@@ -1,73 +1,72 @@
 .modal {
-  position: absolute;
-  z-index: 999;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.50);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	position: absolute;
+	z-index: 999;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .open-modal {
-  outline: none;
-  border: none;
-  background-color: #c1477f;
-  color: #f4f4f4;
-  width: 100%;
-  font-family: "Roboto-Regular-400";
-  font-size: 16px;
-  padding: 4px 0;
-  margin-top: 4px;
-  border-radius: 5px;
-  cursor: pointer;
+	outline: none;
+	border: none;
+	background-color: #c1477f;
+	color: #f4f4f4;
+	width: 100%;
+	font-family: 'Roboto-Regular-400';
+	font-size: 16px;
+	padding: 4px 0;
+	margin-top: 4px;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .modal-container {
-  background-color: #fff;
-  padding: 16px;
-  border-radius: 8px;
+	background-color: #fff;
+	padding: 16px;
+	border-radius: 8px;
 }
 .modal-container p:nth-child(1) {
-  font-size: 20px;
+	font-size: 20px;
 }
 .modal-container p {
-  font-family: "Roboto-Regular-400";
+	font-family: 'Roboto-Regular-400';
 }
 .modal-container h3 {
-  margin: 16px 0;
-  font-size: 18px;
-  color: #c1477f;
+	margin: 16px 0;
+	font-size: 18px;
+	color: #c1477f;
 }
 .modal-container p span {
-  color: #c1437f;
+	color: #c1437f;
 }
-.modal-container input[type="number"] {
-  width: 100%;
-  margin: 12px 0;
-  font-family: "Roboto-Light-300";
-  border: 1.5px solid #c147af;
-  padding: 6px;
-  border-radius: 5px;
-  outline: none;
-  font-size: 16px;
+.modal-container input[type='number'] {
+	width: 100%;
+	margin: 12px 0;
+	font-family: 'Roboto-Light-300';
+	border: 1.5px solid #c147af;
+	padding: 6px;
+	border-radius: 5px;
+	outline: none;
+	font-size: 16px;
 }
 
 .modal-container > div {
-  display: flex;
+	display: flex;
 }
-.modal-container > div button{
-  outline: none;
-  border: none;
-  background-color: #c1437f;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
+.modal-container > div button {
+	outline: none;
+	border: none;
+	background-color: #c1437f;
+	color: #fff;
+	padding: 8px 16px;
+	border-radius: 5px;
+	cursor: pointer;
 }
 .modal-container > div button:nth-child(1) {
-  margin-right: auto;
+	margin-right: auto;
 }
-

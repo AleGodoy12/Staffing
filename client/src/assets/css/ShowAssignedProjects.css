@@ -1,0 +1,53 @@
+.projects-assignment-pm > h2 {
+	font-family: 'Rubik-Regular-400';
+	margin: 16px;
+}
+.projects-assignment-pm > h3 {
+	font-family: 'Rubik-Regular-400';
+	font-size: 16px;
+	margin: 16px;
+}
+
+.projects-assignment-pm .my-projects-table {
+	margin: 16px 0 16px 16px;
+	background-color: #f9f9f9;
+	padding: 16px;
+	border-radius: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	max-width: max-content;
+	gap: 30px;
+}
+
+.projects-assignment-pm .my-projects-table h3 {
+	font-family: 'Rubik-Light-300';
+	color: #cc1144;
+	font-size: 14px;
+	text-align: left;
+	padding-bottom: 8px;
+}
+.projects-assignment-pm .my-projects-table p {
+	font-family: 'Roboto-Regular-400';
+	font-size: 14px;
+	text-align: left;
+}
+
+.projects-assignment-pm .my-projects-table div:nth-child(6) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.projects-assignment-pm .my-projects-table div:nth-child(6) a {
+	text-decoration: none;
+	display: block;
+	font-family: 'Roboto-Regular-400';
+	color: #fff;
+	background-color: #c1437f;
+	padding: 8px 16px;
+	border-radius: 8px;
+	font-size: 14px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}

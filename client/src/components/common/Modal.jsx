@@ -40,7 +40,17 @@ export default function Modal({
 					<h2>{action}</h2>
 					<p>{question}</p>
 					<div className="icon-advise">
-						<img src={type === 'check' ? Check : type === 'warning' ? Warning : type === 'danger' ? Danger : ''} />
+						<img
+							src={
+								type === 'check'
+									? Check
+									: type === 'warning'
+									? Warning
+									: type === 'danger'
+									? Danger
+									: ''
+							}
+						/>
 					</div>
 					<p>{msg}</p>
 					<div>
