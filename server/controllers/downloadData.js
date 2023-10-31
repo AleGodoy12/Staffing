@@ -1,6 +1,9 @@
 const database = require('../db/database');
 const xl = require('excel4node');
 const wb = new xl.Workbook();
+const path = require('path');
+const os = require('os');
+
 const columnTitleStyle = wb.createStyle({
 	alignment: {
 		horizontal: 'center',
@@ -135,6 +138,8 @@ const downloadData = {
 		}
 	},
 	downloadSelectedInfo: async function (req, res) {
+		const userHome = os.homedir();
+		const downloadPath = path.join(userHome, 'Downloads');
 		const pool = await database();
 		try {
 			const { selectedQuery } = req.params;
@@ -166,7 +171,7 @@ const downloadData = {
 							.style(rowStyle);
 					});
 				});
-				wb.write(`${selectedQuery}.xlsx`);
+				wb.write(`${downloadPath}/${selectedQuery}.xlsx`);
 			}
 			res.status(200).json({ status: 200, data: 'Projects file created!' });
 		} catch (error) {
