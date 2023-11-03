@@ -93,6 +93,7 @@ export default function CreateProject() {
 								name="name"
 								value={project.name}
 								onChange={newValue}
+                autoComplete='off'
 							/>
 							{errorBack
 								? errorBack.map((e, index) =>
@@ -112,6 +113,7 @@ export default function CreateProject() {
 								name="area"
 								value={project.area}
 								onChange={newValue}
+                autoComplete='off'
 							/>
 							{errorBack
 								? errorBack.map((e, index) =>
