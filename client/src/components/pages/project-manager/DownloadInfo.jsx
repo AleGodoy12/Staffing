@@ -39,7 +39,9 @@ export default function DownloadInfo() {
 						<h3>Listado de empleados </h3>
 						<button onClick={downloadData} value={'assigned-employees'}>
 							<p>Descargar</p>
+							<span></span>
 							
+							<img src={DownloadIcon} alt="" />	
 						</button>
 
 
