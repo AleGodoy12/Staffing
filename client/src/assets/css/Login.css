@@ -9,7 +9,6 @@
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: 1fr;
 }
-
 .main-login .login {
 	grid-area: 1 / 2 / 2 / 3;
 	background-color: #fff;
@@ -17,7 +16,6 @@
 	align-items: center;
 	justify-content: center;
 }
-
 .main-login .container {
 	/* background-color: antiquewhite; */
 	min-width: 480px;
@@ -47,7 +45,6 @@
 	margin: 0 auto;
 	margin-bottom: 48px;
 }
-
 .main-login form label {
 	font-size: 16px;
 	font-family: 'Roboto-Regular-400';
@@ -72,14 +69,12 @@
 	max-width: 400px;
 	border-radius: 8px;
 }
-
 .main-login form input[type='password'],
 .main-login form input[type='text'] {
 	border: 1px solid #afa2c3;
 	padding-left: 7.5px;
 	font-size: 18px;
 }
-
 .main-login form button {
 	margin-top: 48px;
 	background-color: #c1437f;
@@ -89,7 +84,6 @@
 	font-size: 18px;
 	cursor: pointer;
 }
-
 .main-login .container > span {
 	display: block;
 	text-align: center;
@@ -97,7 +91,6 @@
 	font-family: 'Rubik-Medium-500';
 	color: red;
 }
-
 @media screen and (max-width: 900px) {
 	.main-login {
 		display: flex;
@@ -112,14 +105,12 @@
 		padding: 48px 0 24px 0;
 	}
 }
-
 @media screen and (max-width: 500px) {
 	.main-login {
 		background-image: url('../images/bg-login-mobile.png');
 		min-height: 640px;
 		padding: 8px;
 	}
-
 	.main-login .login {
 		max-width: 400px;
 	}
@@ -127,7 +118,6 @@
 		min-width: auto;
 		padding: 36px 18px 12px 18px;
 	}
-
 	.main-login .logo img {
 		width: 36px;
 	}

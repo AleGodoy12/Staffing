@@ -1,7 +1,6 @@
 .projects-assignment {
 	margin: 16px;
 }
-
 .projects-assignment > div h2 {
 	font-family: 'Rubik-Regular-400';
 	font-size: 24px;
@@ -27,13 +26,11 @@
 	margin-top: 32px;
 	gap: 16px;
 }
-
 .projects-assignment .card {
 	background-color: #f9f9f9;
 	width: 200px;
 	border-radius: 20px;
 }
-
 .projects-assignment .card h2 {
 	font-family: 'Rubik-Light-300';
 	font-size: 16px;
@@ -61,7 +58,6 @@
 .projects-assignment .card > div p:nth-child(1) {
 	margin-bottom: 16px;
 }
-
 @media screen and (max-width: 900px) {
 	.projects-assignment > div a {
 		margin-bottom: 8px;

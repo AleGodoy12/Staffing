@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import '../../../assets/css/ShowEmployees.css'
+import '../../../assets/css/ShowEmployees.css';
 import Header from '../../common/Header';
 import SidebarPm from '../../common/SidebarPm';
 import axios from 'axios';
 
-
 /* Empleados */
 const urlEmployees = 'http://localhost:3000/project/viewEmployeesInfo';
 /* Empleados con y sin asignacion incluyendo bench */
-const urlEmployeeAssingned = "http://localhost:3000/employees/assigned";
+const urlEmployeeAssingned = 'http://localhost:3000/employees/assigned';
 /* Empleados sin asignacion incluyendo bench */
-const urlEmployeeNoAssigned = "http://localhost:3000/employees/noAssigned"
+const urlEmployeeNoAssigned = 'http://localhost:3000/employees/noAssigned';
 
 export default function ShowEmployees() {
 	const [changeButton, setChangeButton] = useState(0);
@@ -39,11 +38,7 @@ export default function ShowEmployees() {
 			employees,
 			employeesAssigned,
 			employeesNoAssigned,
-		})
-
-
-		console.log(typeof employeesNoAssigned[0].id_employee)
-
+		});
 	};
 
 	useEffect(() => {
@@ -71,11 +66,17 @@ export default function ShowEmployees() {
 						</div>
 						<section>
 							{changeButton === 0
-								? (
-									employeeData.employees.map((e,index)=>(
-										<div 
-											className="table-employees-info" key={index}
-											style={e.name_project === 'Bench' ? {border: '1px solid #c1448080'} : e.id_employee === 1 ? {display: 'none'}: {}}
+								? employeeData.employees.map((e, index) => (
+										<div
+											className="table-employees-info"
+											key={index}
+											style={
+												e.name_project === 'Bench'
+													? { border: '1px solid #c1448080' }
+													: e.id_employee === 1
+													? { display: 'none' }
+													: {}
+											}
 										>
 											<div>
 												<h3>Nombre</h3>
@@ -112,14 +113,21 @@ export default function ShowEmployees() {
 												<p>{e.project_manager}</p>
 											</div>
 										</div>
-									))
-								)
+								  ))
 								: changeButton === 1
-								? (
-									employeeData.employeesAssigned.map((e,index)=>(
-										<div 
-											className="table-employees-info" key={index}
-											style={e.name_project === 'Bench' ? {border: '1px solid #c1448080'} : e.id_employee === 1 ? {display: 'none'} : e.role==='project manager' ? {display: 'none'} : {}}
+								? employeeData.employeesAssigned.map((e, index) => (
+										<div
+											className="table-employees-info"
+											key={index}
+											style={
+												e.name_project === 'Bench'
+													? { border: '1px solid #c1448080' }
+													: e.id_employee === 1
+													? { display: 'none' }
+													: e.role === 'project manager'
+													? { display: 'none' }
+													: {}
+											}
 										>
 											<div>
 												<h3>Nombre</h3>
@@ -152,14 +160,21 @@ export default function ShowEmployees() {
 												<p>{e.name_project}</p>
 											</div>
 										</div>
-									))
-								)
+								  ))
 								: changeButton === 2
-								? (
-									employeeData.employeesNoAssigned.map((e,index)=>(
-										<div 
-											className="table-employees-info" key={index}
-											style={e.name_project === 'Bench' ? {border: '1px solid #c1448080'} : e.id_employee === 1 ? {display: 'none'} : e.role==='project manager' ? {display: 'none'} : {}}
+								? employeeData.employeesNoAssigned.map((e, index) => (
+										<div
+											className="table-employees-info"
+											key={index}
+											style={
+												e.name_project === 'Bench'
+													? { border: '1px solid #c1448080' }
+													: e.id_employee === 1
+													? { display: 'none' }
+													: e.role === 'project manager'
+													? { display: 'none' }
+													: {}
+											}
 										>
 											<div>
 												<h3>Nombre</h3>
@@ -192,11 +207,9 @@ export default function ShowEmployees() {
 												<p>{e.name_project}</p>
 											</div>
 										</div>
-									))
-								)
-								: ('')}
+								  ))
+								: ''}
 						</section>
-						
 					</section>
 				</section>
 			</main>

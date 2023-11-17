@@ -56,7 +56,6 @@
 	bottom: 16px;
 	cursor: pointer;
 }
-
 @media screen and (max-width: 900px) {
 	.sidebar-left {
 		height: min-content;

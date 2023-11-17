@@ -79,20 +79,16 @@ export default function EditProject() {
 
 	const updateProject = async (e) => {
 		e.preventDefault();
-		try {
-			const response = await axios.patch(urlUpdate, {
-				name_project: newProject.name,
-				area_project: newProject.area,
-				start_date_project: newProject.start,
-				end_date_project: newProject.end,
-				hours_estimation: newProject.hours,
-				id_project: id,
-			});
-			setStatus(response.statusText);
-			getBlogById();
-		} catch (error) {
-			console.log(error);
-		}
+    const response = await axios.patch(urlUpdate, {
+      name_project: newProject.name,
+      area_project: newProject.area,
+      start_date_project: newProject.start,
+      end_date_project: newProject.end,
+      hours_estimation: newProject.hours,
+      id_project: id,
+    });
+    setStatus(response.statusText);
+    getBlogById();
 	};
 
 	return (

@@ -1,16 +1,14 @@
 .all-pm-employees-info > h2 {
-    font-family: 'Rubik-Regular-400';
-    margin: 16px;
+	font-family: 'Rubik-Regular-400';
+	margin: 16px;
 }
-
 .all-pm-employees-info > h3 {
-    font-family: 'Rubik-Regular-400';
-    font-size: 16px;
-    margin: 16px;
+	font-family: 'Rubik-Regular-400';
+	font-size: 16px;
+	margin: 16px;
 }
-
 .all-pm-employees-info .table-employee-info {
-    margin: 0 0 16px 16px;
+	margin: 0 0 16px 16px;
 	background-color: #f9f9f9;
 	padding: 16px;
 	border-radius: 20px;
@@ -19,17 +17,21 @@
 	max-width: max-content;
 	gap: 20px;
 }
-
 .all-pm-employees-info .table-employee-info h3 {
-    font-family: 'Rubik-Light-300';
+	font-family: 'Rubik-Light-300';
 	color: #cc1144;
 	font-size: 14px;
 	text-align: left;
 	padding-bottom: 8px;
 }
-
 .all-pm-employees-info .table-employee-info p {
-    font-family: 'Roboto-Regular-400';
+	font-family: 'Roboto-Regular-400';
 	font-size: 14px;
 	text-align: left;
+}
+@media screen and (max-width: 900px) {
+	.all-pm-employees-info > h2,
+	.all-pm-employees-info .table-employee-info {
+		margin: 16px 0;
+	}
 }

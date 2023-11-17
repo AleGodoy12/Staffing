@@ -40,7 +40,6 @@
 	font-size: 14px;
 	text-align: left;
 }
-
 .data .bar {
 	margin: 16px 0 16px 16px;
 }
@@ -54,7 +53,6 @@
 	font-size: 16px;
 	margin-bottom: 4px;
 }
-
 .data .bar > div {
 	position: relative;
 	overflow: hidden;
@@ -87,7 +85,6 @@
 	font-family: 'Roboto-Regular-400';
 	font-size: 20px;
 }
-
 .staff > h2 {
 	font-family: 'Rubik-Light-300';
 	font-size: 20px;
@@ -100,7 +97,6 @@
 .staff > div::-webkit-scrollbar {
 	display: none;
 }
-
 .table-leader,
 .staff .table-staff {
 	margin: 0 0 16px 16px;
@@ -112,7 +108,6 @@
 	max-width: max-content;
 	gap: 20px;
 }
-
 .table-leader h3,
 .staff .table-staff h3 {
 	font-family: 'Rubik-Light-300';
@@ -127,17 +122,14 @@
 	font-size: 14px;
 	text-align: left;
 }
-
 .staff .table-staff > div:nth-child(4) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-/* button modal color */
 .staff .table-staff > div:nth-child(4) > button {
 	background-color: #ff1212;
 }
-
 .filter {
 	display: flex;
 	flex-wrap: wrap;
@@ -203,13 +195,11 @@
 	font-family: 'Roboto-Regular-400';
 	font-size: 14px;
 }
-
 @media screen and (max-width: 1200px) {
 	.data {
 		flex-direction: column;
 	}
 }
-
 @media screen and (max-width: 900px) {
 	.data > div > h2,
 	.data .table,

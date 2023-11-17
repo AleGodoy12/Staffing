@@ -39,7 +39,6 @@
 .sidebar-left .nav:nth-child(2) a {
 	color: #c1437f;
 }
-
 @media screen and (max-width: 900px) {
 	.main-home {
 		flex-direction: column;

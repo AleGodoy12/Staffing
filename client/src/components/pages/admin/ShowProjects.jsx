@@ -15,11 +15,9 @@ export default function ShowProjects() {
 	const getProjects = async () => {
 		const res = await axios.get(url);
 		setProjects(res.data.projects);
-		return;
 	};
 
 	const deleteProject = async (id) => {
-		console.log(id);
 		await axios.delete(`${url2}${id}`);
 		getProjects();
 	};

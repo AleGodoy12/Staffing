@@ -53,29 +53,26 @@ export default function CreateUsers() {
 
 	const createUser = async (e) => {
 		e.preventDefault();
-		try {
-			const response = await axios.post(urlPost, {
-				username: user.username,
-				id_employee: user.idUser,
-				mail: user.email,
-				password: user.password,
-				permission: user.role,
-			});
 
-			setUser({
-				idUser: 0,
-				username: '',
-				email: '',
-				role: '',
-				password: '',
-			});
+		const response = await axios.post(urlPost, {
+			username: user.username,
+			id_employee: user.idUser,
+			mail: user.email,
+			password: user.password,
+			permission: user.role,
+		});
 
-			setStatusOk(response.data.data);
+		setUser({
+			idUser: 0,
+			username: '',
+			email: '',
+			role: '',
+			password: '',
+		});
 
-			getPm();
-		} catch (error) {
-			console.log(error);
-		}
+		setStatusOk(response.data.data);
+
+		getPm();
 	};
 
 	return (
