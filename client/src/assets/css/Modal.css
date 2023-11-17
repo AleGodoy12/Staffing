@@ -1,5 +1,5 @@
 .common-modal {
-	position: absolute;
+	position: fixed;
 	z-index: 999;
 	left: 0;
 	top: 0;
@@ -10,7 +10,6 @@
 	align-items: center;
 	justify-content: center;
 }
-
 .open-common-modal {
 	text-decoration: none;
 	display: block;
@@ -23,14 +22,12 @@
 	outline: none;
 	cursor: pointer;
 }
-
 .common-modal-container {
 	background-color: #fff;
 	padding: 16px;
 	border-radius: 8px;
 	max-width: 397.5px;
 }
-
 .common-modal-container h2 {
 	font-family: 'Rubik-Regular-400';
 	font-size: 24px;
@@ -47,7 +44,6 @@
 	align-items: center;
 	justify-content: center;
 }
-
 .common-modal-container > div {
 	display: flex;
 }

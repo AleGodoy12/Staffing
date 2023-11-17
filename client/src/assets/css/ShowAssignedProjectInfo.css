@@ -8,7 +8,6 @@
 	font-family: 'Rubik-Regular-400';
 	font-size: 24px;
 }
-
 .project-employees > h2,
 .project-info-section .project-leader > h2,
 .project-info-section .leader > h2 {
@@ -16,14 +15,12 @@
 	font-size: 20px;
 	margin: 0 16px 16px 16px;
 }
-
 .project-employees > h3 {
 	font-family: 'Rubik-Regular-400';
 	font-size: 16px;
 	margin: 16px;
 	font-weight: 400;
 }
-
 .project-leader .table-leader-project-info,
 .project-employees .table-employee-info,
 .leader .table-employee-info {
@@ -36,7 +33,6 @@
 	max-width: max-content;
 	gap: 20px;
 }
-
 .project-leader .table-leader-project-info h3,
 .project-employees .table-employee-info h3,
 .leader .table-employee-info h3 {
@@ -46,11 +42,26 @@
 	text-align: left;
 	padding-bottom: 8px;
 }
-
 .project-leader .table-leader-project-info p,
 .project-employees .table-employee-info p,
 .leader .table-employee-info p {
 	font-family: 'Roboto-Regular-400';
 	font-size: 14px;
 	text-align: left;
+}
+@media screen and (max-width: 900px) {
+	.project-info-section > div {
+		padding: 0;
+		margin-bottom: 16px;
+	}
+	.project-info-section .project-leader > h2,
+	.project-info-section .leader > h2,
+	.project-info-section .project-employees > h2 {
+		margin: 16px 0;
+	}
+	.project-leader .table-leader-project-info,
+	.project-employees .table-employee-info,
+	.leader .table-employee-info {
+		margin: 16px 0;
+	}
 }

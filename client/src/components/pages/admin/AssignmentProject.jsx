@@ -43,7 +43,6 @@ export default function AssignmentProject() {
 	const getProjectById = async () => {
 		const res = await axios.get(url + id);
 		const data = res.data.projects[0];
-		console.log(data, 'proyecto data');
 		setProject({
 			name: data.name_project,
 			area: data.area_project,
@@ -60,7 +59,6 @@ export default function AssignmentProject() {
 		const res = await axios.get(urlEmployee + selected_project);
 		const data = res.data.data;
 		setEmployee(data);
-		console.log(data, 'Empleados libres');
 	};
 
 	const viewEmployeeFromSelectedProject = async () => {
@@ -68,14 +66,11 @@ export default function AssignmentProject() {
 		const res = await axios.get(urlEmployeeFromProject + id_project);
 		const data = res.data.data;
 		setEmployeeAssign(data);
-		console.log(data, 'Empleados del proyecto seleccionado');
 	};
 
 	const deleteEmployee = async (proyecto, empleado) => {
 		let project_id = proyecto;
 		let employee_id = empleado;
-		console.log(project_id);
-		console.log(employee_id);
 		await axios.delete(`${url}project/${project_id}/${employee_id}`);
 
 		load();
@@ -85,7 +80,6 @@ export default function AssignmentProject() {
 		let selected_project = id;
 		const res = await axios.get(urlLeaderProject + selected_project);
 		const data = res.data.data;
-		console.log(data, 'Lider del proyecto');
 		setLeader(data);
 	};
 

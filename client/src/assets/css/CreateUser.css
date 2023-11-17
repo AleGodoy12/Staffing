@@ -62,7 +62,16 @@
 	cursor: pointer;
 }
 .create-user-section > form + p {
-  font-family: "Rubik-Light-300";
-  margin: 8px 16px;
-  color: green;
+	font-family: 'Rubik-Light-300';
+	margin: 8px 16px;
+	color: green;
+}
+@media screen and (max-width: 900px) {
+	.create-user-section > h2,
+	.create-user-section > select {
+		margin: 0 0 16px 0;
+	}
+	.create-user-section > form {
+		margin: 0;
+	}
 }

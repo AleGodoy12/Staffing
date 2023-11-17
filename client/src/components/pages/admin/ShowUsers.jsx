@@ -15,7 +15,6 @@ export default function ShowUsers() {
 	const getUsers = async () => {
 		const data = await axios.get(url);
 		const usersData = data.data.users;
-		console.log(usersData[0].id_user);
 		setUsers(usersData);
 	};
 

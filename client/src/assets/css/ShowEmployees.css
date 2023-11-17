@@ -1,31 +1,27 @@
 .all-employees-info > h2 {
-    font-family: 'Rubik-Regular-400';
-    margin: 16px;
+	font-family: 'Rubik-Regular-400';
+	margin: 16px;
 }
-
-
 .all-employees-info > div {
-    margin: 16px 16px 32px 16px;
-} 
-
-.all-employees-info > div button {
-    text-decoration: none;
-    margin-right: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Roboto-Regular-400';
-    font-size: 16px;
-    background-color: #c1437f;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 50px;
-    cursor: pointer;
-    border: none;
+	margin: 16px 16px 24px 16px;
 }
-
+.all-employees-info > div button {
+	text-decoration: none;
+	margin: 0 16px 8px 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Roboto-Regular-400';
+	font-size: 16px;
+	background-color: #c1437f;
+	color: #fff;
+	padding: 8px 16px;
+	border-radius: 50px;
+	cursor: pointer;
+	border: none;
+}
 .all-employees-info .table-employees-info {
-    margin: 0 0 16px 16px;
+	margin: 0 0 16px 16px;
 	background-color: #f9f9f9;
 	padding: 16px;
 	border-radius: 20px;
@@ -34,17 +30,29 @@
 	max-width: max-content;
 	gap: 20px;
 }
-
 .all-employees-info .table-employees-info h3 {
-    font-family: 'Rubik-Light-300';
+	font-family: 'Rubik-Light-300';
 	color: #cc1144;
 	font-size: 14px;
 	text-align: left;
 	padding-bottom: 8px;
 }
-
 .all-employees-info .table-employees-info p {
-    font-family: 'Roboto-Regular-400';
+	font-family: 'Roboto-Regular-400';
 	font-size: 14px;
 	text-align: left;
+}
+@media screen and (max-width: 900px) {
+	.all-employees-info > h2 {
+		margin: 16px 0;
+	}
+	.all-employees-info > div {
+		margin: 16px 0;
+	}
+	.all-employees-info > div button {
+		margin: 8px 8px 0 0;
+	}
+	.all-employees-info .table-employees-info {
+		margin: 16px 0;
+	}
 }
