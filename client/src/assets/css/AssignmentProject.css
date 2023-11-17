@@ -203,3 +203,25 @@
 	font-family: 'Roboto-Regular-400';
 	font-size: 14px;
 }
+
+@media screen and (max-width: 1200px) {
+	.data {
+		flex-direction: column;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.data > div > h2,
+	.data .table,
+	.data .bar,
+	.staff > h2,
+	.staff .table-staff,
+	.title-filter,
+	.filter,
+	.title-leader,
+	.title-leader + p,
+	.table-leader,
+	.title-employee {
+		margin: 16px 0;
+	}
+}
